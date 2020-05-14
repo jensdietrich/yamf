@@ -104,7 +104,7 @@ the standard (simple, annotation-based) junit5 feature to impose a predictable e
 * `testSourceCodeFolderStructure` shows how to use some of the new junit5 features
 * the last test is missing, this is something that has to be marked manually. Including it with a special annotation `@ManualMarkingIsRequired` means that it can still be included in reports, where it can be flagged as a TODO for markers. Optionally, marking instructions can be included.
 
-__Step 2 -- Write A Marking Script to run the tests, extending a provided superclass __
+__Step 2 -- Write A Marking Script to run the tests, extending a provided superclass__
 
 ```java
 public static void main(String[] args) throws Exception {
