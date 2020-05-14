@@ -13,8 +13,8 @@
   <modules>
       <module>yamf-core</module>
       <module>yamf-examples</module>
-      <module>yamf-junit</module>
-      <module>yamf-jbytecode</module>
+      <module>yamf-acceptancetests</module>
+      <module>yamf-bytecodechecks</module>
       <module>yamf-mvn</module>
   </modules>
   <url>http://maven.apache.org</url>

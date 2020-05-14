@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
  */
 public class JUnitChecks {
 
-    public static void assertTestsAllSuceed (TestResults testResults) {
+    public static void assertTestsAllSucceed (TestResults testResults) {
         Assertions.assertAll(
             () -> Assertions.assertSame(0,testResults.getTestsFailed(),"Some tests have failed, details:\n" + testResults.getDetails()),
             () -> Assertions.assertSame(0,testResults.getTestsWithErrors(),"Some tests have caused errors, details:\n" + testResults.getDetails()),
