@@ -1,6 +1,6 @@
 ### Why Yet Another Marking Framework
 
-1. Nobody needs yet another marking framework. But ..
+1. Nobody needs yet another marking framework. However ..
 2. Input-output tests are straight-forward and are best done with vanilla unit tests, or even just shell scripts.
 3. It is more challenging to test complex designs in 200-400 level programming courses, where students have to come up with increasingly sophisticated designs,  have choices and there is no canonical correct solution. 
 4. Static analysis can help to some extent to enforce constraints such as “is a certain design pattern used ?”, “does a method use code from a whitelisted library ?”, “are methods in a certain class synchronised”, “are components used under a permissive license ?”, “what is the test coverage of a project?” and so on.
@@ -49,7 +49,7 @@ For Maven - free use, create a Java project in the environment of your choice, a
 
 ### Example 1: Marking a Maven Project
 
-This example is about marking a project where students were required to use Maven. The full source code can be found in [examples/mvn-static](examples/mvn-static) (example submissions) and [src/main/java/nz/ac/vuw/jmkr/examples/mvn](src/main/java/nz/ac/vuw/jmkr/examples/mvn) (marking scheme and script), respectively. 
+This example is about marking a project where students were required to use Maven. The full source code can be found in [yamf-examples/examples/mvn-static](yamf-examples/examples/mvn-static) (example submissions) and [yamf-examples/src/main/java/nz/ac/vuw/jmkr/examples/mvn](yamf-examples/src/main/java/nz/ac/vuw/jmkr/examples/mvn) (marking scheme and script), respectively. 
 
 A typical project consists of:
 
@@ -125,11 +125,11 @@ There are several reporters to chose from, `MSWordReporter` produces a simple wo
 
 A common scenario is that marking is done with acceptance tests. This means that as part of a marking script, tests are executed and marks are allocated based on the outcomes of those tests. This example illustrates how to do this. It is based on a setup that there are submissions and a reference solution that is used to define the acceptance tests. Those acceptance tests are organised as junit tests (in this case junit5, but junit4 is also supported). 
 
-Acceptance tests are run in separate processes / JVMs. The example illustrates this for both submissions and reference solution being organised as Maven projects. This can be customised to work for other project types, like Eclipse projects. The sources can be found in [examples/acceptancetests](examples/acceptancetests) (submissions and reference solution with acceptance tests) and [src/main/java/nz/ac/vuw/jmkr/examples/acceptancetests](src/main/java/nz/ac/vuw/jmkr/examples/acceptancetests) (marking scheme and script), respectively. 
+Acceptance tests are run in separate processes / JVMs. The example illustrates this for both submissions and reference solution being organised as Maven projects. This can be customised to work for other project types, like Eclipse projects. The sources can be found in [yamf-examples/examples/acceptancetests](yamf-examples/examples/acceptancetests) (submissions and reference solution with acceptance tests) and [yamf-examples/src/main/java/nz/ac/vuw/jmkr/examples/acceptancetests](src/main/java/nz/ac/vuw/jmkr/examples/acceptancetests) (marking scheme and script), respectively. 
 
 Note how running acceptance tests is different from running the tests that are part of the submission, and example for this is included in example 1 (see `testTestSuccess()` in the marking scheme).
 
-This is the marking script. It runs two different sets of vanilla just tests (organised as classes with tests methods annotated with `@Test`, see [examples/acceptancetests/reference-solution-with-tests/src/test/java/acceptancetests](examples/acceptancetests/reference-solution-with-tests/src/test/java/acceptancetests). The submission fails the second test as it does not handle overflows as requested in the assignment brief. The [generated report](sample-reports/example-acceptancetests-marks-submission1.doc) contains a reference to the detailed XML reports junit produces containing full details of why the test failed. 
+This is the marking script. It runs two different sets of vanilla just tests (organised as classes with tests methods annotated with `@Test`, see [yamf-examples/examples/acceptancetests/reference-solution-with-tests/src/test/java/acceptancetests](examples/acceptancetests/reference-solution-with-tests/src/test/java/acceptancetests). The submission fails the second test as it does not handle overflows as requested in the assignment brief. The [generated report](yamf-examples/sample-reports/example-acceptancetests-marks-submission1.doc) contains a reference to the detailed XML reports junit produces containing full details of why the test failed. 
 
 The check contain standard junit assumptions. They are slightly different from junit assertions as test violating assumptions will be reported as skipped, not failed. For instance, the assumptions would be violated if their were not tests, for instance, if the acceptance test methods did not have a `@Test` annotation.
 
