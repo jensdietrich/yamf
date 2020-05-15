@@ -16,7 +16,7 @@ public class MarkingScript extends MarkingScriptBuilder {
             .markingScheme(MarkingScheme.class)
             .beforeMarkingEachProjectDo(submission -> MarkingScheme.submission = submission) // inject project folder !!
             .afterMarkingEachActionDo(submission -> System.out.println("Done marking " + submission.getAbsolutePath()))
-            .reportTo(submission -> new MSWordReporter("example-mvn-marks-" + submission.getName() + ".doc"))
+            .reportTo(submission -> new MSWordReporter("yamf-examples/sample-reports/example-mvn-marks-" + submission.getName() + ".doc"))
             .run();
     }
 }

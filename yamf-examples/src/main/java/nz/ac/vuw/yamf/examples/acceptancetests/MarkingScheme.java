@@ -27,7 +27,7 @@ public class MarkingScheme {
 
     @BeforeAll
     public static void prepareAcceptanceTests () throws Exception {
-        acceptanceTestProjectFolder = new File("examples/acceptancetests/reference-solution-with-tests");
+        acceptanceTestProjectFolder = new File("yamf-examples/examples/acceptancetests/reference-solution-with-tests");
         assert acceptanceTestProjectFolder.exists();
 
         junitRunner = new File(JUnitActions.class.getResource("/junit-platform-console-standalone-1.6.2.jar").getFile());

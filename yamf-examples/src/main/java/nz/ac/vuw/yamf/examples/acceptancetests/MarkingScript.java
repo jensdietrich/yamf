@@ -16,7 +16,7 @@ public class MarkingScript {
             .markingScheme(MarkingScheme.class)
             .beforeMarkingEachProjectDo(submission -> MarkingScheme.submission = submission) // inject project folder !!
             .afterMarkingEachActionDo(submission -> System.out.println("Done marking " + submission.getAbsolutePath()))
-            .reportTo(submission -> new MSWordReporter("example-acceptancetests-marks-" + submission.getName() + ".doc"))
+            .reportTo(submission -> new MSWordReporter("yamf-examples/sample-reports/example-acceptancetests-marks-" + submission.getName() + ".doc"))
             .run();
     }
 }
