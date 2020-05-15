@@ -16,6 +16,7 @@
       <module>yamf-acceptancetests</module>
       <module>yamf-bytecodechecks</module>
       <module>yamf-mvn</module>
+      <module>yamf-mswordreporting</module>
   </modules>
   <url>http://maven.apache.org</url>
     <dependencies>

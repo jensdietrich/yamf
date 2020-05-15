@@ -7,16 +7,21 @@
     <version>1.0.0</version>
   </parent>
   <groupId>nz.ac.vuw.yamf</groupId>
-  <artifactId>yamf-core</artifactId>
+  <artifactId>yamf-mswordreporting</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0</version>
-  <name>yamf-core</name>
+  <name>yamf-mswordreporting</name>
   <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-exec</artifactId>
-            <version>1.11</version>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>nz.ac.vuw.yamf</groupId>
+            <artifactId>yamf-core</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 </project>

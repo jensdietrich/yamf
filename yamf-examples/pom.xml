@@ -22,6 +22,11 @@
       <groupId>nz.ac.vuw.yamf</groupId>
       <artifactId>yamf-mvn</artifactId>
       <version>1.0.0</version>
-    </dependency> 
+    </dependency>
+    <dependency>
+      <groupId>nz.ac.vuw.yamf</groupId>
+      <artifactId>yamf-mswordreporting</artifactId>
+      <version>1.0.0</version>
+    </dependency>
   </dependencies> 
 </project>
