@@ -26,11 +26,24 @@ This is a lightweight framework to design automated marking scripts. It uses the
 6. A utility `nz.ac.vuw.yamf.MarkingScriptBuilder` to set up a script that runs the checks using junit5, extracts marking-related information and generates reports
 7. example(s) in `nz.ac.vuw.yamf.examples`
 
+### Modules
+
+Those modules are built into separate jars, applications can add dependencies only to the modules used.
+
+| module | description |
+| -------|-------------|
+| core                  | core classes and utilities, basic reporters, annotations used to make junit5 tests markable |
+| acceptancetests       | support to mark by running acceptance tests |
+| bytecodechecks        | support for simple checks on Java byte code (superclasses, method signatures etc) |
+| mswordreporting       | reporter to produce editable MSWord documents suitable for manual editing (e.g. to fill in gaps) |
+| mvn                   | support to check Maven projects, both static checks and support for acceptance testing mvn projects |
+| examples              | the examples discussed below |
+
 
 ### Usage
 
-As this is not in the central Maven repository, it is recommended to install this into the local repository by running `mvn install`, and then add the 
-following dependency to your project (replace `$version` the version from `pom.xml` in this project): 
+As this is not in the central Maven repository, it is recommended to install this into the local repository by running `mvn install`, this will instaklll the various jar files for the modules.
+Then add the following dependency to your project (replace `$version` the version from `pom.xml` in this project): 
 
 ```xml
 <dependency>
