@@ -2,11 +2,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>nz.ac.vuw.yamf</groupId>
+    <groupId>nz.ac.wgtn.yamf</groupId>
     <artifactId>yamf-parent</artifactId>
     <version>1.0.0</version>
   </parent>
-  <groupId>nz.ac.vuw.yamf</groupId>
+  <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-core</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0</version>
