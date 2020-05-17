@@ -2,8 +2,8 @@
 
 This module contains support for performing some basic bytecode checks.
 
- 1. the action (`nz.ac.vuw.yamf.checks.jbytecode.JByteCodeActions::getClass`) build an instance of `JClass` from a byte code file (.class)
- 2. Checks (`nz.ac.vuw.yamf.checks.jbytecode.JByteCodeChecks`) contains various check for such instance, e.fg. whether certain fields or methods are present, whether the class extends a certain superclass etc
+ 1. the action (`JByteCodeActions::getClass`) build an instance of `JClass` from a byte code file (.class)
+ 2. Checks (`JByteCodeChecks`) contains various check for such instance, e.fg. whether certain fields or methods are present, whether the class extends a certain superclass etc
  
 __Limitations and ideas:__ 
 

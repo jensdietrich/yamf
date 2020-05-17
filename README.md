@@ -23,7 +23,7 @@ This is a lightweight framework to design automated marking scripts. It uses the
     2. **failed**-- no marks are allocated
     3. **aborted** -- a precondition (Junit `assume*`) was violated, no mark is allocated, and the test is flagged for manual checking (and an issue `#todo` is created in the report), this is for instance the case if a file required for a check is missing, but this has already been checked and penalised earlier.
     4. **manual** -- manual marking is required, and an issue is created in the report (`#todo`) with instructions how to mark.
-6. A utility `nz.ac.vuw.yamf.MarkingScriptBuilder` to set up a script that runs the checks using junit5, extracts marking-related information and generates reports
+6. A utility `MarkingScriptBuilder` to set up a script that runs the checks using junit5, extracts marking-related information and generates reports
 7. example(s) in `nz.ac.vuw.yamf.examples`
 
 ### Modules
@@ -47,7 +47,7 @@ Then add the following dependency to your project (replace `$version` the versio
 
 ```xml
 <dependency>
-    <groupId>nz.ac.vuw.yamf</groupId>
+    <groupId>nz.ac.wgtn.yamf</groupId>
     <artifactId>yamf-core</artifactId>
     <version>$version</version>
 </dependency>
@@ -62,7 +62,7 @@ For Maven - free use, create a Java project in the environment of your choice, a
 
 ### Example 1: Marking a Maven Project
 
-This example is about marking a project where students were required to use Maven. The full source code can be found in [yamf-examples/examples/mvn-static](yamf-examples/examples/mvn-static) (example submissions) and [yamf-examples/src/main/java/nz/ac/vuw/yamf/examples/mvn](yamf-examples/src/main/java/nz/ac/vuw/yamf/examples/mvn) (marking scheme and script), respectively. 
+This example is about marking a project where students were required to use Maven. The full source code can be found in [yamf-examples/examples/mvn-static](yamf-examples/examples/mvn-static) (example submissions) and [yamf-examples/src/main/java/nz/ac/wgtn/yamf/examples/mvn](yamf-examples/src/main/java/nz/ac/wgtn/yamf/examples/mvn) (marking scheme and script), respectively. 
 
 A typical project consists of:
 
@@ -138,7 +138,7 @@ There are several reporters to chose from, `MSWordReporter` produces a simple wo
 
 A common scenario is that marking is done with acceptance tests. This means that as part of a marking script, tests are executed and marks are allocated based on the outcomes of those tests. This example illustrates how to do this. It is based on a setup that there are submissions and a reference solution that is used to define the acceptance tests. Those acceptance tests are organised as junit tests (in this case junit5, but junit4 is also supported). 
 
-Acceptance tests are run in separate processes / JVMs. The example illustrates this for both submissions and reference solution being organised as Maven projects. This can be customised to work for other project types, like Eclipse projects. The sources can be found in [yamf-examples/examples/acceptancetests](yamf-examples/examples/acceptancetests) (submissions and reference solution with acceptance tests) and [yamf-examples/src/main/java/nz/ac/vuw/yamf/examples/acceptancetests](src/main/java/nz/ac/vuw/yamf/examples/acceptancetests) (marking scheme and script), respectively. 
+Acceptance tests are run in separate processes / JVMs. The example illustrates this for both submissions and reference solution being organised as Maven projects. This can be customised to work for other project types, like Eclipse projects. The sources can be found in [yamf-examples/examples/acceptancetests](yamf-examples/examples/acceptancetests) (submissions and reference solution with acceptance tests) and [yamf-examples/src/main/java/nz/ac/wgtn/yamf/examples/acceptancetests](src/main/java/nz/ac/wgtn/yamf/examples/acceptancetests) (marking scheme and script), respectively. 
 
 Note how running acceptance tests is different from running the tests that are part of the submission, and example for this is included in example 1 (see `testTestSuccess()` in the marking scheme).
 
