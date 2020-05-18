@@ -2,7 +2,9 @@ package nz.ac.wgtn.yamf.examples.mvn;
 
 import nz.ac.wgtn.yamf.MarkingScriptBuilder;
 import nz.ac.wgtn.yamf.reporting.MSWordReporter;
-
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import java.io.File;
 
 /**
@@ -12,6 +14,10 @@ import java.io.File;
 public class MarkingScript extends MarkingScriptBuilder {
 
     public static void main(String[] args) throws Exception {
+
+        Configurator.initialize(new DefaultConfiguration());
+        Configurator.setRootLevel(Level.INFO);
+
         new MarkingScriptBuilder()
             .submissions(new File("yamf-examples/examples/mvn-static/submissions").listFiles())
             .markingScheme(MarkingScheme.class)

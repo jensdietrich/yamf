@@ -65,7 +65,7 @@ public class MarkingTestExecutionListener implements TestExecutionListener {
 
     @Override
     public void testPlanExecutionStarted(TestPlan testPlan) {
-        System.out.println("Tests started");
+        LOGGER.info("Tests started");
     }
 
     @Override
@@ -78,34 +78,58 @@ public class MarkingTestExecutionListener implements TestExecutionListener {
 
     }
 
+    private boolean isTestMethod (TestIdentifier testIdentifier) {
+        return testIdentifier.getSource().isPresent() && testIdentifier.getSource().get() instanceof MethodSource;
+    }
+
+    private String getTestIdentfierName(TestIdentifier testIdentifier) {
+        TestSource source = testIdentifier.getSource().isPresent() ?
+                testIdentifier.getSource().get() : null;
+        if (source!=null && source instanceof MethodSource) {
+            String name = "";
+            MethodSource methodSource = (MethodSource)source;
+            try {
+                name = methodSource.getClassName() + "::";
+            }
+            catch (Exception x) {
+            }
+            return name + methodSource.getMethodName();
+        }
+        return "testidentifier " + testIdentifier;
+    }
+
     @Override
     public void executionSkipped(TestIdentifier testIdentifier, String reason) {
-        System.out.println("Test skipped " + testIdentifier);
+        if (isTestMethod(testIdentifier)) {
+            LOGGER.info("check " + getTestIdentfierName(testIdentifier) + " skipped, reason: " + reason);
+        }
     }
 
     @Override
     public void executionStarted(TestIdentifier testIdentifier) {
-
+        if (isTestMethod(testIdentifier)) {
+            LOGGER.info("running check: " + getTestIdentfierName(testIdentifier));
+        }
     }
 
     @Override
     public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
+        LOGGER.info("\tTest " + getTestIdentfierName(testIdentifier) + " finished");
         try {
             AssignedMark extractedMark = extractMark(testIdentifier);
             if (extractedMark!=null) {
-                results.add(new MarkingResultRecord(extractedMark,testIdentifier,testExecutionResult));
+                MarkingResultRecord record = new MarkingResultRecord(extractedMark,testIdentifier,testExecutionResult);
+                results.add(record);
+                LOGGER.info("\tstatus: " + record.getResultStatus());
             }
         }
         catch (Exception x) {
             LOGGER.error("Exception extracting mark from test " + testIdentifier.getDisplayName(),x);
         }
-
-
     }
 
     @Override
     public void reportingEntryPublished(TestIdentifier testIdentifier, ReportEntry entry) {
-        System.out.println("Test reported " + testIdentifier);
     }
 
     // use reflection to extract annotation
@@ -117,7 +141,7 @@ public class MarkingTestExecutionListener implements TestExecutionListener {
                 Class clazz = Class.forName(methodSource.getClassName());
                 String methodParameterTypes = methodSource.getMethodParameterTypes();
                 if (methodParameterTypes==null || methodParameterTypes.equals("")) { // test methods dont have parameters
-                    LOGGER.warn("Parameterised methods are not yet supported");
+                    LOGGER.debug("Parameterised methods are not yet supported");
                 }
                 Method method = clazz.getMethod(methodSource.getMethodName());
 

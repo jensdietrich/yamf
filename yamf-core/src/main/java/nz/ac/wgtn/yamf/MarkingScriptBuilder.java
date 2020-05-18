@@ -2,6 +2,9 @@ package nz.ac.wgtn.yamf;
 
 import com.google.common.base.Preconditions;
 import nz.ac.wgtn.yamf.reporting.Reporter;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
@@ -28,6 +31,8 @@ public class MarkingScriptBuilder {
     private List<Function<File, Reporter>> reporterFactories = new ArrayList<>();
     private File[] submissions = null;
     private Class markingScheme = null;
+    private boolean configureLogging = true;
+    private Level logLevel = Level.INFO;
 
     public MarkingScriptBuilder beforeMarkingEachProjectDo(Consumer<File> action) {
         this.beforeMarkingEachProject = action;
@@ -65,10 +70,26 @@ public class MarkingScriptBuilder {
         return this;
     }
 
+    public MarkingScriptBuilder logLevel(Level logLevel) {
+        Preconditions.checkNotNull(logLevel);
+        this.logLevel = logLevel;
+        return this;
+    }
+
+    public MarkingScriptBuilder configureLogging(boolean value) {
+        this.configureLogging = value;
+        return this;
+    }
+
     public void run() throws Exception {
         Preconditions.checkState(this.submissions!=null,"submissions to mark must be set");
         Preconditions.checkState(this.markingScheme!=null,"marking scheme must be set");
         Preconditions.checkState(!this.reporterFactories.isEmpty(),"at least one reporter must be set");
+
+        if (this.configureLogging) {
+            Configurator.initialize(new DefaultConfiguration());
+            Configurator.setRootLevel(Level.INFO);
+        }
 
         beforeMarkingAllProjects.run();
         for (File projectFolder:submissions)   {
