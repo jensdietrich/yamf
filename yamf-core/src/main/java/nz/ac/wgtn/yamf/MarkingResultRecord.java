@@ -21,13 +21,35 @@ public class MarkingResultRecord {
         this.testIdentifier = testIdentifier;
         this.testExecutionResult = testExecutionResult;
     }
+    public boolean isPenalty() {
+        return mark.marks < 0;
+    }
 
     public double getMark() {
-        return testExecutionResult.getStatus()== TestExecutionResult.Status.SUCCESSFUL?mark.marks:0;
+        // if marks are set negative, then this is flipped
+        if (mark.marks < 0) {
+            // penalty
+            if (mark.mustBeMarkedManually) {
+                return 0; // default: no penalty but must be checked
+            }
+            else {
+                return testExecutionResult.getStatus() == TestExecutionResult.Status.SUCCESSFUL ? 0 : mark.marks;
+            }
+        }
+        else {
+            // normal mark
+            if (mark.mustBeMarkedManually) {
+                return 0; // default: no marks but must be checked
+            }
+            else {
+                return testExecutionResult.getStatus() == TestExecutionResult.Status.SUCCESSFUL ? mark.marks : 0;
+            }
+        }
     }
 
     public double getMaxMark() {
-        return mark.marks;
+        // if marks are set negative, then this is a penalty, and the max marks is zero (= no penalty)
+        return mark.marks < 0 ? 0 : mark.marks ;
     }
 
     public boolean isManualMarkingRequired() {

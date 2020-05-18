@@ -2,9 +2,9 @@ package nz.ac.wgtn.yamf.commons;
 
 import javax.annotation.Nonnull;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Utility to check for the presence of IDE meta data in submissions.
@@ -17,12 +17,12 @@ public class IDE {
      * @param projectFolder list of folder names
      * @return
      */
-    public static @Nonnull List<String> getEclipseProjectFiles(File projectFolder) {
-        List<String> list = new ArrayList<>(3);
-        checkAndAdd(list,projectFolder,".classpath");
-        checkAndAdd(list,projectFolder,".project");
-        checkAndAdd(list,projectFolder,".settings");
-        return Collections.unmodifiableList(list);
+    public static @Nonnull Set<String> getEclipseProjectFiles(File projectFolder) {
+        Set<String> set = new HashSet<>();
+        checkAndAdd(set,projectFolder,".classpath");
+        checkAndAdd(set,projectFolder,".project");
+        checkAndAdd(set,projectFolder,".settings");
+        return Collections.unmodifiableSet(set);
     }
 
     /**
@@ -30,10 +30,10 @@ public class IDE {
      * @param projectFolder list of folder names
      * @return
      */
-    public static @Nonnull List<String> getIntellijProjectFiles(File projectFolder) {
-        List<String> list = new ArrayList<>(1);
-        checkAndAdd(list,projectFolder,".idea");
-        return Collections.unmodifiableList(list);
+    public static @Nonnull Set<String> getIntellijProjectFiles(File projectFolder) {
+        Set<String> set = new HashSet<>(1);
+        checkAndAdd(set,projectFolder,".idea");
+        return Collections.unmodifiableSet(set);
     }
 
     /**
@@ -41,17 +41,17 @@ public class IDE {
      * @param projectFolder list of folder names
      * @return
      */
-    public static @Nonnull List<String> getIDEProjectFiles(File projectFolder) {
-        List<String> list = new ArrayList<>();
-        list.addAll(getEclipseProjectFiles(projectFolder));
-        list.addAll(getIntellijProjectFiles(projectFolder));
-        return Collections.unmodifiableList(list);
+    public static @Nonnull Set<String> getIDEProjectFiles(File projectFolder) {
+        Set<String> set = new HashSet<>();
+        set.addAll(getEclipseProjectFiles(projectFolder));
+        set.addAll(getIntellijProjectFiles(projectFolder));
+        return Collections.unmodifiableSet(set);
     }
 
 
-    private static void checkAndAdd(List<String> list, File projectFolder, String fileName) {
+    private static void checkAndAdd(Set<String> set, File projectFolder, String fileName) {
         if (new File(projectFolder,fileName).exists()) {
-            list.add(fileName);
+            set.add(fileName);
         }
     }
 }

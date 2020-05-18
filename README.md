@@ -105,6 +105,14 @@ public class MarkingScheme {
     @ManualMarkingIsRequired(instructions="check comments manually, look for completness, correctness, spelling and grammar, 0.5 marks for minor gaps or violations")
     @Marking(name="Q8 -- comments should be comprehensive", marks = 1)
     public void testCodeComments () {}
+
+    @Test
+    @Marking(name="Q9 -- submissions should not contain IDE project settings", marks = -1)
+    public void testForIDEProjectMetaData() {
+        Set<String> ideProjectMetaData = IDE.getIDEProjectFiles(submission);
+        Assertions.assertTrue(ideProjectMetaData.isEmpty(),"the submission contains IDE project meta data files and folders: " + ideProjectMetaData.stream().collect(Collectors.joining(",")));
+    }
+
 }
 ```
 
@@ -115,7 +123,8 @@ Some noteworthy points:
 the standard (simple, annotation-based) junit5 feature to impose a predictable execution order of tests must be used, see https://junit.org/junit5/docs/current/user-guide/#writing-tests-test-execution-order .
 * the asserts are mainly provided by the checks implemented here, such as running `mvn` and checking the results of this command, or checking whether the `pom.xml` file in the project checked is valid with respect to a schema
 * `testSourceCodeFolderStructure` shows how to use some of the new junit5 features
-* the last test is missing, this is something that has to be marked manually. Including it with a special annotation `@ManualMarkingIsRequired` means that it can still be included in reports, where it can be flagged as a TODO for markers. Optionally, marking instructions can be included.
+* `testCodeComments` is empty, this is something that has to be marked manually. Including it with a special annotation `@ManualMarkingIsRequired` means that it can still be included in reports, where it can be flagged as a TODO for markers. Optionally, marking instructions can be included.
+* `testForIDEProjectMetaData` shows how do penalties -- the marks are negative, students get zero marks if the assertions succeed, -1 if they fail
 
 __Step 2 -- Write A Marking Script to run the tests, extending a provided superclass__
 

@@ -5,8 +5,11 @@ import nz.ac.wgtn.yamf.checks.mvn.MVNActions;
 import nz.ac.wgtn.yamf.checks.mvn.MVNChecks;
 import nz.ac.wgtn.yamf.ManualMarkingIsRequired;
 import nz.ac.wgtn.yamf.Marking;
+import nz.ac.wgtn.yamf.commons.IDE;
 import org.junit.jupiter.api.*;
 import java.io.File;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Example marking scheme for Maven projects.
@@ -84,6 +87,14 @@ public class MarkingScheme {
     @ManualMarkingIsRequired(instructions="check comments manually, look for completeness, correctness, spelling and grammar, 0.5 marks for minor gaps or violations")
     @Marking(name="Q8 -- comments should be comprehensive", marks = 1)
     public void testCodeComments () {}
+
+    // illustrates a penalty -- 1 mark will be deducted if IDE mata data is part of the submission
+    @Test
+    @Marking(name="Q9 -- submissions should not contain IDE project settings", marks = -1)
+    public void testForIDEProjectMetaData() {
+        Set<String> ideProjectMetaData = IDE.getIDEProjectFiles(submission);
+        Assertions.assertTrue(ideProjectMetaData.isEmpty(),"the submission contains IDE project meta data files and folders: " + ideProjectMetaData.stream().collect(Collectors.joining(",")));
+    }
 
 
 }
