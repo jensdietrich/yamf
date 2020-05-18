@@ -87,8 +87,9 @@ public class MarkingScriptBuilder {
         Preconditions.checkState(!this.reporterFactories.isEmpty(),"at least one reporter must be set");
 
         if (this.configureLogging) {
+            System.out.println("Configuring logging");
             Configurator.initialize(new DefaultConfiguration());
-            Configurator.setRootLevel(Level.INFO);
+            Configurator.setRootLevel(this.logLevel);
         }
 
         beforeMarkingAllProjects.run();
