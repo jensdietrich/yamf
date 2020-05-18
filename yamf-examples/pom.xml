@@ -4,29 +4,29 @@
   <parent>
     <groupId>nz.ac.wgtn.yamf</groupId>
     <artifactId>yamf-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
   </parent>
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-examples</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version>
+  <version>${project-version}</version>
   <name>yamf-examples</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
       <groupId>nz.ac.wgtn.yamf</groupId>
       <artifactId>yamf-core</artifactId>
-      <version>1.0.0</version>
+      <version>${project-version}</version>
     </dependency>  
     <dependency>
       <groupId>nz.ac.wgtn.yamf</groupId>
       <artifactId>yamf-mvn</artifactId>
-      <version>1.0.0</version>
+      <version>${project-version}</version>
     </dependency>
     <dependency>
       <groupId>nz.ac.wgtn.yamf</groupId>
       <artifactId>yamf-mswordreporting</artifactId>
-      <version>1.0.0</version>
+      <version>${project-version}</version>
     </dependency>
   </dependencies> 
 </project>

@@ -4,19 +4,19 @@
   <parent>
     <groupId>nz.ac.wgtn.yamf</groupId>
     <artifactId>yamf-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
   </parent>
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-acceptancetests</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version>
+  <version>${project-version}</version>
   <name>yamf-acceptancetests</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
       <groupId>nz.ac.wgtn.yamf</groupId>
       <artifactId>yamf-core</artifactId>
-      <version>1.0.0</version>
+      <version>${project-version}</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
     <dependency>

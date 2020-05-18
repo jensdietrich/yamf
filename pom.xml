@@ -4,8 +4,13 @@
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version>
+  <version>${project-version}</version>
   <name>yamf-parent</name>
+  <properties>
+      <project-version>1.0.1</project-version>
+      <maven.compiler.target>1.8</maven.compiler.target>
+      <maven.compiler.source>1.8</maven.compiler.source>
+  </properties>
 
   <licenses>
         <license>
@@ -18,10 +23,6 @@
        <url>https://github.com/jensdietrich/yamf.git</url>
    </scm>
 
-  <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
-  </properties>
   <modules>
       <module>yamf-core</module>
       <module>yamf-examples</module>
