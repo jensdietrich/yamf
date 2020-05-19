@@ -21,7 +21,7 @@ This is a lightweight framework to design automated marking scripts. It uses the
 5. Checks have the following outcomes that are reported:
     1. **success** - marks are allocated as specified in `@Test` 
     2. **failed**-- no marks are allocated
-    3. **aborted** -- a precondition (Junit `assume*`) was violated, no mark is allocated, and the test is flagged for manual checking (and an issue `#todo` is created in the report), this is for instance the case if a file required for a check is missing, but this has already been checked and penalised earlier.
+    3. **aborted** -- a precondition (Junit `assume*`) was violated, no mark is allocated, and the test is flagged for manual checking (and an issue (`#todo`) is created in the report), this is for instance the case if a file required for a check is missing, but this has already been checked and penalised earlier.
     4. **manual** -- manual marking is required, and an issue is created in the report (`#todo`) with instructions how to mark.
 6. A utility `MarkingScriptBuilder` to set up a script that runs the checks using junit5, extracts marking-related information and generates reports
 7. example(s) in `nz.ac.vuw.yamf.examples`
