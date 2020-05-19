@@ -28,7 +28,7 @@ public class JByteCodeActions {
             clazz.setSuperClass(convertClassName(superName));
             if (interfaces!=null) {
                 Stream.of(interfaces)
-                    .map(i -> convertClassName(name))
+                    .map(i -> convertClassName(i))
                     .forEach(i -> clazz.addInterface(i));
             }
         }
