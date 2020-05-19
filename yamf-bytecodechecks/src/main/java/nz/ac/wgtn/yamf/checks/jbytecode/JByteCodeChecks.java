@@ -40,13 +40,18 @@ public class JByteCodeChecks {
     }
 
     public static void assertHasJUnit5Tests(JClass clazz) throws Exception {
+        // test methods do not have to be public, but they cannot be private:
+        // https://junit.org/junit5/docs/current/user-guide/#writing-tests-classes-and-methods
         assertHasAnyMethodSuchThat(clazz,
-                method -> method.isPublic() && !method.isStatic() && method.getAnnotations().contains("org.junit.jupiter.api.Test"),
+                method -> !method.isPrivate() && !method.isStatic() && method.getAnnotations().contains("org.junit.jupiter.api.Test"),
       "class should contain junit5 test method (public, non-static, annotated with @org.junit.jupiter.api.Test)"
         );
     }
 
+
     public static void assertHasJUnit4Tests(JClass clazz) throws Exception {
+        // junit4 methods must be public:
+        // https://junit.org/junit4/javadoc/latest/org/junit/Test.html
         assertHasAnyMethodSuchThat(clazz,
             method -> method.isPublic() && !method.isStatic() && method.getAnnotations().contains("org.junit.Test"),
   "class should contain junit5 test method (public, non-static, annotated with @org.junit.Test)"
