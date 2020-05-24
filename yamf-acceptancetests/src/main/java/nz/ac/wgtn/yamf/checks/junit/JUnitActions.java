@@ -50,7 +50,7 @@ public class JUnitActions {
             result = OS.exe(new File("."), "java","-jar", junitRunner.getAbsolutePath(), "-reports-dir",junitReportFolder.getAbsolutePath(),"-c",testClass);
         }
         else {
-            result = OS.exe(new File("."), "java","-jar", junitRunner.getAbsolutePath(), "-reports-dir",junitReportFolder.getAbsolutePath(),"-class-path",classpath,"-c",testClass);
+            result = OS.exe(new File("."), "java","-jar", junitRunner.getAbsolutePath(), "-reports-dir",junitReportFolder.getAbsolutePath(),"-cp",classpath,"-c",testClass);
         }
 
         // parse results
