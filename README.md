@@ -194,5 +194,7 @@ public class MarkingScheme {
 
 This needs more checks being implemented.
 
+__The mvn module does not function correctly under Windows, see issues for details__
+
 
 
