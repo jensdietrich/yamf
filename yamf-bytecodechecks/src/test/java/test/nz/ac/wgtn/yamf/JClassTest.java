@@ -1,15 +1,14 @@
 package test.nz.ac.wgtn.yamf;
 
 import nz.ac.wgtn.yamf.checks.jbytecode.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.net.URL;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,7 +18,12 @@ public class JClassTest {
 
     @BeforeEach
     public void setup () throws Exception {
-        File file = new File(getClass().getResource("/MyClass.class").getFile());
+        URL url = JClassTest.class.getResource("/test/nz/ac/wgtn/yamf/SampleClass.class");
+        System.out.println(url);
+        File file = new File(url.getFile());
+        System.out.println(file);
+        System.out.println(file.exists());
+        System.out.println();
         jclazz = JByteCodeActions.getClass(file);
     }
 
@@ -30,7 +34,7 @@ public class JClassTest {
 
     @Test
     public void testClassName () throws Exception {
-        assertEquals("MyClass",jclazz.getName());
+        assertEquals("test.nz.ac.wgtn.yamf.SampleClass",jclazz.getName());
     }
 
     @Test
@@ -109,8 +113,7 @@ public class JClassTest {
         assertTrue(method.getExceptions().contains("java.io.IOException"));
         assertTrue(method.getExceptions().contains("java.lang.InterruptedException"));
 
-        assertEquals(1,method.getInvocations().size());
-        Invocation inv = method.getInvocations().iterator().next();
+        Invocation inv = method.getInvocations().stream().filter(i -> i.getName().equals("println")).findAny().get();
         assertEquals("java.io.PrintStream",inv.getOwner());
         assertEquals("println",inv.getName());
         assertEquals("void",inv.getDescriptor().getReturnType());
@@ -140,7 +143,7 @@ public class JClassTest {
 
         assertEquals(1,method.getInvocations().size());
         Invocation inv = method.getInvocations().iterator().next();
-        assertEquals("MyClass",inv.getOwner());
+        assertEquals("test.nz.ac.wgtn.yamf.SampleClass",inv.getOwner());
         assertEquals("foo",inv.getName());
         assertEquals("void",inv.getDescriptor().getReturnType());
         assertEquals(2,inv.getDescriptor().getParamTypes().size());

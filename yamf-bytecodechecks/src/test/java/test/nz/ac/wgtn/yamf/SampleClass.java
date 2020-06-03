@@ -1,7 +1,9 @@
+package test.nz.ac.wgtn.yamf;
+
 import java.io.*;
 import java.util.*;
 
-public class MyClass implements java.io.Serializable {
+public class SampleClass implements java.io.Serializable {
 
     private static final List<String> field1 = null;
     protected int[] field2 = null;

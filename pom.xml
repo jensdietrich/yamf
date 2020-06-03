@@ -4,10 +4,10 @@
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
   <name>yamf-parent</name>
   <properties>
-      <project-version>1.0.4</project-version>
+      <project-version>1.0.5</project-version>
       <maven.compiler.target>1.8</maven.compiler.target>
       <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
@@ -22,6 +22,20 @@
    <scm>
        <url>https://github.com/jensdietrich/yamf.git</url>
    </scm>
+
+    <!-- custom version necessary to prevent some resources not being found during testing -->
+    <build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M4</version>
+            <configuration>
+                <redirectTestOutputToFile>true</redirectTestOutputToFile>
+            </configuration>
+        </plugin>
+    </plugins>
+    </build>
 
   <modules>
       <module>yamf-core</module>
