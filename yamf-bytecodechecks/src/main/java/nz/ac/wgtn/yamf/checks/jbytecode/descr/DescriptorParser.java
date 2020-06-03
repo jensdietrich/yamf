@@ -42,6 +42,10 @@ public abstract class DescriptorParser  {
         return d;
     }
 
+    public static String parseType (String descr)  {
+        return descr.replace('/','.');
+    }
+
     private static String parseType(Iterator<Character> iter) {
         char c = iter.next();
         if (c=='I') return "int";

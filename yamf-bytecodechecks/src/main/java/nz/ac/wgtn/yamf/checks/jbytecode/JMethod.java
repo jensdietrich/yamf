@@ -2,9 +2,8 @@ package nz.ac.wgtn.yamf.checks.jbytecode;
 
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,6 +16,7 @@ public class JMethod extends JArtifact {
     private String name = null;
     private MethodDescriptor descriptor = null;
     private List<String> exceptions = null;
+    private Set<Invocation> invocations = new HashSet<>();
 
     public JMethod(String name, String descr, String[] excepts, int modifiers) {
         super(modifiers);
@@ -25,6 +25,14 @@ public class JMethod extends JArtifact {
         this.exceptions = excepts==null
             ? Collections.EMPTY_LIST
             : Stream.of(excepts).map(x -> x.replace("/",".")).collect(Collectors.toList());
+    }
+
+    void addInvocation(Invocation invocation) {
+        this.invocations.add(invocation);
+    }
+
+    public Set<Invocation> getInvocations() {
+        return invocations;
     }
 
     public String getName() {
@@ -58,5 +66,23 @@ public class JMethod extends JArtifact {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), name, descriptor, exceptions);
+    }
+
+
+    // several useful helper methods
+    public boolean isJunit4Test() {
+        return !this.isPrivate() && !this.isStatic() && this.getAnnotations().contains("org.junit.Test");
+    }
+
+    public boolean isJunit5Test() {
+        return !this.isPrivate() && !this.isStatic() && this.getAnnotations().contains("org.junit.jupiter.api.Test");
+    }
+
+    public boolean isConstructor() {
+        return this.name.equals("<init>");
+    }
+
+    public boolean isStaticBlock() {
+        return this.name.equals("<clinit>");
     }
 }

@@ -1,10 +1,10 @@
 package nz.ac.wgtn.yamf.checks.jbytecode;
 
 import com.google.common.base.Preconditions;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.MethodVisitor;
+import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
+import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;
+import org.objectweb.asm.*;
+
 import java.io.File;
 import java.util.stream.Stream;
 
@@ -54,12 +54,38 @@ public class JByteCodeActions {
                 public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
                     return collectAnnotations(method,descriptor,visible);
                 }
+
+                @Override
+                public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+
+                    Invocation.Kind kind = null;
+                    if (ASMCommons.checkFlag(opcode, Opcodes.INVOKEINTERFACE) ) {
+                        kind = Invocation.Kind.INVOKEINTERFACE;
+                    }
+                    else if (ASMCommons.checkFlag(opcode, Opcodes.INVOKESPECIAL) ) {
+                        kind = Invocation.Kind.INVOKESPECIAL;
+                    }
+                    else if (ASMCommons.checkFlag(opcode, Opcodes.INVOKEVIRTUAL) ) {
+                        kind = Invocation.Kind.INVOKEVIRTUAL;
+                    }
+                    else if (ASMCommons.checkFlag(opcode, Opcodes.INVOKESTATIC) ) {
+                        kind = Invocation.Kind.INVOKESTATIC;
+                    }
+                    assert kind != null;
+
+                    String clazz = DescriptorParser.parseType(owner);
+                    MethodDescriptor descr = DescriptorParser.parseMethodDescriptor(descriptor);
+
+                    Invocation invocation = new Invocation(clazz,name,descr,kind);
+                    method.addInvocation(invocation);
+                }
+
             };
         }
 
         @Override
         public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-            JField field = new JField(name,descriptor,access);
+            JField field = new JField(name,DescriptorParser.parseFieldDescriptor(descriptor),access);
             clazz.addField(field);
             return new FieldVisitor(ASMCommons.ASM_VERSION) {
                 @Override

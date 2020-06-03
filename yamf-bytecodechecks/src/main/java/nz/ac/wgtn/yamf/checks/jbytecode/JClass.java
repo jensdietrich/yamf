@@ -96,7 +96,15 @@ public class JClass extends JArtifact {
             .filter(method -> method.getName().equals(methodName))
             .filter(method -> method.getReturnType().equals("void"))
             .filter(method -> method.getParameterTypes().size()==1)
-            .anyMatch(method -> method.getParameterTypes().isEmpty());
+            .anyMatch(method -> method.getParameterTypes().get(0).equals(type));
+    }
+
+    public boolean isJunit4Test() {
+        return this.getMethods().stream().anyMatch(method -> method.isJunit4Test());
+    }
+
+    public boolean isJunit5Test() {
+        return this.getMethods().stream().anyMatch(method -> method.isJunit5Test());
     }
 
     public boolean hasGetterAndSetter(String property,String type) {
