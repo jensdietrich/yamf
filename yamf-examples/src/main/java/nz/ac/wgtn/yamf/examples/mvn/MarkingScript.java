@@ -1,7 +1,8 @@
 package nz.ac.wgtn.yamf.examples.mvn;
 
 import nz.ac.wgtn.yamf.MarkingScriptBuilder;
-import nz.ac.wgtn.yamf.reporting.MSWordReporter;
+import nz.ac.wgtn.yamf.reporting.msoffice.MSExcelReporter;
+import nz.ac.wgtn.yamf.reporting.msoffice.MSWordReporter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
@@ -24,6 +25,7 @@ public class MarkingScript extends MarkingScriptBuilder {
             .beforeMarkingEachProjectDo(submission -> MarkingScheme.submission = submission) // inject project folder !!
             .afterMarkingEachActionDo(submission -> System.out.println("Done marking " + submission.getAbsolutePath()))
             .reportTo(submission -> new MSWordReporter("yamf-examples/sample-reports/example-mvn-marks-" + submission.getName() + ".doc"))
+            .reportTo(submission -> new MSExcelReporter("yamf-examples/sample-reports/example-mvn-marks-" + submission.getName() + ".xlsx"))
             .run();
     }
 }

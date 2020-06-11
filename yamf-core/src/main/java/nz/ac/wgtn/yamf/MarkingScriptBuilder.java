@@ -1,7 +1,7 @@
 package nz.ac.wgtn.yamf;
 
 import com.google.common.base.Preconditions;
-import nz.ac.wgtn.yamf.reporting.Reporter;
+import nz.ac.wgtn.yamf.reporting.msoffice.Reporter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;

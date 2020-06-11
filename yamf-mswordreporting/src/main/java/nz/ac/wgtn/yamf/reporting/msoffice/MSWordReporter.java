@@ -1,4 +1,4 @@
-package nz.ac.wgtn.yamf.reporting;
+package nz.ac.wgtn.yamf.reporting.msoffice;
 
 import nz.ac.wgtn.yamf.MarkingResultRecord;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;

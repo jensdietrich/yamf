@@ -1,4 +1,4 @@
-package nz.ac.wgtn.yamf.reporting;
+package nz.ac.wgtn.yamf.reporting.msoffice;
 
 import java.util.function.Predicate;
 

@@ -21,7 +21,7 @@ public class MarkingTestExecutionListener implements TestExecutionListener {
 
     private static final Logger LOGGER = LogManager.getLogger("marking");
 
-    static class AssignedMark {
+    public static class AssignedMark {
         double marks = 0;
         String name = null;
         boolean mustBeMarkedManually = false;
