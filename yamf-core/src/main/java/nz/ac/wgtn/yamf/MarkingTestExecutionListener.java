@@ -66,11 +66,13 @@ public class MarkingTestExecutionListener implements TestExecutionListener {
     @Override
     public void testPlanExecutionStarted(TestPlan testPlan) {
         LOGGER.info("Tests started");
+        Attachments.reset();
     }
 
     @Override
     public void testPlanExecutionFinished(TestPlan testPlan) {
         System.out.println("Tests finished");
+        Attachments.reset();
     }
 
     @Override
@@ -102,6 +104,7 @@ public class MarkingTestExecutionListener implements TestExecutionListener {
     public void executionSkipped(TestIdentifier testIdentifier, String reason) {
         if (isTestMethod(testIdentifier)) {
             LOGGER.info("check " + getTestIdentfierName(testIdentifier) + " skipped, reason: " + reason);
+            Attachments.startTest(testIdentifier); // needs to be checked
         }
     }
 
@@ -109,22 +112,30 @@ public class MarkingTestExecutionListener implements TestExecutionListener {
     public void executionStarted(TestIdentifier testIdentifier) {
         if (isTestMethod(testIdentifier)) {
             LOGGER.info("running check: " + getTestIdentfierName(testIdentifier));
+            Attachments.startTest(testIdentifier);
         }
     }
 
     @Override
     public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-        LOGGER.info("\tTest " + getTestIdentfierName(testIdentifier) + " finished");
-        try {
-            AssignedMark extractedMark = extractMark(testIdentifier);
-            if (extractedMark!=null) {
-                MarkingResultRecord record = new MarkingResultRecord(extractedMark,testIdentifier,testExecutionResult);
-                results.add(record);
-                LOGGER.info("\tstatus: " + record.getResultStatus());
+        if (isTestMethod(testIdentifier)) {
+            LOGGER.info("\tTest " + getTestIdentfierName(testIdentifier) + " finished");
+            try {
+                AssignedMark extractedMark = extractMark(testIdentifier);
+                if (extractedMark != null) {
+                    MarkingResultRecord record = new MarkingResultRecord(extractedMark, testIdentifier, testExecutionResult);
+                    Collection<Attachment> attachments = Attachments.getAttachments(testIdentifier);
+                    record.setAttachments(attachments);
+                    results.add(record);
+
+                    LOGGER.info("\tstatus: " + record.getResultStatus());
+                }
+            } catch (Exception x) {
+                LOGGER.error("Exception extracting mark from test " + testIdentifier.getDisplayName(), x);
             }
-        }
-        catch (Exception x) {
-            LOGGER.error("Exception extracting mark from test " + testIdentifier.getDisplayName(),x);
+            finally {
+                Attachments.endTest(testIdentifier);
+            }
         }
     }
 

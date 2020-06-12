@@ -3,6 +3,8 @@ package nz.ac.wgtn.yamf;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.launcher.TestIdentifier;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -15,6 +17,7 @@ public class MarkingResultRecord {
     private MarkingTestExecutionListener.AssignedMark mark = null;
     private TestIdentifier testIdentifier = null;
     private TestExecutionResult testExecutionResult = null;
+    private Collection<Attachment> attachments = Collections.EMPTY_SET;
 
     public MarkingResultRecord(MarkingTestExecutionListener.AssignedMark mark, TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
         this.mark = mark;
@@ -23,6 +26,14 @@ public class MarkingResultRecord {
     }
     public boolean isPenalty() {
         return mark.marks < 0;
+    }
+
+    public Collection<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(Collection<Attachment> attachments) {
+        this.attachments = attachments==null?Collections.EMPTY_SET:attachments;
     }
 
     public double getMark() {

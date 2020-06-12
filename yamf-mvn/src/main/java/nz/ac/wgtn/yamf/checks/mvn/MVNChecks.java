@@ -1,6 +1,8 @@
 package nz.ac.wgtn.yamf.checks.mvn;
 
 import com.google.common.base.Preconditions;
+import nz.ac.wgtn.yamf.Attachment;
+import nz.ac.wgtn.yamf.Attachments;
 import nz.ac.wgtn.yamf.commons.XML;
 import org.junit.jupiter.api.Assertions;
 import org.w3c.dom.Node;
@@ -224,6 +226,8 @@ public class MVNChecks {
                     reports.add("target/surefire-reports/"+xmlReport.getName());
                 }
             }
+            Attachment attachment = new Attachment(xmlReport.getName(),xmlReport,"application/xml");
+            Attachments.add(attachment);
         }
         Assertions.assertTrue(failureCounter==0,"There are tests with status \"" + status + "\", see reports in " + reports.stream().collect(Collectors.joining()));
     }

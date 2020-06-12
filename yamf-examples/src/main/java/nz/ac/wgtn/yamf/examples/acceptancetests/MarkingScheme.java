@@ -1,5 +1,7 @@
 package nz.ac.wgtn.yamf.examples.acceptancetests;
 
+import nz.ac.wgtn.yamf.Attachment;
+import nz.ac.wgtn.yamf.Attachments;
 import nz.ac.wgtn.yamf.checks.junit.JUnitActions;
 import nz.ac.wgtn.yamf.checks.junit.TestResults;
 import nz.ac.wgtn.yamf.checks.mvn.MVNActions;
@@ -37,7 +39,7 @@ public class MarkingScheme {
     @Test
     @Marking(name="Q1 -- run simple acceptance tests",marks=5.0)
     public void runSimpleAcceptanceTests () throws Exception {
-        TestResults results = MVNActions.acceptanceTestMvnProject(junitRunner,"acceptancetests.TestCalculatorSimple", submission,acceptanceTestProjectFolder,true,false);
+        TestResults results = MVNActions.acceptanceTestMvnProject(junitRunner,"acceptancetests.TestCalculatorSimple", submission,acceptanceTestProjectFolder,true,true);
         Assumptions.assumeTrue(results.getTests() == 3);
         Assertions.assertSame(3,results.getTestsSuccessed(),"not all tests succeeded, details:\n" + results.getDetails());
     }
@@ -45,7 +47,7 @@ public class MarkingScheme {
     @Test
     @Marking(name="Q2 -- run advanced acceptance tests to check overflow handing",marks=5.0)
     public void runAdvancedAcceptanceTests () throws Exception {
-        TestResults results = MVNActions.acceptanceTestMvnProject(junitRunner,"acceptancetests.TestCalculatorOverflow", submission,acceptanceTestProjectFolder,true,false);
+        TestResults results = MVNActions.acceptanceTestMvnProject(junitRunner,"acceptancetests.TestCalculatorOverflow", submission,acceptanceTestProjectFolder,true,true);
         Assumptions.assumeTrue(results.getTests() == 1);
         Assertions.assertSame(1,results.getTestsSuccessed(),"not all tests succeeded, details:\n" + results.getDetails());
     }

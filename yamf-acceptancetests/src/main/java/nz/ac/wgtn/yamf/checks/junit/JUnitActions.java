@@ -1,6 +1,8 @@
 package nz.ac.wgtn.yamf.checks.junit;
 
 import com.google.common.base.Preconditions;
+import nz.ac.wgtn.yamf.Attachment;
+import nz.ac.wgtn.yamf.Attachments;
 import nz.ac.wgtn.yamf.commons.OS;
 import nz.ac.wgtn.yamf.commons.XML;
 import org.zeroturnaround.exec.ProcessResult;
@@ -66,6 +68,7 @@ public class JUnitActions {
             String details = "";
             if (includeJUnitReports) {
                 for (File junitReport : junitReportFolder.listFiles(fl -> !fl.isHidden())) {
+                    Attachments.add(new Attachment(junitReport.getName(),junitReport,"application/xml"));
                     try (Stream<String> stream = Files.lines(junitReport.toPath())) {
                         details = details + "======= " + junitReport.getName() + " =======\n";
                         details = details + stream.collect(Collectors.joining());
