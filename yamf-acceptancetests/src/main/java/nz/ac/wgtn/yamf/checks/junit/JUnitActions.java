@@ -34,11 +34,10 @@ public class JUnitActions {
      * @param junitRunner the junit runner library, for instance junit-platform-console-standalone-1.6.2.jar
      * @param testClass the name of the class with tests
      * @param classpath the classpath to be used
-     * @param includeJUnitReports whether to include the content of the generated junit report(s) in the test results
      * @return test results
      * @throws Exception
      */
-    public static TestResults test (File junitRunner,String testClass,String classpath,boolean includeJUnitReports) throws Exception {
+    public static TestResults test (File junitRunner, String testClass, String classpath, JUnitVersion junitVersion) throws Exception {
 
         // see https://junit.org/junit5/docs/current/user-guide/  , section 4.3
         Preconditions.checkArgument(junitRunner!=null,"JUnit runner library must be provided (junit-platform-console-standalone-1.6.2.jar or similar)");
@@ -66,19 +65,24 @@ public class JUnitActions {
 
         if (junitReportFolder.exists()) {
             String details = "";
-            if (includeJUnitReports) {
-                for (File junitReport : junitReportFolder.listFiles(fl -> !fl.isHidden())) {
-                    Attachments.add(new Attachment(junitReport.getName(),junitReport,"application/xml"));
-                    try (Stream<String> stream = Files.lines(junitReport.toPath())) {
-                        details = details + "======= " + junitReport.getName() + " =======\n";
-                        details = details + stream.collect(Collectors.joining());
-                    } catch (IOException e) {
-                        throw new Exception(e);
+            for (File junitReport : junitReportFolder.listFiles(fl -> !fl.isHidden())) {
+                if (junitReport.getName().equals(JUPITER_REPORT_NAME)) {
+                    if (junitVersion == JUnitVersion.JUNIT5) {
+                        Attachments.add(new Attachment(junitReport.getName(),junitReport,"application/xml"));
                     }
                 }
-            }
-            else {
-                details = "junit reports were generated in " + junitReportFolder.getAbsolutePath();
+                else if (junitReport.getName().equals(VINTAGE_REPORT_NAME)) {
+                    if (junitVersion == JUnitVersion.JUNIT4) {
+                        Attachments.add(new Attachment(junitReport.getName(),junitReport,"application/xml"));
+                    }
+                }
+
+                try (Stream<String> stream = Files.lines(junitReport.toPath())) {
+                    details = details + "======= " + junitReport.getName() + " =======\n";
+                    details = details + stream.collect(Collectors.joining());
+                } catch (IOException e) {
+                    throw new Exception(e);
+                }
             }
             testResults.setDetails(details);
         }

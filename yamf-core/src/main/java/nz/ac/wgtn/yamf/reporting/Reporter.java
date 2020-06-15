@@ -1,4 +1,4 @@
-package nz.ac.wgtn.yamf.reporting.msoffice;
+package nz.ac.wgtn.yamf.reporting;
 
 import nz.ac.wgtn.yamf.MarkingResultRecord;
 

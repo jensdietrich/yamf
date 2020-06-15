@@ -1,6 +1,8 @@
 package nz.ac.wgtn.yamf.reporting.msoffice;
 
 import nz.ac.wgtn.yamf.MarkingResultRecord;
+import nz.ac.wgtn.yamf.reporting.Reporter;
+import nz.ac.wgtn.yamf.reporting.StackTraceFilters;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;

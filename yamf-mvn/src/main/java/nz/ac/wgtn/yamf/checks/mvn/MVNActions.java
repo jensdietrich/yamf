@@ -2,10 +2,11 @@ package nz.ac.wgtn.yamf.checks.mvn;
 
 import com.google.common.base.Preconditions;
 import nz.ac.wgtn.yamf.checks.junit.JUnitActions;
+import nz.ac.wgtn.yamf.checks.junit.JUnitVersion;
 import nz.ac.wgtn.yamf.checks.junit.TestResults;
 import nz.ac.wgtn.yamf.commons.OS;
 import nz.ac.wgtn.yamf.commons.XML;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.zeroturnaround.exec.ProcessResult;
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class MVNActions {
         }
         ProcessResult result = OS.exe(projectFolder,cmd);
         String cmdAsString = "mvn " + Stream.of(phases).collect(Collectors.joining(" "));
-        Assertions.assertTrue(result.getExitValue()==0,"Command \"" + cmdAsString + "\" has failed " + System.lineSeparator() + result.outputString());
+        Assumptions.assumeTrue(result.getExitValue()==0,"Command \"" + cmdAsString + "\" has failed " + System.lineSeparator() + result.outputString());
     }
 
     public static void compile (File projectFolder) throws Exception {
@@ -57,7 +58,7 @@ public class MVNActions {
         else {
             result = OS.exe(projectFolder, "mvn", "test");
         }
-        Assertions.assertTrue(result.getExitValue()==0,"Command \"mvn test\" has failed " + System.lineSeparator() + result.outputString());
+        Assumptions.assumeTrue(result.getExitValue()==0,"Command \"mvn test\" has failed " + System.lineSeparator() + result.outputString());
     }
 
     /**
@@ -138,7 +139,7 @@ public class MVNActions {
             classPathIsNext = line.trim().endsWith("Dependencies classpath:");
 
         }
-        Assertions.fail("Cannot get Maven project classpath");
+        Assumptions.assumeTrue(false,"Cannot get Maven project classpath");
         return null;
     }
 
@@ -170,11 +171,11 @@ public class MVNActions {
      * @param mvnProjectToBeTestedFolder the project to be tested
      * @param mvnProjectWithAcceptanceTestsFolder the project that has the acceptance tests
      * @param buildMvn whether to run the necessary mvn builds in the projects to ensure that the binaries exist
-     * @param includeJUnitReports whether to include the content of the generated junit report(s) in the test results
+     * @param junitVersion the junit version used by acceptance tests (to include the appropriate reports)
      */
-    public static TestResults acceptanceTestMvnProject (File junitRunner,String testClass,File mvnProjectToBeTestedFolder, File mvnProjectWithAcceptanceTestsFolder, boolean buildMvn,boolean includeJUnitReports) throws Exception {
+    public static TestResults acceptanceTestMvnProject (File junitRunner, String testClass, File mvnProjectToBeTestedFolder, File mvnProjectWithAcceptanceTestsFolder, boolean buildMvn, JUnitVersion junitVersion) throws Exception {
         if (buildMvn) {
-            MVNActions.test(mvnProjectWithAcceptanceTestsFolder,true);
+            MVNActions.compileTests(mvnProjectWithAcceptanceTestsFolder);
         }
         File acceptanceTestsClassesFolder = new File(mvnProjectWithAcceptanceTestsFolder,"target/test-classes");
         Preconditions.checkState(acceptanceTestsClassesFolder.exists(),"Folder with acceptance tests does not exist, project " + acceptanceTestsClassesFolder + " must be build first with \"mvn compile compiler:testCompile\"" );
@@ -197,7 +198,7 @@ public class MVNActions {
                     + System.getProperty("path.separator") + acceptanceTestsClassesFolder.getAbsolutePath()
                     + System.getProperty("path.separator") + submissionClassesFolder.getAbsolutePath();
         }
-        return JUnitActions.test(junitRunner,testClass,classPath,includeJUnitReports);
+        return JUnitActions.test(junitRunner,testClass,classPath,junitVersion);
     }
 
 
@@ -207,9 +208,9 @@ public class MVNActions {
      * @param testClass the name of the class with tests
      * @param mvnProjectToBeTestedFolder the project to be tested
      * @param buildMvn whether to run the necessary mvn builds in the projects to ensure that the binaries exist
-     * @param includeJUnitReports whether to include the content of the generated junit report(s) in the test results
+     * @param junitVersion the junit version used by acceptance tests (to include the appropriate reports)
      */
-    public static TestResults testMvnProject (File junitRunner, String testClass,File mvnProjectToBeTestedFolder, boolean buildMvn,boolean includeJUnitReports) throws Exception {
+    public static TestResults testMvnProject (File junitRunner, String testClass,File mvnProjectToBeTestedFolder, boolean buildMvn,JUnitVersion junitVersion) throws Exception {
 
         if (buildMvn) {
             MVNActions.compileTests(mvnProjectToBeTestedFolder);
@@ -226,6 +227,6 @@ public class MVNActions {
         else {
             classPath = classPath + System.getProperty("path.separator") + submissionClassesFolder.getAbsolutePath();
         }
-        return JUnitActions.test(junitRunner,testClass,classPath,includeJUnitReports);
+        return JUnitActions.test(junitRunner,testClass,classPath,junitVersion);
     }
 }

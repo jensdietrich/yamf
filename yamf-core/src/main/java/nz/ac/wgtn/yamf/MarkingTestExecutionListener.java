@@ -71,7 +71,7 @@ public class MarkingTestExecutionListener implements TestExecutionListener {
 
     @Override
     public void testPlanExecutionFinished(TestPlan testPlan) {
-        System.out.println("Tests finished");
+        LOGGER.info("Tests finished");
         Attachments.reset();
     }
 

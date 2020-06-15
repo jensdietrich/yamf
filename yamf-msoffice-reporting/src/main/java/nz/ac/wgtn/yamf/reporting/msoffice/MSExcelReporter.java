@@ -4,12 +4,13 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import nz.ac.wgtn.yamf.Attachment;
 import nz.ac.wgtn.yamf.MarkingResultRecord;
+import nz.ac.wgtn.yamf.reporting.Reporter;
+import nz.ac.wgtn.yamf.reporting.StackTraceFilters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -48,22 +49,6 @@ public class MSExcelReporter implements Reporter {
         this(false,fileName);
     }
 
-    public boolean isReportFailureAndErrorDetails() {
-        return reportFailureAndErrorDetails;
-    }
-
-    public void setReportFailureAndErrorDetails(boolean reportFailureAndErrorDetails) {
-        this.reportFailureAndErrorDetails = reportFailureAndErrorDetails;
-    }
-
-    public Predicate<StackTraceElement> getStacktraceElementFilter() {
-        return stacktraceElementFilter;
-    }
-
-    public void setStacktraceElementFilter(Predicate<StackTraceElement> stacktraceElementFilter) {
-        this.stacktraceElementFilter = stacktraceElementFilter;
-    }
-
     @Override
     public void generateReport(List<MarkingResultRecord> markingResultRecords) {
 
@@ -98,7 +83,16 @@ public class MSExcelReporter implements Reporter {
 
             addCell(row,col++,styleR,record.getMark());
             addCell(row,col++,styleR,record.getMaxMark());
-            addCell(row,col++,styleL,record.getManualMarkingInstructions());
+
+            String notes = "";
+            if (record.isManualMarkingRequired()) {
+                notes = record.getManualMarkingInstructions();
+            }
+            else if (record.isAborted() && record.getThrowable()!=null) {
+                notes = record.getThrowable().getMessage();
+            }
+
+            addCell(row,col++,styleL,notes);
 
             Collection<Attachment>attachmentsOfThisRecord = record.getAttachments();
             List<String> attachmentNames = new ArrayList<>();
@@ -126,7 +120,11 @@ public class MSExcelReporter implements Reporter {
         cell.setCellFormula(formula );  // =SUM(C2:C3)
         cell.setCellStyle(styleR);
 
-        addCell(row,col++,styleC,"");
+        cell = row.createCell(col++);
+        formula = IntStream.range(2,rowCount).mapToObj(i -> "D"+i).collect(Collectors.joining("+"));
+        cell.setCellFormula(formula );  // =SUM(C2:C3)
+        cell.setCellStyle(styleR);
+
         addCell(row,col++,styleC,"");
         addCell(row,col++,styleC,"");
 

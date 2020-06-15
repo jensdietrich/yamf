@@ -4,10 +4,10 @@
     <parent>
         <groupId>nz.ac.wgtn.yamf</groupId>
         <artifactId>yamf-parent</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
     </parent>
   <groupId>nz.ac.wgtn.yamf</groupId>
-  <artifactId>yamf-mswordreporting</artifactId>
+  <artifactId>yamf-msoffice-reporting</artifactId>
   <packaging>jar</packaging>
   <version>${project-version}</version>
   <name>yamf-mswordreporting</name>
