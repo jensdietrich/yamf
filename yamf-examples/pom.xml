@@ -25,7 +25,7 @@
     </dependency>
     <dependency>
       <groupId>nz.ac.wgtn.yamf</groupId>
-      <artifactId>yamf-mswordreporting</artifactId>
+      <artifactId>yamf-msoffice-reporting</artifactId>
       <version>${project-version}</version>
     </dependency>
   </dependencies> 

@@ -10,7 +10,7 @@
   <artifactId>yamf-msoffice-reporting</artifactId>
   <packaging>jar</packaging>
   <version>${project-version}</version>
-  <name>yamf-mswordreporting</name>
+  <name>yamf-msoffice-reporting</name>
   <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
