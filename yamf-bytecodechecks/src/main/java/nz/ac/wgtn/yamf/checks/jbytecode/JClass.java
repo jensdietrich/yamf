@@ -71,6 +71,17 @@ public class JClass extends JArtifact {
             .anyMatch(method -> method.getParameterTypes().isEmpty());
     }
 
+    public boolean hasMainMethod() {
+        return this.getMethods().stream()
+            .filter(method -> method.isPublic())
+            .filter(method -> method.isStatic())
+            .filter(method -> method.getName().equals("main"))
+            .filter(method -> method.getReturnType().equals("void"))
+            .filter(method -> method.getParameterTypes().size()==1)
+            .filter(method -> method.getParameterTypes().get(0).equals("java.lang.String[]"))
+            .anyMatch(method -> method.getParameterTypes().isEmpty());
+    }
+
     public boolean hasGetter(String property,String type) {
         String methodName = null;
         if (type.equals("boolean")) {
