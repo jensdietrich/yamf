@@ -21,12 +21,15 @@ import java.util.stream.Stream;
  * @author jens dietrich
  */
 public class MVNActions {
+    
+    private static boolean isWindows = false;
+    private static boolean osChecked = false;
 
     public static void mvn(File projectFolder,String... phases) throws Exception {
         Preconditions.checkArgument(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null");
         Preconditions.checkArgument(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath());
         String[] cmd = new String[phases.length+1];
-        cmd[0] = "mvn";
+        cmd[0] = getMvnString();
         for (int i=0;i<phases.length;i++) {
             cmd[i+1] = phases[i];
         }
@@ -53,10 +56,10 @@ public class MVNActions {
         Preconditions.checkArgument(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath());
         ProcessResult result = null;
         if (ignoreFailed) {
-            result = OS.exe(projectFolder, "mvn", "-Dmaven.test.failure.ignore=true", "-Dmaven.test.error.ignore=true","test");
+            result = OS.exe(projectFolder, getMvnString(), "-Dmaven.test.failure.ignore=true", "-Dmaven.test.error.ignore=true","test");
         }
         else {
-            result = OS.exe(projectFolder, "mvn", "test");
+            result = OS.exe(projectFolder, getMvnString(), "test");
         }
         Assumptions.assumeTrue(result.getExitValue()==0,"Command \"mvn test\" has failed " + System.lineSeparator() + result.outputString());
     }
@@ -111,7 +114,7 @@ public class MVNActions {
 
 
     public static String getProjectClassPath (File projectFolder) throws Exception {
-        ProcessResult result = OS.exe(projectFolder, "mvn","dependency:build-classpath");
+        ProcessResult result = OS.exe(projectFolder, getMvnString(),"dependency:build-classpath");
         String output = result.outputString();
 
         //  look for output:
@@ -228,6 +231,22 @@ public class MVNActions {
             classPath = classPath + System.getProperty("path.separator") + submissionClassesFolder.getAbsolutePath();
         }
         return JUnitActions.test(junitRunner,testClass,classPath,junitVersion);
+    }
+    
+    private static String getMvnString() {
+        if (!osChecked) { checkOSisWindows(); }
+        if (isWindows) {
+            return "mvn.cmd";
+        } else {
+            return "mvn";
+        }
+    }
+
+    private static void checkOSisWindows() {
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            isWindows = true;
+        }
+        osChecked = true;
     }
 
     /**
