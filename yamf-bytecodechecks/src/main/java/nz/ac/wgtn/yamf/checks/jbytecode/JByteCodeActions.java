@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;
 import org.objectweb.asm.*;
-
 import java.io.File;
 import java.util.stream.Stream;
 
@@ -104,13 +103,11 @@ public class JByteCodeActions {
         }
     }
 
-
     public static JClass getClass(File file) throws Exception {
         Preconditions.checkArgument(file.exists(),"File " + file.getAbsolutePath() + " does not exist");
         JClassBuilder builder = new JClassBuilder();
         ASMCommons.analyse(file,builder);
         return builder.clazz;
     }
-
 
 }

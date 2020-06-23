@@ -77,8 +77,8 @@ public class MSExcelReporter implements Reporter {
             row = sheet.createRow(rowCount++);
             addCell(row,col++,styleL,record.getName());
 
-            String status = (record.isManualMarkingRequired() || record.isAborted()) ? "todo" :
-                record.isSuccess() ? "ok" : "fail";
+            String status = (record.isManualMarkingRequired() || record.isAborted()) ? "manual marking required" :
+                record.isSuccess() ? "success" : "fail";
             addCell(row,col++,styleC,status);
 
             addCell(row,col++,styleR,record.getMark());

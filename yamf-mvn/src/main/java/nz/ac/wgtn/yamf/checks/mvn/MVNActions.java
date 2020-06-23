@@ -4,13 +4,13 @@ import com.google.common.base.Preconditions;
 import nz.ac.wgtn.yamf.checks.junit.JUnitActions;
 import nz.ac.wgtn.yamf.checks.junit.JUnitVersion;
 import nz.ac.wgtn.yamf.checks.junit.TestResults;
+import nz.ac.wgtn.yamf.commons.Files;
 import nz.ac.wgtn.yamf.commons.OS;
 import nz.ac.wgtn.yamf.commons.XML;
 import org.junit.jupiter.api.Assumptions;
 import org.zeroturnaround.exec.ProcessResult;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -96,7 +96,7 @@ public class MVNActions {
             String details = null;
             if (txtReport.exists()) {
                 if (includeJUnitReports) {
-                    try (Stream<String> stream = Files.lines(txtReport.toPath())) {
+                    try (Stream<String> stream = java.nio.file.Files.lines(txtReport.toPath())) {
                         details = stream.collect(Collectors.joining());
                     } catch (IOException e) {
                         throw new Exception(e);
@@ -247,5 +247,17 @@ public class MVNActions {
             isWindows = true;
         }
         osChecked = true;
+    }
+
+    /**
+     * Get the top-most maven project (folder with pom.xml), or null if it does not exist. The top-most folder can be root.
+     * @param root
+     * @return
+     */
+    public static File getTopMostMvnProjectFolder(File root) {
+        Preconditions.checkNotNull(root);
+        Preconditions.checkArgument(root.exists());
+        Preconditions.checkArgument(root.isDirectory());
+        return Files.findTopMostChildSuchThat(root, f -> f.isDirectory() && new File(f,"pom.xml").exists());
     }
 }

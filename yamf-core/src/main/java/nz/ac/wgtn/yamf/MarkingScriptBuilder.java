@@ -11,6 +11,7 @@ import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -62,6 +63,11 @@ public class MarkingScriptBuilder {
 
     public MarkingScriptBuilder submissions(File[] submissions) {
         this.submissions = submissions;
+        return this;
+    }
+
+    public MarkingScriptBuilder submissions(Collection<File> submissions) {
+        this.submissions = submissions.toArray(new File[submissions.size()]);
         return this;
     }
 
