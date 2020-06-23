@@ -28,7 +28,7 @@ public class Files {
      * @param root
      * @return
      */
-    public static File findFirstChildSuchThat(File root, Predicate<File> condition) {
+    public static File findTopMostChildSuchThat(File root, Predicate<File> condition) {
         Preconditions.checkNotNull(root);
         Preconditions.checkArgument(root.exists());
         Preconditions.checkArgument(root.isDirectory());

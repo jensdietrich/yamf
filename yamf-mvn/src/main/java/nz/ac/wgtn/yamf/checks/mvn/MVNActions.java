@@ -239,6 +239,6 @@ public class MVNActions {
         Preconditions.checkNotNull(root);
         Preconditions.checkArgument(root.exists());
         Preconditions.checkArgument(root.isDirectory());
-        return Files.findFirstChildSuchThat(root, f -> f.isDirectory() && new File(f,"pom.xml").exists());
+        return Files.findTopMostChildSuchThat(root, f -> f.isDirectory() && new File(f,"pom.xml").exists());
     }
 }
