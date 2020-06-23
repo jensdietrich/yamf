@@ -79,7 +79,7 @@ public class JClass extends JArtifact {
             .filter(method -> method.getReturnType().equals("void"))
             .filter(method -> method.getParameterTypes().size()==1)
             .filter(method -> method.getParameterTypes().get(0).equals("java.lang.String[]"))
-            .anyMatch(method -> method.getParameterTypes().isEmpty());
+            .anyMatch(method -> true);
     }
 
     public boolean hasGetter(String property,String type) {
