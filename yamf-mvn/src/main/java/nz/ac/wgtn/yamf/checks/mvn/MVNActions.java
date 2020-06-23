@@ -122,7 +122,7 @@ public class MVNActions {
         //  [INFO] Dependencies classpath:
         //  /Users/foo/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.6.2/junit-jupiter-engine-5.6.2.jar:/Users/foo/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:
 
-        String[] lines = output.split(System.lineSeparator());
+        String[] lines = output.split("\\r?\\n");
         assert lines.length>0;
         boolean classPathIsNext = false;
         for (String line:lines) {
