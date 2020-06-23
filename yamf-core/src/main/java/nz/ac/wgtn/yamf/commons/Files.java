@@ -33,7 +33,7 @@ public class Files {
         Preconditions.checkArgument(root.exists());
         Preconditions.checkArgument(root.isDirectory());
         Queue<File> queue = new ArrayDeque<>();
-
+        queue.add(root);
         while(!queue.isEmpty()) {
             File f = queue.remove();
             if (condition.test(f)) {
