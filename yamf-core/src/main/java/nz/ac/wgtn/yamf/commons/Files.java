@@ -40,8 +40,10 @@ public class Files {
                 return f;
             }
             // add next generation
-            for (File child:f.listFiles()) {
-                queue.add(child);
+            if (f.isDirectory()) {
+                for (File child : f.listFiles()) {
+                    queue.add(child);
+                }
             }
         }
 
