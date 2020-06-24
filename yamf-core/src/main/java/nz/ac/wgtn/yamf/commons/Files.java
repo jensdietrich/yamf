@@ -19,6 +19,34 @@ public class Files {
         return pathBase.relativize(pathAbsolute).toString();
     }
 
+    /**
+     * Find an ancestor satidfying a certain condition.
+     * @param file
+     * @param condition
+     * @param includeSelf -- whether file is also being considered
+     * @return
+     */
+    public static File findAncestorSuchThat(File file, Predicate<File> condition, boolean includeSelf) {
+        Preconditions.checkNotNull(file);
+        Preconditions.checkArgument(file.exists());
+        if (includeSelf && condition.test(file)) {
+            return file;
+        }
+        return doFindAncestorSuchThat(file.getParentFile(),condition);
+    }
+
+    private static File doFindAncestorSuchThat(File file, Predicate<File> condition) {
+        if (condition.test(file)) {
+            return file;
+        }
+        File parent = file.getParentFile();
+        if (parent==null) {
+            return null;
+        }
+        else {
+            return doFindAncestorSuchThat(parent,condition);
+        }
+    }
 
     /**
      * Breath-first traverse children to find a child file or folder satisfying a condition.
