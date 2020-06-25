@@ -49,8 +49,6 @@ public class JUnitActions {
 
         File junitReportFolder = new File(new File(JUNIT_REPORT_FOLDER),""+FOLDERNAME_FROM_TIMESTAMP_FORMAT.format(new Date())); // unique folder names
         junitReportFolder.mkdirs();
-        
-        
 
         ProcessResult result = null;
         if (classpath==null) {
