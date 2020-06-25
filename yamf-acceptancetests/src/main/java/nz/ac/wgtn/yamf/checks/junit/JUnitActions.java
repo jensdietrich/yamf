@@ -13,6 +13,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.lang.System;
 
 /**
  * Actions to run tests (usually acceptance tests).
@@ -26,6 +27,9 @@ public class JUnitActions {
     public static final String JUNIT_REPORT_FOLDER = ".junit-reports";
     public static final String JUPITER_REPORT_NAME = "TEST-junit-jupiter.xml";
     public static final String VINTAGE_REPORT_NAME = "TEST-junit-vintage.xml";
+    
+    private static bool isWindows = false;
+    private static bool osChecked = false;
 
     public static final DateFormat FOLDERNAME_FROM_TIMESTAMP_FORMAT = new java.text.SimpleDateFormat("yyyy-MM-dd--HH-mm-ss--SSS");
 
@@ -45,13 +49,19 @@ public class JUnitActions {
 
         File junitReportFolder = new File(new File(JUNIT_REPORT_FOLDER),""+FOLDERNAME_FROM_TIMESTAMP_FORMAT.format(new Date())); // unique folder names
         junitReportFolder.mkdirs();
+        
+        
 
         ProcessResult result = null;
         if (classpath==null) {
             result = OS.exe(new File("."), "java","-jar", junitRunner.getAbsolutePath(), "-reports-dir",junitReportFolder.getAbsolutePath(),"-c",testClass);
         }
         else {
-            result = OS.exe(new File("."), "java","-jar", junitRunner.getAbsolutePath(), "-reports-dir",junitReportFolder.getAbsolutePath(),"-cp",classpath,"-c",testClass);
+            if (checkOSisWindows()) {
+                result = adjustRunnerForWindows(classpath, junitRunner, junitReportFolder, testClass);
+            } else {
+                result = OS.exe(new File("."), "java","-jar", junitRunner.getAbsolutePath(), "-reports-dir",junitReportFolder.getAbsolutePath(),"-cp",classpath,"-c",testClass);
+            }
         }
 
         // parse results
@@ -104,6 +114,38 @@ public class JUnitActions {
         testResults.addToTestsSkipped(testSkippedCount);
         int testResultingInErrorCounts = XML.evalXPathSingleNodeAsInt(junitReport, "/testsuite/@errors");
         testResults.addToTestsWithErrors(testResultingInErrorCounts);
+    }
+    
+    private static ProcessResult adjustRunnerForWindows(String classpath, File junitRunner, File junitReportFolder, String testClass) {     
+        //Prepend junit jar to classpath
+        classpath = junitRunner.getAbsolutePath()+File.pathSeparator+classpath;
+            
+        //Extract spring-mock dependency from classpath, and append to end        
+        String[] cp = classpath.split(File.pathSeparator);
+        String cp2 = "";
+        String mock = "";
+        for (int i = 0; i < cp.length; i++) {
+            if (!cp[i].contains("spring-mock")) {
+                cp2 += cp[i] + File.pathSeparator;
+            } else {
+                mock = cp[i];
+            }
+        }
+        cp2 += File.pathSeparator+mock;
+        
+        //Execute jar from classpath
+        result = OS.exe(new File("."), "java","-cp", cp2, "org.junit.platform.console.ConsoleLauncher", "-reports-dir",junitReportFolder.getAbsolutePath(),"-c",testClass);
+    }
+    
+    private static boolean checkOSisWindows() {
+        if (!osChecked) {
+            if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                isWindows = true;
+            }   
+            osChecked = true;
+        }
+        
+        return isWindows;
     }
 
 
