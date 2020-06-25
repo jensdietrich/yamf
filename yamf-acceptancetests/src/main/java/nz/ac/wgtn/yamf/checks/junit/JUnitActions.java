@@ -28,8 +28,8 @@ public class JUnitActions {
     public static final String JUPITER_REPORT_NAME = "TEST-junit-jupiter.xml";
     public static final String VINTAGE_REPORT_NAME = "TEST-junit-vintage.xml";
     
-    private static bool isWindows = false;
-    private static bool osChecked = false;
+    private static boolean isWindows = false;
+    private static boolean osChecked = false;
 
     public static final DateFormat FOLDERNAME_FROM_TIMESTAMP_FORMAT = new java.text.SimpleDateFormat("yyyy-MM-dd--HH-mm-ss--SSS");
 
@@ -116,7 +116,7 @@ public class JUnitActions {
         testResults.addToTestsWithErrors(testResultingInErrorCounts);
     }
     
-    private static ProcessResult adjustRunnerForWindows(String classpath, File junitRunner, File junitReportFolder, String testClass) {     
+    private static ProcessResult adjustRunnerForWindows(String classpath, File junitRunner, File junitReportFolder, String testClass) throws Exception {     
         //Prepend junit jar to classpath
         classpath = junitRunner.getAbsolutePath()+File.pathSeparator+classpath;
             
@@ -134,7 +134,7 @@ public class JUnitActions {
         cp2 += File.pathSeparator+mock;
         
         //Execute jar from classpath
-        result = OS.exe(new File("."), "java","-cp", cp2, "org.junit.platform.console.ConsoleLauncher", "-reports-dir",junitReportFolder.getAbsolutePath(),"-c",testClass);
+        return OS.exe(new File("."), "java","-cp", cp2, "org.junit.platform.console.ConsoleLauncher", "-reports-dir",junitReportFolder.getAbsolutePath(),"-c",testClass);
     }
     
     private static boolean checkOSisWindows() {
