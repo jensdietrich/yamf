@@ -1,6 +1,8 @@
 package nz.ac.wgtn.yamf.checks.mvn;
 
 import com.google.common.base.Preconditions;
+import nz.ac.wgtn.yamf.Attachment;
+import nz.ac.wgtn.yamf.Attachments;
 import nz.ac.wgtn.yamf.checks.junit.JUnitActions;
 import nz.ac.wgtn.yamf.checks.junit.JUnitVersion;
 import nz.ac.wgtn.yamf.checks.junit.TestResults;
@@ -11,7 +13,9 @@ import org.junit.jupiter.api.Assumptions;
 import org.zeroturnaround.exec.ProcessResult;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,7 +65,24 @@ public class MVNActions {
         else {
             result = OS.exe(projectFolder, getMvnString(), "test");
         }
-        Assumptions.assumeTrue(result.getExitValue()==0,"Command \"mvn test\" has failed " + System.lineSeparator() + result.outputString());
+
+        // set attachments -- concatenate all txt files in target/surefire-reports
+        File junitReportsFolder = new File(projectFolder,"target/surefire-reports");
+        List<String> mergedContent = new ArrayList<>();
+        if (junitReportsFolder.exists()) {
+            Stream.of(junitReportsFolder.listFiles())
+                .filter(f -> f.getName().endsWith(".txt"))
+                .map(f -> new Attachment(f.getName(),f,"test/plain"))
+                .forEach(attachment -> {
+                    mergedContent.add("");
+                    mergedContent.add("target/surefire-reports/"+attachment.getFile().getName());
+                    mergedContent.addAll(attachment.getContent());
+                });
+            Attachment attachment = new Attachment("surefire-reports",mergedContent,"test/plain");
+
+        }
+
+        Assumptions.assumeTrue(result.getExitValue()==0,"Command \"mvn test\" has failed");
     }
 
     /**

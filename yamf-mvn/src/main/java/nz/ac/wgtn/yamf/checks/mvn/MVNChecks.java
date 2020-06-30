@@ -147,6 +147,19 @@ public class MVNChecks {
         Assertions.fail("no reporting plugin in the pom satisfies the requirement(s)");
     }
 
+    // includes reporting and build plugins
+    public static void assertHasPluginSuchThat(File pom, Predicate<POMPlugin> test) throws Exception {
+        NodeList nodeList = XML.evalXPath(pom, "//plugins/plugin");
+        List<POMPlugin> plugins = POMPlugin.from(nodeList);
+        for (POMPlugin plugin:plugins) {
+            if (test.test(plugin)) {
+                Assertions.assertTrue(true);
+                return;
+            }
+        }
+        Assertions.fail("no reporting plugin in the pom satisfies the requirement(s)");
+    }
+
     public static void assertValidDependencies(File pom, Predicate<List<MVNDependency>> test) throws Exception {
         NodeList nodeList = XML.evalXPath(pom, "/project/dependencies/dependency");
         List<MVNDependency> deps = MVNDependency.from(nodeList);
