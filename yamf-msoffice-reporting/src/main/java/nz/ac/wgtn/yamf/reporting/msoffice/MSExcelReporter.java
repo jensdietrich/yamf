@@ -164,13 +164,7 @@ public class MSExcelReporter implements Reporter {
     }
 
     private List<String> loadContent(Attachment attachment) {
-        try {
-            return Files.readLines(attachment.getFile(), Charset.defaultCharset());
-        }
-        catch (IOException x) {
-            LOGGER.error(x);
-            return Lists.newArrayList("details not available");
-        }
+        return attachment.getContent();
     }
 
     private void addCell(Row row, int col, CellStyle style, String value) {
