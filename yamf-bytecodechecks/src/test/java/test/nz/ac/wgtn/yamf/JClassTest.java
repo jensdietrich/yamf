@@ -1,12 +1,9 @@
 package test.nz.ac.wgtn.yamf;
 
-import nz.ac.wgtn.yamf.checks.jbytecode.*;
+import nz.ac.wgtn.yamf.checks.cha.*;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;

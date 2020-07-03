@@ -7,16 +7,31 @@
     <version>1.0.8</version>
   </parent>
   <groupId>nz.ac.wgtn.yamf</groupId>
-  <artifactId>yamf-bytecodechecks</artifactId>
+  <artifactId>yamf-cha</artifactId>
   <packaging>jar</packaging>
   <version>${project-version}</version>
-  <name>yamf-bytecodechecks</name>
+  <name>yamf-cha</name>
   <url>http://maven.apache.org</url>
     <dependencies>
       <dependency>
           <groupId>org.ow2.asm</groupId>
           <artifactId>asm</artifactId>
           <version>7.0</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-api</artifactId>
+        <version>2.1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-graph-impl</artifactId>
+        <version>2.1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>nz.ac.wgtn.yamf</groupId>
+        <artifactId>yamf-bytecodechecks</artifactId>
+        <version>${project-version}</version>
       </dependency>
     </dependencies>
 </project>

@@ -1,7 +1,7 @@
 package test.nz.ac.wgtn.yamf;
 
-import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
-import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;
+import nz.ac.wgtn.yamf.checks.cha.descr.DescriptorParser;
+import nz.ac.wgtn.yamf.checks.cha.descr.MethodDescriptor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
