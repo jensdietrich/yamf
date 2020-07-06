@@ -1,8 +1,8 @@
 package nz.ac.wgtn.yamf.checks.cha;
 
 /**
- * Implements edge.
+ * Invocation edge in a callgraph.
  * @author jens dietrich
  */
-public class ImplementsEdge extends SubtypeEdge {
+public class InvocationEdge {
 }

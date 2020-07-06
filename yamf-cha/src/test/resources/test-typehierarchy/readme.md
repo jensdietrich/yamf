@@ -1,0 +1,1 @@
+Project to be used in tests, must be build with `mvn compile dependency:copy-dependencies`

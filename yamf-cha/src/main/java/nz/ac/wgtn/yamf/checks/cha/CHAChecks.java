@@ -1,9 +1,9 @@
 package nz.ac.wgtn.yamf.checks.cha;
 
 
+import nz.ac.wgtn.yamf.checks.jbytecode.JClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.LinkedList;
 import java.util.Objects;
@@ -66,7 +66,7 @@ public class CHAChecks {
         Assertions.assertFalse(check,"Class " + className + " does implement " + interfaceName);
     }
 
-    private static boolean hasSuperType(TypeHierarchy typeHierarchy,JClass type, Predicate<Edge> edgeFilter, Predicate<JClass> acceptanceTest) {
+    private static boolean hasSuperType(TypeHierarchy typeHierarchy, JClass type, Predicate<SubtypeEdge> edgeFilter, Predicate<JClass> acceptanceTest) {
         Queue<JClass> queue = new LinkedList<>();
         Set<JClass> superTypes = typeHierarchy.getOutEdges(type).stream()
             .filter(e -> edgeFilter.test(e))

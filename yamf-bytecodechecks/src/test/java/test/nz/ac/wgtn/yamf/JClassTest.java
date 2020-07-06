@@ -1,6 +1,6 @@
 package test.nz.ac.wgtn.yamf;
 
-import nz.ac.wgtn.yamf.checks.cha.*;
+import nz.ac.wgtn.yamf.checks.jbytecode.*;
 import org.junit.jupiter.api.*;
 
 import java.io.File;

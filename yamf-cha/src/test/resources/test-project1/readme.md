@@ -1,1 +1,0 @@
-Project to be used in tests, must be build with `maven compile dependency:copy-dependencies`

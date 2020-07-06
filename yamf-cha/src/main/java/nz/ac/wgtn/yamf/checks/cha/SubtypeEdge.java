@@ -1,8 +1,7 @@
 package nz.ac.wgtn.yamf.checks.cha;
 
 /**
- * Extends edge.
+ * Abstract edge type.
  * @author jens dietrich
  */
-public class ExtendsEdge extends SubtypeEdge {
-}
+public abstract class SubtypeEdge {}
