@@ -42,7 +42,7 @@ public class MarkingScheme {
     public void runSimpleAcceptanceTests () throws Exception {
         TestResults results = MVNActions.acceptanceTestMvnProject(junitRunner,"acceptancetests.TestCalculatorSimple", submission,acceptanceTestProjectFolder,true, JUnitVersion.JUNIT5);
         Assumptions.assumeTrue(results.getTests() == 3);
-        Assertions.assertSame(3,results.getTestsSuccessed(),"not all tests succeeded, details:\n" + results.getDetails());
+        Assertions.assertSame(3,results.getTestsSucceeded(),"not all tests succeeded, details:\n" + results.getDetails());
     }
 
     @Test
@@ -50,6 +50,6 @@ public class MarkingScheme {
     public void runAdvancedAcceptanceTests () throws Exception {
         TestResults results = MVNActions.acceptanceTestMvnProject(junitRunner,"acceptancetests.TestCalculatorOverflow", submission,acceptanceTestProjectFolder,true,JUnitVersion.JUNIT5);
         Assumptions.assumeTrue(results.getTests() == 1);
-        Assertions.assertSame(1,results.getTestsSuccessed(),"not all tests succeeded, details:\n" + results.getDetails());
+        Assertions.assertSame(1,results.getTestsSucceeded(),"not all tests succeeded, details:\n" + results.getDetails());
     }
 }

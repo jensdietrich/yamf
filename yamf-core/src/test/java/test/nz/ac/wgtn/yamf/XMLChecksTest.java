@@ -28,6 +28,8 @@ public class XMLChecksTest {
 
     @Test
     public void testIsValidXMLFile1() throws Exception {
+        // this test depends on the availability of the network to access the schema
+        // and is therefore flaky
         File file = getResourceAsFile("xml/pom.xml");
         assertTrue(XML.isValidXML(file));
     }
