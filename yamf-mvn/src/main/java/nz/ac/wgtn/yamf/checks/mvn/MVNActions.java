@@ -11,12 +11,12 @@ import nz.ac.wgtn.yamf.commons.OS;
 import nz.ac.wgtn.yamf.commons.XML;
 import org.junit.jupiter.api.Assumptions;
 import org.zeroturnaround.exec.ProcessResult;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,17 +29,29 @@ public class MVNActions {
     private static boolean isWindows = false;
     private static boolean osChecked = false;
 
-    public static void mvn(File projectFolder,String... phases) throws Exception {
+    public static ProcessResult mvn(File projectFolder, Properties properties, String... phases) throws Exception {
         Preconditions.checkArgument(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null");
         Preconditions.checkArgument(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath());
-        String[] cmd = new String[phases.length+1];
+        String[] cmd = new String[phases.length+properties.size()+1 ];
+        int index = 1;
         cmd[0] = getMvnString();
+        for (String propertyName:properties.stringPropertyNames()) {
+            cmd[index] ="-D"+propertyName+"="+properties.getProperty(propertyName);
+            index = index+1;
+        }
         for (int i=0;i<phases.length;i++) {
-            cmd[i+1] = phases[i];
+            cmd[index] = phases[i];
+            index = index+1;
         }
         ProcessResult result = OS.exe(projectFolder,cmd);
         String cmdAsString = "mvn " + Stream.of(phases).collect(Collectors.joining(" "));
         Assumptions.assumeTrue(result.getExitValue()==0,"Command \"" + cmdAsString + "\" has failed " + System.lineSeparator() + result.outputString());
+
+        return result;
+    }
+
+    public static ProcessResult mvn(File projectFolder,String... phases) throws Exception {
+        return mvn(projectFolder,new Properties(),phases);
     }
 
     public static void compile (File projectFolder) throws Exception {
@@ -53,6 +65,24 @@ public class MVNActions {
 
     public static void test (File projectFolder) throws Exception {
         test(projectFolder,true);
+    }
+
+    public static String inferClasspath(File projectFolder,boolean includeTargetFolder) throws Exception {
+        File classpathFile = new File(".tmp-project-classpath.txt"); // using a file avoid parsing the (potentially changable) log string
+        Properties properties = new Properties();
+        properties.setProperty("mdep.outputFile",classpathFile.getAbsolutePath());
+        ProcessResult result = mvn(projectFolder,properties,"dependency:build-classpath");
+        BufferedReader reader = new BufferedReader(new FileReader(classpathFile));
+        String classpath = reader.lines().collect(Collectors.joining());
+        if (includeTargetFolder) {
+            classpath = "target" + File.separator + "classes" + File.pathSeparator + classpath;
+        }
+        return classpath;
+    }
+
+
+    public static String inferClasspath(File projectFolder) throws Exception {
+        return inferClasspath(projectFolder,true);
     }
 
     public static void test (File projectFolder, boolean ignoreFailed) throws Exception {
