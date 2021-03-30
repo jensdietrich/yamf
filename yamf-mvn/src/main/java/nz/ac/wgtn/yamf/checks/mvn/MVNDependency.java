@@ -46,6 +46,13 @@ public class MVNDependency {
         this.scope = scope;
     }
 
+    public MVNDependency(String groupId, String artifactId) {
+        this.groupId = groupId;
+        this.artifactId = artifactId;
+        this.version = null;
+        this.scope = null;
+    }
+
     public static List<MVNDependency> from(NodeList xmlNodes) {
         List<MVNDependency> deps = new ArrayList<>(xmlNodes.getLength());
         for (int i=0;i<xmlNodes.getLength();i++) {

@@ -153,7 +153,7 @@ Note how running acceptance tests is different from running the tests that are p
 
 This is the marking script. It runs two different sets of vanilla just tests (organised as classes with tests methods annotated with `@Test`, see [yamf-examples/examples/acceptancetests/reference-solution-with-tests/src/test/java/acceptancetests](yamf-examples/examples/acceptancetests/reference-solution-with-tests/src/test/java/acceptancetests). The submission fails the second test as it does not handle overflows as requested in the assignment brief. The [generated report](yamf-examples/sample-reports/example-acceptancetests-marks-submission1.doc) contains a reference to the detailed XML reports junit produces containing full details of why the test failed. 
 
-The check contain standard junit assumptions. They are slightly different from junit assertions as test violating assumptions will be reported as skipped, not failed. For instance, the assumptions would be violated if their were not tests, for instance, if the acceptance test methods did not have a `@Test` annotation.
+The check contains standard junit assumptions. They are slightly different from junit assertions as test violating assumptions will be reported as skipped, not failed. For instance, the assumptions would be violated if their were not tests, for instance, if the acceptance test methods did not have a `@Test` annotation.
 
 
 ```java
