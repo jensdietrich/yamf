@@ -70,7 +70,7 @@ public class TestResults {
         return testsWithErrors;
     }
 
-    public int getTestsSuccessed() {
+    public int getTestsSucceeded() {
         return this.tests - (this.testsWithErrors + this.testsFailed + this.testsSkipped);
     }
 

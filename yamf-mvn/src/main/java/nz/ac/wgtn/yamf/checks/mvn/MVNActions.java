@@ -54,17 +54,17 @@ public class MVNActions {
         return mvn(projectFolder,new Properties(),phases);
     }
 
-    public static void compile (File projectFolder) throws Exception {
-        mvn(projectFolder,"compile");
+    public static ProcessResult compile (File projectFolder) throws Exception {
+        return mvn(projectFolder,"compile");
     }
 
-    public static void compileTests (File projectFolder) throws Exception {
+    public static ProcessResult compileTests (File projectFolder) throws Exception {
         // do not actually run tests
-        mvn(projectFolder,"compile","compiler:testCompile");
+        return mvn(projectFolder,"compile","compiler:testCompile");
     }
 
-    public static void test (File projectFolder) throws Exception {
-        test(projectFolder,true);
+    public static ProcessResult test (File projectFolder) throws Exception {
+        return test(projectFolder,true);
     }
 
     public static String inferClasspath(File projectFolder,boolean includeTargetFolder) throws Exception {
@@ -75,7 +75,8 @@ public class MVNActions {
         BufferedReader reader = new BufferedReader(new FileReader(classpathFile));
         String classpath = reader.lines().collect(Collectors.joining());
         if (includeTargetFolder) {
-            classpath = "target" + File.separator + "classes" + File.pathSeparator + classpath;
+            File projectClassesFolder = new File(projectFolder,"target/classes");
+            classpath = projectClassesFolder.getAbsolutePath() + File.pathSeparator + classpath;
         }
         return classpath;
     }
@@ -85,7 +86,7 @@ public class MVNActions {
         return inferClasspath(projectFolder,true);
     }
 
-    public static void test (File projectFolder, boolean ignoreFailed) throws Exception {
+    public static ProcessResult test (File projectFolder, boolean ignoreFailed) throws Exception {
         Preconditions.checkArgument(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null");
         Preconditions.checkArgument(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath());
         ProcessResult result = null;
@@ -109,10 +110,11 @@ public class MVNActions {
                     mergedContent.addAll(attachment.getContent());
                 });
             Attachment attachment = new Attachment("surefire-reports",mergedContent,"test/plain");
+            Attachments.add(attachment);
 
         }
-
         Assumptions.assumeTrue(result.getExitValue()==0,"Command \"mvn test\" has failed");
+        return result;
     }
 
     /**
@@ -163,7 +165,7 @@ public class MVNActions {
         return results;
     }
 
-
+    @Deprecated // use inferClasspath -- uses more stable file
     public static String getProjectClassPath (File projectFolder) throws Exception {
         ProcessResult result = OS.exe(projectFolder, getMvnString(),"dependency:build-classpath");
         String output = result.outputString();

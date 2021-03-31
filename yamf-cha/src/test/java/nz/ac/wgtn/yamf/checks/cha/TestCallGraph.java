@@ -61,6 +61,7 @@ public class TestCallGraph {
             .get();
     }
 
+    @Disabled
     @Test
     public void testCallsitesInMyAppenderAppend1() {
         JMethod source = findMethod("foo.MyAppender","append","(Lorg/apache/log4j/spi/LoggingEvent;)V");
@@ -71,6 +72,7 @@ public class TestCallGraph {
         Assertions.assertTrue(callGraph.getSuccessors(source).contains(target));
     }
 
+    @Disabled
     @Test
     public void testCallsitesInMyAppenderAppend2() {
         JMethod source = findMethod("foo.MyAppender","append","(Lorg/apache/log4j/spi/LoggingEvent;)V");
@@ -81,6 +83,7 @@ public class TestCallGraph {
         Assertions.assertTrue(callGraph.getSuccessors(source).contains(target));
     }
 
+    @Disabled
     @Test
     public void testCallsitesInMyHelperWrite() {
         JMethod source = findMethod("foo.MyHelper","write","(Ljava/lang/Object;)V");

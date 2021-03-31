@@ -50,6 +50,7 @@ public class TestTypeHierachy {
         typeHierarchy = null;
     }
 
+    @Disabled
     @Test
     public void testAppender1() {
         Assumptions.assumeTrue(typeHierarchy!=null);
@@ -58,6 +59,7 @@ public class TestTypeHierachy {
         CHAChecks.assertDoesNotExtend(typeHierarchy,"foo.AppenderImpl1","org.apache.log4j.WriterAppender");
     }
 
+    @Disabled
     @Test
     public void testAppender2() {
         Assumptions.assumeTrue(typeHierarchy!=null);
@@ -66,6 +68,7 @@ public class TestTypeHierachy {
         CHAChecks.assertDoesNotExtend(typeHierarchy,"foo.AppenderImpl2","org.apache.log4j.WriterAppender");
     }
 
+    @Disabled
     @Test
     public void testAppender3() {
         Assumptions.assumeTrue(typeHierarchy!=null);

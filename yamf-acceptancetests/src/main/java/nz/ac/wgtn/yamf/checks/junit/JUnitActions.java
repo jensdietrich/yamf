@@ -7,7 +7,9 @@ import nz.ac.wgtn.yamf.commons.OS;
 import nz.ac.wgtn.yamf.commons.XML;
 import org.zeroturnaround.exec.ProcessResult;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.util.Date;
@@ -63,7 +65,20 @@ public class JUnitActions {
         TestResults testResults = new TestResults();
         testResults.setConsoleOutput(output);
 
+
+
+
+
         if (junitReportFolder.exists()) {
+
+            // attach console output
+            File consoleOutputFile = new File(junitReportFolder,"system.out.txt");
+            try (PrintWriter out = new PrintWriter(new FileWriter(consoleOutputFile))) {
+                out.println(output);
+                Attachments.add(new Attachment(consoleOutputFile.getName(),consoleOutputFile,"test/plain"));
+            }
+
+            // attach generated junit reports
             String details = "";
             for (File junitReport : junitReportFolder.listFiles(fl -> !fl.isHidden())) {
                 if (junitReport.getName().equals(JUPITER_REPORT_NAME)) {

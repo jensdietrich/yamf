@@ -4,10 +4,10 @@
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.8</version>
+  <version>1.0.9</version>
   <name>yamf-parent</name>
   <properties>
-      <project-version>1.0.8</project-version>
+      <project-version>1.0.9</project-version>
       <maven.compiler.target>1.8</maven.compiler.target>
       <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
@@ -44,7 +44,7 @@
       <module>yamf-bytecodechecks</module>
       <module>yamf-mvn</module>
       <module>yamf-msoffice-reporting</module>
-      <module>yamf-cha</module>
+      <!-- <module>yamf-cha</module> -->
   </modules>
   <url>http://maven.apache.org</url>
     <dependencies>

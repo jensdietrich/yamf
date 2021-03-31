@@ -57,7 +57,7 @@ public class MSExcelReporter implements Reporter {
         int rowCount = 0;
 
         // row 0 -- header
-        String[] titles = new String[]{"task","status","marks","maxMarks","notes","details"};
+        String[] titles = new String[]{"task","status","marks","maxMarks","details/logs","notes"};
         Row row = sheet.createRow(rowCount++);
         addHeaderCells(workbook,row,titles);
 
@@ -84,16 +84,7 @@ public class MSExcelReporter implements Reporter {
             addCell(row,col++,styleR,record.getMark());
             addCell(row,col++,styleR,record.getMaxMark());
 
-            String notes = "";
-            if (record.isManualMarkingRequired()) {
-                notes = record.getManualMarkingInstructions();
-            }
-            else if (record.isAborted() && record.getThrowable()!=null) {
-                notes = record.getThrowable().getMessage();
-            }
-
-            addCell(row,col++,styleL,notes);
-
+            // attachments
             Collection<Attachment>attachmentsOfThisRecord = record.getAttachments();
             List<String> attachmentNames = new ArrayList<>();
             for (Attachment attachment:attachmentsOfThisRecord) {
@@ -102,6 +93,20 @@ public class MSExcelReporter implements Reporter {
             }
             String txt = attachmentNames.stream().collect(Collectors.joining(","));
             addCell(row,col++,styleL,txt);
+
+            // notes
+            String notes = "";
+            if (record.isManualMarkingRequired()) {
+                notes = record.getManualMarkingInstructions();
+            }
+            else if ((record.isFailed() || record.isAborted()) && record.getThrowable()!=null) {
+                notes = record.getThrowable().getMessage();
+            }
+            addCell(row,col++,styleL,notes);
+            // next statement is necessary to retain previous statement in bytecode
+            // this might be a case of erroneous compiler optimisation
+            System.out.print("");
+
         }
 
         // TODO summary
