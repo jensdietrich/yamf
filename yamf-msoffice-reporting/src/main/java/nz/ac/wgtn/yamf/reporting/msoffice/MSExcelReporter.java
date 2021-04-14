@@ -8,6 +8,7 @@ import nz.ac.wgtn.yamf.reporting.Reporter;
 import nz.ac.wgtn.yamf.reporting.StackTraceFilters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -30,6 +31,8 @@ public class MSExcelReporter implements Reporter {
     private Predicate<StackTraceElement> stacktraceElementFilter = StackTraceFilters.DEFAULT;
     private static char[] ROW_NAMES =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static Logger LOGGER = LogManager.getLogger("excel-reporter");
+
+    private SpreadsheetVersion version = null;
 
     public MSExcelReporter(boolean reportFailureAndErrorDetails, File file) {
         this.file = file;
@@ -55,6 +58,8 @@ public class MSExcelReporter implements Reporter {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("results");
         int rowCount = 0;
+
+        this.version = workbook.getSpreadsheetVersion();
 
         // row 0 -- header
         String[] titles = new String[]{"task","status","marks","maxMarks","details/logs","notes"};
@@ -173,7 +178,13 @@ public class MSExcelReporter implements Reporter {
     }
 
     private void addCell(Row row, int col, CellStyle style, String value) {
+
+        // truncate if necessary in order to avoid IllegalArgumentException later
+
         Cell cell = row.createCell(col);
+        if(value.length() > this.version.getMaxTextLength()) {
+            value = value.substring(0,this.version.getMaxTextLength() - 16) + " .. (truncated)";
+        }
         cell.setCellValue(value);
         cell.setCellStyle(style);
     }
