@@ -17,7 +17,7 @@ This is a lightweight framework to design automated marking scripts. It uses the
 1. Classes with checks in `nz.ac.vuw.yamf.checks` packages that can be used in tests, including static checks to test properties in configuration files etc, whether a class file has certain properties etc, and dynamic scripts to run scripts such as acceptance tests, and check the test outcomes. Those checks are implemented using static `assert*` methods, and are based on standard junit `assert*` methods.  Therefore, those checks are usable in any marking system supporting junit tests. 
 2. A custom annotation `@Marking` (example: `@Marking(name="task 1",marks=2)`) to be used alongside the standard `@Test` annotation, and some classes to extract this information from test runs and pass this to reporters.
 3. A custom annotation `@ManualMarkingIsRequired` (example: `@ManualMarkingIsRequired(instructions="check whether generated coverage reports exist")`) to indicate that something cannot be tested automatically.
-4. Pluggable reporters in `nz.ac.vuw.yamf.reporting` to produce marking summaries in plain test and MS Word format.
+4. Pluggable reporters in `nz.ac.vuw.yamf.reporting` to produce marking summaries in plain test, MS Word and MS Excel ( incl summing uo total marks) format. Implementing new reporters is easy.
 5. Checks have the following outcomes that are reported:
     1. **success** - marks are allocated as specified in `@Test` 
     2. **failed**-- no marks are allocated
