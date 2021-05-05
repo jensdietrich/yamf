@@ -26,4 +26,6 @@ public class SampleClass implements java.io.Serializable {
             }
         });
     }
+
+    public static void main(String[] args) {}
 }

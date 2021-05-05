@@ -63,6 +63,11 @@ public class JByteCodeChecks {
         );
     }
 
+
+    public static void assertHasMainMethod(JClass clazz) throws Exception {
+        Assertions.assertTrue(clazz.hasMainMethod(),"no main method found in class " + clazz.getName());
+    }
+
     public static void assertHasJUnit4Tests(JClass clazz,Predicate<String> testMethodFilter) throws Exception {
         // junit4 methods must be public:
         // https://junit.org/junit4/javadoc/latest/org/junit/Test.html
