@@ -50,6 +50,12 @@ public class JUnitActions {
         File junitReportFolder = new File(new File(JUNIT_REPORT_FOLDER),""+FOLDERNAME_FROM_TIMESTAMP_FORMAT.format(new Date())); // unique folder names
         junitReportFolder.mkdirs();
 
+        // build custom pattern for class, this is to deal with:
+        // FN -- e.g. the custom pattern will miss classes with tests with names like *Test1
+        // FP -- there might be some speed advantage of only loading the classes necessary, this documentation hints at this:
+        // https://junit.org/junit5/docs/5.0.0-M5/user-guide/#running-tests-console-launcher-options
+        // see also https://github.com/jensdietrich/yamf/issues/1
+        String classPattern = "^" + testClass.replace(".","\\.")+ "$";
         ProcessResult result = null;
         if (classpath==null) {
             result = OS.exe(
@@ -57,7 +63,8 @@ public class JUnitActions {
                 "java",
                 "-jar", junitRunner.getAbsolutePath(),
                 "-reports-dir",junitReportFolder.getAbsolutePath(),
-                "-c",testClass
+                "-c",testClass,
+                "-n",classPattern
             );
         }
         else {
@@ -67,7 +74,8 @@ public class JUnitActions {
                 "-jar", junitRunner.getAbsolutePath(),
                 "-reports-dir",junitReportFolder.getAbsolutePath(),
                 "-cp",classpath,
-                "-c",testClass
+                "-c",testClass,
+                "-n",classPattern
             );
         }
 
