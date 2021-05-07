@@ -33,6 +33,8 @@ public class JUnitActions {
 
     /**
      * Run unit tests, and return results.
+     * It is highly recommended to name test classed ending woth Test or Tests, otherwise the runner might not pick them
+     * up , see also: https://junit.org/junit5/docs/5.0.0-M5/user-guide/#running-tests-console-launcher-options
      * @param junitRunner the junit runner library, for instance junit-platform-console-standalone-1.6.2.jar
      * @param testClass the name of the class with tests
      * @param classpath the classpath to be used
@@ -50,10 +52,23 @@ public class JUnitActions {
 
         ProcessResult result = null;
         if (classpath==null) {
-            result = OS.exe(new File("."), "java","-jar", junitRunner.getAbsolutePath(), "-reports-dir",junitReportFolder.getAbsolutePath(),"-c",testClass);
+            result = OS.exe(
+                new File("."),
+                "java",
+                "-jar", junitRunner.getAbsolutePath(),
+                "-reports-dir",junitReportFolder.getAbsolutePath(),
+                "-c",testClass
+            );
         }
         else {
-            result = OS.exe(new File("."), "java","-jar", junitRunner.getAbsolutePath(), "-reports-dir",junitReportFolder.getAbsolutePath(),"-cp",classpath,"-c",testClass);
+            result = OS.exe(
+                new File("."),
+                "java",
+                "-jar", junitRunner.getAbsolutePath(),
+                "-reports-dir",junitReportFolder.getAbsolutePath(),
+                "-cp",classpath,
+                "-c",testClass
+            );
         }
 
         // parse results

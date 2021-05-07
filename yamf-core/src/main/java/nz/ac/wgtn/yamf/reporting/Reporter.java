@@ -9,5 +9,9 @@ import java.util.List;
  * @author jens dietrich
  */
 public interface Reporter {
+    /**
+     * Generate the report.
+     * @param results
+     */
     void generateReport (List<MarkingResultRecord> results);
 }

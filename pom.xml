@@ -4,10 +4,10 @@
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.12</version>
+  <version>1.0.13</version>
   <name>yamf-parent</name>
   <properties>
-      <project-version>1.0.12</project-version>
+      <project-version>1.0.13</project-version>
       <maven.compiler.target>1.8</maven.compiler.target>
       <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
