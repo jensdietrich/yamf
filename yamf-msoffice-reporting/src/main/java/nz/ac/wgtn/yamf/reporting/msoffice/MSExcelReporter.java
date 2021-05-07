@@ -1,23 +1,16 @@
 package nz.ac.wgtn.yamf.reporting.msoffice;
 
-import com.google.common.collect.Lists;
-import com.google.common.io.Files;
 import nz.ac.wgtn.yamf.Attachment;
 import nz.ac.wgtn.yamf.MarkingResultRecord;
 import nz.ac.wgtn.yamf.reporting.Reporter;
-import nz.ac.wgtn.yamf.reporting.StackTraceFilters;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,31 +18,17 @@ import java.util.stream.IntStream;
  * Reporter producing MS Excel files that are editable.
  * @author jens dietrich
  */
-public class MSExcelReporter implements Reporter {
+public class MSExcelReporter extends AbstractReporter {
     private File file = null;
-    private boolean reportFailureAndErrorDetails = false;
-    private Predicate<StackTraceElement> stacktraceElementFilter = StackTraceFilters.DEFAULT;
-    private static char[] ROW_NAMES =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-    private static Logger LOGGER = LogManager.getLogger("excel-reporter");
 
     private SpreadsheetVersion version = null;
 
-    public MSExcelReporter(boolean reportFailureAndErrorDetails, File file) {
-        this.file = file;
-        this.reportFailureAndErrorDetails = reportFailureAndErrorDetails;
-    }
-
-    public MSExcelReporter(boolean reportFailureAndErrorDetails, String fileName) {
+    public MSExcelReporter(String fileName) {
         this.file = new File(fileName);
-        this.reportFailureAndErrorDetails = reportFailureAndErrorDetails;
     }
 
     public MSExcelReporter(File file) {
-        this(false,file);
-    }
-
-    public MSExcelReporter(String fileName) {
-        this(false,fileName);
+        this.file = file;
     }
 
     @Override
@@ -156,7 +135,7 @@ public class MSExcelReporter implements Reporter {
             for (String line:lines) {
                 aRow = aSheet.createRow(rowCount++);
                 aCell = aRow.createCell(0);
-                aCell.setCellValue(line);
+                aCell.setCellValue(sanitise(line));
                 aCell.setCellStyle(style);
             }
             aSheet.autoSizeColumn(0);
@@ -185,7 +164,7 @@ public class MSExcelReporter implements Reporter {
         if(value.length() > this.version.getMaxTextLength()) {
             value = value.substring(0,this.version.getMaxTextLength() - 16) + " .. (truncated)";
         }
-        cell.setCellValue(value);
+        cell.setCellValue(sanitise(value));
         cell.setCellStyle(style);
     }
 

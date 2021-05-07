@@ -17,7 +17,7 @@ import java.util.function.Predicate;
  * Reporter producing MS Word files that are editable.
  * @author jens dietrich
  */
-public class MSWordReporter implements Reporter {
+public class MSWordReporter extends AbstractReporter {
     private File file = null;
     private boolean reportFailureAndErrorDetails = false;
     private Predicate<StackTraceElement> stacktraceElementFilter = StackTraceFilters.DEFAULT;
@@ -47,6 +47,7 @@ public class MSWordReporter implements Reporter {
     public void setReportFailureAndErrorDetails(boolean reportFailureAndErrorDetails) {
         this.reportFailureAndErrorDetails = reportFailureAndErrorDetails;
     }
+
 
     public Predicate<StackTraceElement> getStacktraceElementFilter() {
         return stacktraceElementFilter;
@@ -134,7 +135,7 @@ public class MSWordReporter implements Reporter {
         paragraphRun.setFontFamily("Courier");
         paragraphRun.setColor(colour);
         paragraphRun.setFontSize(fontSize);
-        paragraphRun.setText(text);
+        paragraphRun.setText(sanitise(text));
     }
 
     private void addTextBlock(XWPFDocument document, boolean bold, int fontSize, String text) {
