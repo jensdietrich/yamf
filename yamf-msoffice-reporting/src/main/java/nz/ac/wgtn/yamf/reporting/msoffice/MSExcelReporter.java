@@ -160,11 +160,12 @@ public class MSExcelReporter extends AbstractReporter {
 
         // truncate if necessary in order to avoid IllegalArgumentException later
 
+        value = sanitise(value);
         Cell cell = row.createCell(col);
         if(value.length() > this.version.getMaxTextLength()) {
             value = value.substring(0,this.version.getMaxTextLength() - 16) + " .. (truncated)";
         }
-        cell.setCellValue(sanitise(value));
+        cell.setCellValue(value);
         cell.setCellStyle(style);
     }
 

@@ -11,11 +11,11 @@ import nz.ac.wgtn.yamf.commons.OS;
 import nz.ac.wgtn.yamf.commons.XML;
 import org.junit.jupiter.api.Assumptions;
 import org.zeroturnaround.exec.ProcessResult;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -209,6 +209,32 @@ public class MVNActions {
         Preconditions.checkState(classesFolder.exists(),"Classes folder does not exist (project must be built first with \"mvn compile\"): " + classesFolder.getAbsolutePath());
         return new File(classesFolder,className.replace(".","/") + ".class");
 
+    }
+
+    public static Set<File> getAllClassFiles(File projectFolder) throws IOException {
+        Preconditions.checkArgument(projectFolder.exists(),"Project folder does not exist: " + projectFolder.getAbsolutePath());
+        File targetFolder = new File(projectFolder,"target");
+        Preconditions.checkState(targetFolder.exists(),"Target folder does not exist (project must be built first): " + targetFolder.getAbsolutePath());
+        File classesFolder = new File(targetFolder,"classes");
+        Preconditions.checkState(classesFolder.exists(),"Classes folder does not exist (project must be built first with \"mvn compile\"): " + classesFolder.getAbsolutePath());
+        return java.nio.file.Files.walk(classesFolder.toPath())
+            .filter(java.nio.file.Files::isRegularFile)
+            .filter(f -> f.toFile().getName().endsWith(".class"))
+            .map(f -> f.toFile())
+            .collect(Collectors.toSet());
+    }
+
+    public static Set<File> getAllTestClassFiles(File projectFolder) throws IOException {
+        Preconditions.checkArgument(projectFolder.exists(),"Project folder does not exist: " + projectFolder.getAbsolutePath());
+        File targetFolder = new File(projectFolder,"target");
+        Preconditions.checkState(targetFolder.exists(),"Target folder does not exist (project must be built first): " + targetFolder.getAbsolutePath());
+        File classesFolder = new File(targetFolder,"test-classes");
+        Preconditions.checkState(classesFolder.exists(),"Test classes folder does not exist (project must be built first with \"mvn compile compiler:testCompile\"): " + classesFolder.getAbsolutePath());
+        return java.nio.file.Files.walk(classesFolder.toPath())
+            .filter(java.nio.file.Files::isRegularFile)
+            .filter(f -> f.toFile().getName().endsWith(".class"))
+            .map(f -> f.toFile())
+            .collect(Collectors.toSet());
     }
 
     public static File getTestClassFile(File projectFolder,String className) {

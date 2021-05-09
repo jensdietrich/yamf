@@ -20,7 +20,7 @@ public class Files {
     }
 
     /**
-     * Find an ancestor satidfying a certain condition.
+     * Find an ancestor satisfying a certain condition.
      * @param file
      * @param condition
      * @param includeSelf -- whether file is also being considered

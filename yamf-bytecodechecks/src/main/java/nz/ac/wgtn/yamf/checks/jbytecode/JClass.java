@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 
 /**
@@ -128,11 +129,19 @@ public class JClass extends JArtifact {
         }
         String methodName2 = methodName; // to make final for lambda
         return this.getMethods().stream()
-                .filter(method -> method.isPublic())
-                .filter(method -> !method.isStatic())
-                .filter(method -> method.getName().equals(methodName2))
-                .filter(method -> method.getReturnType().equals(type))
-                .anyMatch(method -> method.getParameterTypes().isEmpty());
+            .filter(method -> method.isPublic())
+            .filter(method -> !method.isStatic())
+            .filter(method -> method.getName().equals(methodName2))
+            .filter(method -> method.getReturnType().equals(type))
+            .anyMatch(method -> method.getParameterTypes().isEmpty());
+    }
+
+    public boolean hasMethodSuchThat(Predicate<JMethod> filter) {
+        return this.getMethods().stream().anyMatch(filter);
+    }
+
+    public boolean hasFieldSuchThat(Predicate<JField> filter) {
+        return this.getFields().stream().anyMatch(filter);
     }
 
 
