@@ -4,7 +4,7 @@
     <parent>
         <groupId>nz.ac.wgtn.yamf</groupId>
         <artifactId>yamf-parent</artifactId>
-        <version>1.0.14</version>
+        <version>1.0.15</version>
     </parent>
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-msoffice-reporting</artifactId>

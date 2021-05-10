@@ -3,6 +3,8 @@ package nz.ac.wgtn.yamf;
 import com.google.common.base.Preconditions;
 import nz.ac.wgtn.yamf.reporting.Reporter;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.junit.platform.launcher.Launcher;
@@ -15,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 
@@ -27,6 +30,7 @@ public class MarkingScriptBuilder {
 
     private Consumer<File> beforeMarkingEachProject = (projectFolder) -> {};
     private Consumer<File> afterMarkingEachProject = (projectFolder) -> {};
+    private Predicate<File> skipMarkingProjectCondition = (projectFolder) -> false;
     private Runnable beforeMarkingAllProjects = () -> {};
     private Runnable afterMarkingAllProjects = () -> {};
     private List<Function<File, Reporter>> reporterFactories = new ArrayList<>();
@@ -47,6 +51,11 @@ public class MarkingScriptBuilder {
 
     public MarkingScriptBuilder beforeMarkingAllProjectsDo(Runnable action) {
         this.beforeMarkingAllProjects = action;
+        return this;
+    }
+
+    public MarkingScriptBuilder skipMarkingProjectIf(Predicate<File> condition) {
+        this.skipMarkingProjectCondition = condition;
         return this;
     }
 
@@ -98,24 +107,32 @@ public class MarkingScriptBuilder {
             Configurator.setRootLevel(this.logLevel);
         }
 
+        Logger logger = LogManager.getLogger("marking-script");
+
+
         beforeMarkingAllProjects.run();
         for (File projectFolder:submissions)   {
             if (projectFolder.isDirectory()) {
-                beforeMarkingEachProject.accept(projectFolder);
-                // junit boilerplate code
-                LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder
-                    .request()
-                    .selectors(selectClass(markingScheme)).build();
-                Launcher launcher = LauncherFactory.create();
-                MarkingTestExecutionListener listener = new MarkingTestExecutionListener() ;
-                launcher.registerTestExecutionListeners(listener);
-                launcher.execute(request);
-                List<MarkingResultRecord> results = listener.getResults();
-                for (Function<File,Reporter> reporterFactory:reporterFactories) {
-                    Reporter reporter = reporterFactory.apply(projectFolder);
-                    reporter.generateReport(results);
+                if (!skipMarkingProjectCondition.test(projectFolder)) {
+                    beforeMarkingEachProject.accept(projectFolder);
+                    // junit boilerplate code
+                    LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder
+                        .request()
+                        .selectors(selectClass(markingScheme)).build();
+                    Launcher launcher = LauncherFactory.create();
+                    MarkingTestExecutionListener listener = new MarkingTestExecutionListener();
+                    launcher.registerTestExecutionListeners(listener);
+                    launcher.execute(request);
+                    List<MarkingResultRecord> results = listener.getResults();
+                    for (Function<File, Reporter> reporterFactory : reporterFactories) {
+                        Reporter reporter = reporterFactory.apply(projectFolder);
+                        reporter.generateReport(results);
+                    }
+                    afterMarkingEachProject.accept(projectFolder);
                 }
-                afterMarkingEachProject.accept(projectFolder);
+                else {
+                    logger.info("Skipping project " + projectFolder);
+                }
             }
         }
         afterMarkingAllProjects.run();
