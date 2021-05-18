@@ -58,7 +58,7 @@ public class MSWordReporter extends AbstractReporter {
     }
 
     @Override
-    public void generateReport(List<MarkingResultRecord> markingResultRecords) {
+    public void generateReport(File submission, List<MarkingResultRecord> markingResultRecords) {
         XWPFDocument document = new XWPFDocument();
         addTextBlock(document, true, 16, "Marking Report");
         space(document);

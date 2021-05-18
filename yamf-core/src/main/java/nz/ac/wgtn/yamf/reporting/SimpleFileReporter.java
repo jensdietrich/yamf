@@ -28,7 +28,7 @@ public class SimpleFileReporter extends AbstractSimpleReporter {
     }
 
     @Override
-    public void generateReport(List<MarkingResultRecord> results) {
+    public void generateReport(File submission, List<MarkingResultRecord> results) {
         try (PrintStream out = new PrintStream(new FileOutputStream(file))) {
             export(results,out);
         } catch (FileNotFoundException e) {

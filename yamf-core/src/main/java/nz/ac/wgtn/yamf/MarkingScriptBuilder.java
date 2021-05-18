@@ -126,7 +126,7 @@ public class MarkingScriptBuilder {
                     List<MarkingResultRecord> results = listener.getResults();
                     for (Function<File, Reporter> reporterFactory : reporterFactories) {
                         Reporter reporter = reporterFactory.apply(projectFolder);
-                        reporter.generateReport(results);
+                        reporter.generateReport(projectFolder,results);
                     }
                     afterMarkingEachProject.accept(projectFolder);
                 }

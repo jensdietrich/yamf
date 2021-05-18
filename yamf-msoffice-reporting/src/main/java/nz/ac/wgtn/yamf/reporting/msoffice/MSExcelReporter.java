@@ -32,7 +32,7 @@ public class MSExcelReporter extends AbstractReporter {
     }
 
     @Override
-    public void generateReport(List<MarkingResultRecord> markingResultRecords) {
+    public void generateReport(File submission, List<MarkingResultRecord> markingResultRecords) {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("results");
