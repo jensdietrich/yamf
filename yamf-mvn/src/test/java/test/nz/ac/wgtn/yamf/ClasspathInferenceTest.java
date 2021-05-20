@@ -18,6 +18,6 @@ public class ClasspathInferenceTest {
         // System.out.println(classpath);
         assertTrue(classpath.contains("log4j-api-2.13.3.jar"));
         assertTrue(classpath.contains("log4j-core-2.13.3.jar"));
-        assertTrue(classpath.contains("guava-27.1-jre.jar"));
+        assertTrue(classpath.contains("guava-29.0-jre.jar"));
     }
 }

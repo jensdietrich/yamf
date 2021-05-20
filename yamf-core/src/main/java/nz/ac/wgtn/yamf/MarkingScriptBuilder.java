@@ -12,9 +12,7 @@ import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -111,6 +109,7 @@ public class MarkingScriptBuilder {
 
 
         beforeMarkingAllProjects.run();
+        Set<Reporter> reporters = new LinkedHashSet<>();
         for (File projectFolder:submissions)   {
             if (projectFolder.isDirectory()) {
                 if (!skipMarkingProjectCondition.test(projectFolder)) {
@@ -126,6 +125,7 @@ public class MarkingScriptBuilder {
                     List<MarkingResultRecord> results = listener.getResults();
                     for (Function<File, Reporter> reporterFactory : reporterFactories) {
                         Reporter reporter = reporterFactory.apply(projectFolder);
+                        reporters.add(reporter);
                         reporter.generateReport(projectFolder,results);
                     }
                     afterMarkingEachProject.accept(projectFolder);
@@ -135,6 +135,11 @@ public class MarkingScriptBuilder {
                 }
             }
         }
+
+        for (Reporter reporter:reporters) {
+            reporter.finish();
+        }
+
         afterMarkingAllProjects.run();
     }
 
