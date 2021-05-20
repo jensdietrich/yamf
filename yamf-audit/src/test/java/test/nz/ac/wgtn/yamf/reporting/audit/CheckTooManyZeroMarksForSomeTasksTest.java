@@ -5,9 +5,11 @@ import nz.ac.wgtn.yamf.reporting.audit.CheckTooManyZeroMarksForSomeTasks;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
-import static test.nz.ac.wgtn.yamf.reporting.audit.MarkingResultRecordFactory.testData;
+import static test.nz.ac.wgtn.yamf.reporting.audit.MarkingResultRecordFactory.testData1;
 
-
+/**
+ * @author jens dietrich
+ */
 public class CheckTooManyZeroMarksForSomeTasksTest {
 
     @Test
@@ -28,31 +30,31 @@ public class CheckTooManyZeroMarksForSomeTasksTest {
 
     @Test
     public void testWith85PercentSensitivity() {
-        List<AuditRule.Result> auditResults = new CheckTooManyZeroMarksForSomeTasks(85).apply(testData());
+        List<AuditRule.Issue> auditResults = new CheckTooManyZeroMarksForSomeTasks(85).apply(testData1());
         assertSame(1,auditResults.size());
-        AuditRule.Result auditResult = auditResults.get(0);
+        AuditRule.Issue auditResult = auditResults.get(0);
         assertSame(AuditRule.Status.WARN,auditResult.status);
         assertEquals("zero marks allocated for : 9 / 10 submissions for task task1",auditResult.details);
     }
 
     @Test
     public void testWith90PercentSensitivity() {
-        List<AuditRule.Result> auditResults = new CheckTooManyZeroMarksForSomeTasks(90).apply(testData());
+        List<AuditRule.Issue> auditResults = new CheckTooManyZeroMarksForSomeTasks(90).apply(testData1());
         assertSame(1,auditResults.size());
-        AuditRule.Result auditResult = auditResults.get(0);
+        AuditRule.Issue auditResult = auditResults.get(0);
         assertSame(AuditRule.Status.WARN,auditResult.status);
         assertEquals("zero marks allocated for : 9 / 10 submissions for task task1",auditResult.details);
     }
 
     @Test
     public void testWith95PercentSensitivity() {
-        List<AuditRule.Result> auditResults = new CheckTooManyZeroMarksForSomeTasks(95).apply(testData());
+        List<AuditRule.Issue> auditResults = new CheckTooManyZeroMarksForSomeTasks(95).apply(testData1());
         assertTrue(auditResults.isEmpty());
     }
 
     @Test
     public void testWith100PercentSensitivity() {
-        List<AuditRule.Result> auditResults = new CheckTooManyZeroMarksForSomeTasks(100).apply(testData());
+        List<AuditRule.Issue> auditResults = new CheckTooManyZeroMarksForSomeTasks(100).apply(testData1());
         assertTrue(auditResults.isEmpty());
     }
 

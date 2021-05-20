@@ -9,11 +9,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static test.nz.ac.wgtn.yamf.reporting.audit.MarkingResultRecordFactory.*;
 
-
+/**
+ * @author jens dietrich
+ */
 public class CheckTasksMarkedConsistencyTest {
 
     @Test
-    public void testTasksAreConsistent() throws Exception {
+    public void testTasksAreConsistent() {
         List<List<MarkingResultRecord>> allResults = Lists.newArrayList(
             Lists.newArrayList(
                 create("task1",1,2),
@@ -24,12 +26,12 @@ public class CheckTasksMarkedConsistencyTest {
                 create("task2",0,2)
             )
         );
-        List<AuditRule.Result> auditResults = new CheckTasksMarkedConsistency().apply(allResults);
+        List<AuditRule.Issue> auditResults = new CheckTasksMarkedConsistency().apply(allResults);
         assertTrue(auditResults.isEmpty());
     }
 
     @Test
-    public void testTaskCountsDontMatch() throws Exception {
+    public void testTaskCountsDontMatch() {
         List<List<MarkingResultRecord>> allResults = Lists.newArrayList(
             Lists.newArrayList(
                 create("task1",1,2),
@@ -39,15 +41,15 @@ public class CheckTasksMarkedConsistencyTest {
                 create("task1",1,2)
             )
         );
-        List<AuditRule.Result> auditResults = new CheckTasksMarkedConsistency().apply(allResults);
+        List<AuditRule.Issue> auditResults = new CheckTasksMarkedConsistency().apply(allResults);
         assertSame(1,auditResults.size());
-        AuditRule.Result auditResult = auditResults.get(0);
+        AuditRule.Issue auditResult = auditResults.get(0);
         assertSame(AuditRule.Status.ERROR,auditResult.status);
         assertEquals("inconsistent task counts across submissions: 2 task(s) marked for submission 1 but 1 task(s) marked for submission 2",auditResult.details);
     }
 
     @Test
-    public void testTaskNamesDontMatch() throws Exception {
+    public void testTaskNamesDontMatch() {
         List<List<MarkingResultRecord>> allResults = Lists.newArrayList(
             Lists.newArrayList(
                 create("task1",1,2),
@@ -58,9 +60,9 @@ public class CheckTasksMarkedConsistencyTest {
                 create("task3",1,2)
             )
         );
-        List<AuditRule.Result> auditResults = new CheckTasksMarkedConsistency().apply(allResults);
+        List<AuditRule.Issue> auditResults = new CheckTasksMarkedConsistency().apply(allResults);
         assertSame(1,auditResults.size());
-        AuditRule.Result auditResult = auditResults.get(0);
+        AuditRule.Issue auditResult = auditResults.get(0);
         assertSame(AuditRule.Status.ERROR,auditResult.status);
         assertEquals("task names for task 2 mismatch between submissions 1 and 2",auditResult.details);
     }

@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Reporter that creates a report summarising some patterns found in test results.
@@ -29,6 +30,10 @@ public class AuditReporter implements Reporter {
         this.file = file;
     }
 
+    public void setRules(AuditRule... auditRules) {
+        this.rules = Stream.of(auditRules).collect(Collectors.toList());
+    }
+
     @Override
     public void generateReport(File file, List<MarkingResultRecord> list) {
         this.allResults.add(list);
@@ -38,10 +43,10 @@ public class AuditReporter implements Reporter {
     public void finish() {
         try (PrintWriter out = new PrintWriter(new FileWriter(this.file))) {
             for (AuditRule rule:rules) {
-                out.println("Applying rule: " + rule.getName());
+                out.println("AUDIT RULE: " + rule.getName());
                 out.println();
-                List<AuditRule.Result> auditResults = rule.apply(this.allResults);
-                for (AuditRule.Result auditResult:auditResults) {
+                List<AuditRule.Issue> auditResults = rule.apply(this.allResults);
+                for (AuditRule.Issue auditResult:auditResults) {
                     out.print("\t");
                     out.print(auditResult.status);
                     out.print(" - ");

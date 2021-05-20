@@ -10,8 +10,8 @@ import java.util.List;
  */
 public interface AuditRule {
     enum Status {ERROR, WARN}
-    class Result {
-        public Result(Status status,String details) {
+    class Issue {
+        public Issue(Status status, String details) {
             this.status = status;
             this.details = details;
         }
@@ -21,6 +21,6 @@ public interface AuditRule {
 
     String getName();
 
-    List<Result> apply (@Nonnull List<List<MarkingResultRecord>> allResults);
+    List<Issue> apply (@Nonnull List<List<MarkingResultRecord>> allResults);
 
 }

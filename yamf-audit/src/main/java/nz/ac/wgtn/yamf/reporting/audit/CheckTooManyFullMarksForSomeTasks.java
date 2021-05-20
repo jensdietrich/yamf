@@ -37,10 +37,10 @@ public class CheckTooManyFullMarksForSomeTasks implements AuditRule {
     }
 
     @Override
-    public List<Result>  apply(@Nonnull List<List<MarkingResultRecord>> allResults) {
-        List<Result> auditResults = new ArrayList<>();
+    public List<Issue>  apply(@Nonnull List<List<MarkingResultRecord>> allResults) {
+        List<Issue> auditResults = new ArrayList<>();
         if (allResults.size()==0) {
-            auditResults.add(new Result(Status.ERROR,"no submissions found"));
+            auditResults.add(new Issue(Status.ERROR,"no submissions found"));
         }
         else {
             // init
@@ -56,7 +56,7 @@ public class CheckTooManyFullMarksForSomeTasks implements AuditRule {
             for (List<MarkingResultRecord> results:allResults) {
                 for (int i=0;i<results.size();i++) {
                     MarkingResultRecord record = results.get(i);
-                    if (record.getMark()==record.getMaxMark()) {
+                    if (!record.isManualMarkingRequired() && record.getMark()==record.getMaxMark()) {
                         successCounts[i] = successCounts[i]+1;
                     }
                 }
@@ -66,7 +66,7 @@ public class CheckTooManyFullMarksForSomeTasks implements AuditRule {
             for (int i=0;i<successCounts.length;i++) {
                 int count = successCounts[i];
                 if (100*((double)count)/((double)allResults.size()) >= threshold) {
-                    auditResults.add(new Result(Status.WARN,"full marks allocated for " + ": " + count + " / " + allResults.size() + " submissions for task " +  taskNames.get(i)));
+                    auditResults.add(new Issue(Status.WARN,"full marks allocated for " + ": " + count + " / " + allResults.size() + " submissions for task " +  taskNames.get(i)));
                 }
             }
         }
