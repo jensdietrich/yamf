@@ -10,6 +10,8 @@ import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A file with some details that might be useful to report.
@@ -36,6 +38,16 @@ public class Attachment {
         this.content = content;
         this.contentType = contentType;
     }
+
+    public Attachment(String name, Throwable throwable) {
+        this.name = name;
+        this.contentType = "text/plain";
+        this.content = Stream.of(throwable.getStackTrace()).map(e -> e.toString()).collect(Collectors.toList());
+        if (throwable.getMessage()!=null) {
+            this.content.add(0, throwable.getMessage());
+        }
+    }
+
 
     public String getName() {
         return name;

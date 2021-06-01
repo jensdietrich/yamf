@@ -1,13 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.16</version>
+  <version>1.0.18</version>
   <name>yamf-parent</name>
   <properties>
-      <project-version>1.0.16</project-version>
+      <project-version>1.0.18</project-version>
       <maven.compiler.target>11</maven.compiler.target>
       <maven.compiler.source>11</maven.compiler.source>
   </properties>
@@ -45,6 +44,7 @@
       <module>yamf-mvn</module>
       <module>yamf-msoffice-reporting</module>
       <module>yamf-audit</module>
+      <module>yamf-http</module>
   </modules>
   <url>http://maven.apache.org</url>
     <dependencies>

@@ -18,28 +18,35 @@ public class Attachments {
     private static TestIdentifier currentTest = null;
     private static Multimap<TestIdentifier,Attachment> attachments = HashMultimap.create();
 
+    // for testing, disable precondition checks
+    private static boolean TEST_MODE = false;
+
+    public static void setTestTestMode() {
+        TEST_MODE = true;
+    }
+
     static void startTest(TestIdentifier test) {
-        Preconditions.checkState(currentTest==null);
+        Preconditions.checkState(TEST_MODE || currentTest==null);
         currentTest = test;
     }
 
     static void endTest(TestIdentifier test) {
-        Preconditions.checkState(currentTest==test);
+        Preconditions.checkState(TEST_MODE || currentTest==test);
         currentTest = null;
     }
 
     static void reset() {
-        Preconditions.checkState(currentTest==null); // call endTest first
+        Preconditions.checkState(TEST_MODE || currentTest==null); // call endTest first
         attachments = HashMultimap.create();
     }
 
     public static void add(Attachment attachment) {
-        Preconditions.checkState(currentTest!=null);
+        Preconditions.checkState(TEST_MODE || currentTest!=null);
         attachments.put(currentTest,attachment);
     }
 
     public static void addAll(Collection<Attachment> attachments2) {
-        Preconditions.checkState(currentTest!=null);
+        Preconditions.checkState(TEST_MODE || currentTest!=null);
         attachments.putAll(currentTest,attachments2);
     }
 
