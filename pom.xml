@@ -44,7 +44,7 @@
       <module>yamf-bytecodechecks</module>
       <module>yamf-mvn</module>
       <module>yamf-msoffice-reporting</module>
-      <!-- <module>yamf-cha</module> -->
+      <module>yamf-audit</module>
   </modules>
   <url>http://maven.apache.org</url>
     <dependencies>
