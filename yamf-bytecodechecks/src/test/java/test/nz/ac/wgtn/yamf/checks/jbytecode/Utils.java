@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf;
+package test.nz.ac.wgtn.yamf.checks.jbytecode;
 
 import java.io.File;
 

@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class JArtifact {
     protected int modifiers = 0;
-    protected List<String> annotations = new ArrayList<>();
+    protected List<JAnnotation> annotations = new ArrayList<>();
 
     public JArtifact(int modifiers) {
         this.modifiers = modifiers;
@@ -22,7 +22,7 @@ public class JArtifact {
         return modifiers;
     }
 
-    public List<String> getAnnotations() {
+    public List<JAnnotation> getAnnotations() {
         return Collections.unmodifiableList(annotations);
     }
 
@@ -30,7 +30,7 @@ public class JArtifact {
         this.modifiers = modifiers;
     }
 
-    public void addAnnotation(String annotation) {
+    public void addAnnotation(JAnnotation annotation) {
         this.annotations.add(annotation);
     }
 

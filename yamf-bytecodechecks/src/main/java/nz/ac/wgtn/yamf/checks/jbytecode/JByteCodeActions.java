@@ -5,6 +5,8 @@ import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;
 import org.objectweb.asm.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 import java.util.zip.ZipFile;
 
@@ -13,6 +15,68 @@ import java.util.zip.ZipFile;
  * @author jens dietrich
  */
 public class JByteCodeActions {
+
+    private static AnnotationVisitor collectAnnotations(JArtifact annotatable, String descriptor) {
+        assert descriptor.startsWith("L") && descriptor.endsWith(";");
+        String name = convertClassName(descriptor);
+        JAnnotation annotation = new JAnnotation(0, name);
+        annotatable.addAnnotation(annotation);
+        return new JAnnotationVisitor(annotation);
+    }
+
+    private static class JAnnotationVisitor extends AnnotationVisitor {
+
+        public JAnnotationVisitor(JAnnotation annotation) {
+            super(ASMCommons.ASM_VERSION);
+            this.annotation = annotation;
+        }
+
+        private JAnnotation annotation = null;
+
+        @Override
+        public void visit(String name, Object value) {
+            annotation.setProperty(name,value);
+        }
+
+        @Override
+        public void visitEnum(String name, String descriptor, String value) {
+            String annotationClassName = convertClassName(descriptor);
+            String annotationValue = annotationClassName + '.' + value;
+            annotation.setProperty(name,annotationValue);
+        }
+
+        @Override
+        public AnnotationVisitor visitAnnotation(String name, String descriptor) {
+            return collectAnnotations(annotation,descriptor);
+        }
+
+        @Override
+        public AnnotationVisitor visitArray(String name) {
+            List<Object> values = new ArrayList<>();
+            annotation.setProperty(name,values);
+            return new AnnotationVisitor(ASMCommons.ASM_VERSION) {
+                @Override
+                public void visit(String name, Object value) {
+                    super.visit(name, value);
+                    values.add(value);
+                }
+
+                @Override
+                public void visitEnum(String name, String descriptor, String value) {
+                    String annotationClassName = convertClassName(descriptor);
+                    String annotationValue = annotationClassName + '.' + value;
+                    values.add(annotationValue);
+                }
+
+                @Override
+                public AnnotationVisitor visitArray(String name) {
+                    System.err.println("unsupported analysis for nested arrays in annotation properties");
+                    return null;
+                }
+            };
+        }
+
+    }
 
     private static class JClassBuilder extends ClassVisitor {
         JClass clazz = null;
@@ -33,17 +97,9 @@ public class JByteCodeActions {
             }
         }
 
-        private AnnotationVisitor collectAnnotations(JArtifact annotatable, String descriptor, boolean visible) {
-            if (descriptor.startsWith("L") && descriptor.endsWith(";")) {
-                String annotation = convertClassName(descriptor);
-                annotatable.addAnnotation(annotation);
-            }
-            return super.visitAnnotation(descriptor, visible);
-        }
-
         @Override
         public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-            return collectAnnotations(clazz,descriptor,visible);
+            return collectAnnotations(clazz,descriptor);
         }
 
         @Override public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
@@ -52,7 +108,7 @@ public class JByteCodeActions {
             return new MethodVisitor(ASMCommons.ASM_VERSION) {
                 @Override
                 public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-                    return collectAnnotations(method,descriptor,visible);
+                    return collectAnnotations(method,descriptor);
                 }
 
                 @Override
@@ -90,18 +146,11 @@ public class JByteCodeActions {
             return new FieldVisitor(ASMCommons.ASM_VERSION) {
                 @Override
                 public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-                    return collectAnnotations(field,descriptor,visible);
+                    return collectAnnotations(field,descriptor);
                 }
             };
         }
 
-        private String convertClassName(String name) {
-            if (name.endsWith(";")) {
-                name.startsWith("L");
-                name = name.substring(1,name.length()-1);
-            }
-            return name.replace("/",".");
-        }
     }
 
     public static JClass getClass(File file) throws Exception {
@@ -116,6 +165,14 @@ public class JByteCodeActions {
         JClassBuilder builder = new JClassBuilder();
         ASMCommons.analyse(new ZipFile(jar),name,builder);
         return builder.clazz;
+    }
+
+    private static String convertClassName(String name) {
+        if (name.endsWith(";")) {
+            name.startsWith("L");
+            name = name.substring(1,name.length()-1);
+        }
+        return name.replace("/",".");
     }
 
 }

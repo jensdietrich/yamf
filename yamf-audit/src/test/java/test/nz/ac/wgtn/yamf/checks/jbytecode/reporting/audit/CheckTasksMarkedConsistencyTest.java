@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.reporting.audit;
+package test.nz.ac.wgtn.yamf.checks.jbytecode.reporting.audit;
 
 import com.google.common.collect.Lists;
 import nz.ac.wgtn.yamf.MarkingResultRecord;
@@ -7,7 +7,7 @@ import nz.ac.wgtn.yamf.reporting.audit.CheckTasksMarkedConsistency;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
-import static test.nz.ac.wgtn.yamf.reporting.audit.MarkingResultRecordFactory.*;
+import static test.nz.ac.wgtn.yamf.checks.jbytecode.reporting.audit.MarkingResultRecordFactory.*;
 
 /**
  * @author jens dietrich

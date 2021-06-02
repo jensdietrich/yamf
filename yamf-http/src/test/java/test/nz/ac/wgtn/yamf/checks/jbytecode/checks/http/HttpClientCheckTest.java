@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.checks.http;
+package test.nz.ac.wgtn.yamf.checks.jbytecode.checks.http;
 
 import nz.ac.wgtn.yamf.Attachments;
 import nz.ac.wgtn.yamf.checks.http.HttpClientChecks;

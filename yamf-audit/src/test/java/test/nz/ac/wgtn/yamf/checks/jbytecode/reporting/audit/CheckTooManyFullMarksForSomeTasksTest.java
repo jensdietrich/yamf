@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.reporting.audit;
+package test.nz.ac.wgtn.yamf.checks.jbytecode.reporting.audit;
 
 import nz.ac.wgtn.yamf.reporting.audit.AuditRule;
 import nz.ac.wgtn.yamf.reporting.audit.CheckTooManyFullMarksForSomeTasks;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static test.nz.ac.wgtn.yamf.reporting.audit.MarkingResultRecordFactory.testData1;
+import static test.nz.ac.wgtn.yamf.checks.jbytecode.reporting.audit.MarkingResultRecordFactory.testData1;
 
 /**
  * @author jens dietrich

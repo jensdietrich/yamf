@@ -1,10 +1,11 @@
-package test.nz.ac.wgtn.yamf;
+package test.nz.ac.wgtn.yamf.checks.jbytecode;
 
 import nz.ac.wgtn.yamf.checks.jbytecode.*;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,7 +16,7 @@ public class JClassTest {
 
     @BeforeEach
     public void setup () throws Exception {
-        URL url = JClassTest.class.getResource("/test/nz/ac/wgtn/yamf/SampleClass.class");
+        URL url = JClassTest.class.getResource("/test/nz/ac/wgtn/yamf/checks/jbytecode/SampleClass.class");
         System.out.println(url);
         File file = new File(url.getFile());
         System.out.println(file);
@@ -31,7 +32,7 @@ public class JClassTest {
 
     @Test
     public void testClassName () throws Exception {
-        assertEquals("test.nz.ac.wgtn.yamf.SampleClass",jclazz.getName());
+        assertEquals("test.nz.ac.wgtn.yamf.checks.jbytecode.SampleClass",jclazz.getName());
     }
 
     @Test
@@ -140,7 +141,7 @@ public class JClassTest {
 
         assertEquals(1,method.getInvocations().size());
         Invocation inv = method.getInvocations().iterator().next();
-        assertEquals("test.nz.ac.wgtn.yamf.SampleClass",inv.getOwner());
+        assertEquals("test.nz.ac.wgtn.yamf.checks.jbytecode.SampleClass",inv.getOwner());
         assertEquals("foo",inv.getName());
         assertEquals("void",inv.getDescriptor().getReturnType());
         assertEquals(2,inv.getDescriptor().getParamTypes().size());
@@ -162,6 +163,38 @@ public class JClassTest {
 
         boolean fooInvocationDetected = method.getInvocations().stream().anyMatch(invocation -> invocation.getName().equals("foo"));
         assertTrue(fooInvocationDetected);
+    }
+
+    @Test
+    public void testClassAnnotation () {
+        assertEquals(1,jclazz.getAnnotations().size());
+        JAnnotation annotation = jclazz.getAnnotations().get(0);
+        assertEquals("org.junit.jupiter.api.DisplayName",annotation.getName());
+        assertEquals(1,annotation.getPropertyNames().size());
+        assertTrue(annotation.getPropertyNames().contains("value"));
+        assertEquals("some-class",annotation.getProperty("value"));
+    }
+
+    @Test
+    public void testMethodAnnotation1 () {
+        JMethod jmethod = jclazz.getMethods().stream().filter(m -> m.getName().equals("foo")).findAny().get();
+        assertEquals(1,jmethod.getAnnotations().size());
+        JAnnotation annotation = jmethod.getAnnotations().get(0);
+        assertEquals("org.junit.jupiter.api.DisplayName",annotation.getName());
+        assertEquals(1,annotation.getPropertyNames().size());
+        assertTrue(annotation.getPropertyNames().contains("value"));
+        assertEquals("some-method",annotation.getProperty("value"));
+    }
+
+    @Test
+    public void testMethodAnnotation2 () {
+        JMethod jmethod = jclazz.getMethods().stream().filter(m -> m.getName().equals("bar")).findAny().get();
+        assertEquals(1,jmethod.getAnnotations().size());
+        JAnnotation annotation = jmethod.getAnnotations().get(0);
+        assertEquals("org.junit.jupiter.params.provider.ValueSource",annotation.getName());
+        assertEquals(1,annotation.getPropertyNames().size());
+        assertTrue(annotation.getPropertyNames().contains("strings"));
+        assertEquals(List.of("a","b"),annotation.getProperty("strings"));
     }
 
 
