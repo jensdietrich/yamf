@@ -45,6 +45,7 @@
       <module>yamf-msoffice-reporting</module>
       <module>yamf-audit</module>
       <module>yamf-http</module>
+      <module>yamf-jee</module>
   </modules>
   <url>http://maven.apache.org</url>
     <dependencies>
