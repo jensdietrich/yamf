@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.checks.jbytecode;
+package test.nz.ac.wgtn.yamf.checks.mvn;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

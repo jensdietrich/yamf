@@ -1,9 +1,6 @@
-package test.nz.ac.wgtn.yamf.checks.jbytecode;
+package test.nz.ac.wgtn.yamf.checks.mvn;
 
-import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorUtil;
-import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

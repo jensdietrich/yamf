@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.checks.jbytecode;
+package test.nz.ac.wgtn.yamf.checks.mvn;
 
 import nz.ac.wgtn.yamf.checks.jbytecode.*;
 import org.junit.jupiter.api.*;
@@ -16,7 +16,7 @@ public class JClassTest {
 
     @BeforeEach
     public void setup () throws Exception {
-        URL url = JClassTest.class.getResource("/test/nz/ac/wgtn/yamf/checks/jbytecode/SampleClass.class");
+        URL url = JClassTest.class.getResource("/test/nz/ac/wgtn/yamf/checks/mvn/SampleClass.class");
         System.out.println(url);
         File file = new File(url.getFile());
         System.out.println(file);

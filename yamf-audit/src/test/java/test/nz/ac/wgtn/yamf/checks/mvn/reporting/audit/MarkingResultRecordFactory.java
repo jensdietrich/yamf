@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.checks.jbytecode.reporting.audit;
+package test.nz.ac.wgtn.yamf.checks.mvn.reporting.audit;
 
 import com.google.common.collect.Lists;
 import nz.ac.wgtn.yamf.MarkingResultRecord;

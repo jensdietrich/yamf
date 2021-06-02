@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.checks.jbytecode;
+package test.nz.ac.wgtn.yamf.checks.mvn;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.provider.ValueSource;
