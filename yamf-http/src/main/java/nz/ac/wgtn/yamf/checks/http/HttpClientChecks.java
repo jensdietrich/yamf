@@ -11,8 +11,6 @@ import org.json.JSONTokener;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

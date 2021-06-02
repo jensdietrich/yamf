@@ -9,7 +9,7 @@
   <artifactId>yamf-http</artifactId>
   <packaging>jar</packaging>
   <version>1.0.18</version>
-  <name>yamf-mvn</name>
+  <name>yamf-http</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
