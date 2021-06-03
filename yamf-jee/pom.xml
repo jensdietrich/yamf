@@ -18,5 +18,10 @@
       <version>1.0.18</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>nz.ac.wgtn.yamf</groupId>
+      <artifactId>yamf-core</artifactId>
+      <version>1.0.18</version>
+    </dependency>
   </dependencies>
 </project>

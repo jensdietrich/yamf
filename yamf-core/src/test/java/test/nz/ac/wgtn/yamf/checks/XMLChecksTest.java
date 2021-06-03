@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.checks.mvn;
+package test.nz.ac.wgtn.yamf.checks;
 
 import nz.ac.wgtn.yamf.commons.XML;
 import java.io.File;
@@ -30,6 +30,7 @@ public class XMLChecksTest {
     public void testIsValidXMLFile1() throws Exception {
         // this test depends on the availability of the network to access the schema
         // and is therefore flaky
+        // TODO: build a suitable precondition
         File file = Utils.getResourceAsFile("xml/pom.xml");
         assertTrue(XML.isValidXML(file));
     }

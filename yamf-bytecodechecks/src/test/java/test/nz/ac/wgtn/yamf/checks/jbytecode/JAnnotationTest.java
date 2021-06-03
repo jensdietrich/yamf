@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.checks.mvn;
+package test.nz.ac.wgtn.yamf.checks.jbytecode;
 
 import nz.ac.wgtn.yamf.checks.jbytecode.*;
 import org.junit.jupiter.api.AfterEach;
@@ -18,7 +18,7 @@ public class JAnnotationTest {
 
     @BeforeEach
     public void setup () throws Exception {
-        URL url = JAnnotationTest.class.getResource("/test/nz/ac/wgtn/yamf/checks/mvn/SampleAnnotation.class");
+        URL url = JAnnotationTest.class.getResource("/test/nz/ac/wgtn/yamf/checks/jbytecode/SampleAnnotation.class");
         System.out.println(url);
         File file = new File(url.getFile());
         System.out.println(file);

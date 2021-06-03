@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.checks.mvn;
+package test.nz.ac.wgtn.yamf.checks.jbytecode;
 
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorUtil;
 import org.junit.jupiter.api.Test;

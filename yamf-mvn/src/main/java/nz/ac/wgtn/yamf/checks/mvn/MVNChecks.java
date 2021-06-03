@@ -100,6 +100,15 @@ public class MVNChecks {
         }
     }
 
+    public static void assertValidPackaging(File pom, String expected) throws Exception {
+        Preconditions.checkArgument(pom.exists(),"Cannot check whether file is POM, file does not exist: " + pom.getAbsolutePath());
+        String packaging = XML.evalXPathSingleNode(pom, "/project/packaging");
+        if (packaging==null) {
+            packaging = "jar";
+        }
+        Assertions.assertEquals(expected,packaging,"Unexpected packaging format in pom, expected " + expected + " but was " + packaging);
+    }
+
     public static void assertConfiguresJavaVersion(File pom, Predicate<String> versionTest) throws Exception {
         // note that clients should make similar precondition check using org.junit.jupiter.api.Assumptions::assume* methods !
         Preconditions.checkArgument(pom.exists(),"Cannot check whether file is POM, file does not exist: " + pom.getAbsolutePath());
