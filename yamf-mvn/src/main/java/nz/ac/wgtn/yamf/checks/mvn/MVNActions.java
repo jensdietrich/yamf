@@ -10,6 +10,7 @@ import nz.ac.wgtn.yamf.commons.Files;
 import nz.ac.wgtn.yamf.commons.OS;
 import nz.ac.wgtn.yamf.commons.XML;
 import org.junit.jupiter.api.Assumptions;
+import org.w3c.dom.NodeList;
 import org.zeroturnaround.exec.ProcessResult;
 import java.io.BufferedReader;
 import java.io.File;
@@ -339,4 +340,49 @@ public class MVNActions {
         Preconditions.checkArgument(root.isDirectory());
         return Files.findTopMostChildSuchThat(root, f -> f.isDirectory() && new File(f,"pom.xml").exists());
     }
+
+    /**
+     * Get the dependencies from a pom.
+     * @param pom
+     * @return
+     * @throws Exception
+     */
+    public static List<MVNDependency> getDependencies(File pom) throws Exception {
+        NodeList nodeList = XML.evalXPath(pom, "/project/dependencies/dependency");
+        return MVNDependency.from(nodeList);
+    }
+
+    /**
+     * Get the plugins from a pom.
+     * @param pom
+     * @return
+     * @throws Exception
+     */
+    public static List<POMPlugin> getPlugins(File pom) throws Exception {
+        NodeList nodeList = XML.evalXPath(pom, "//plugins/plugin");
+        return POMPlugin.from(nodeList);
+    }
+
+    /**
+     * Get the reporting plugins from a pom.
+     * @param pom
+     * @return
+     * @throws Exception
+     */
+    public static List<POMPlugin> getReportingPlugins(File pom) throws Exception {
+        NodeList nodeList = XML.evalXPath(pom, "/project/reporting/plugins/plugin");
+        return POMPlugin.from(nodeList);
+    }
+
+    /**
+     * Get the build plugins from a pom.
+     * @param pom
+     * @return
+     * @throws Exception
+     */
+    public static List<POMPlugin> getBuildPlugins(File pom) throws Exception {
+        NodeList nodeList = XML.evalXPath(pom, "/project/build/plugins/plugin");
+        return POMPlugin.from(nodeList);
+    }
+
 }

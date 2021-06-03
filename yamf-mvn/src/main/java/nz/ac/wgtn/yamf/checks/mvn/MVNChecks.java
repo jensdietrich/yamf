@@ -133,8 +133,7 @@ public class MVNChecks {
     }
 
     public static void assertHasBuildPluginSuchThat(File pom, Predicate<POMPlugin> test) throws Exception {
-        NodeList nodeList = XML.evalXPath(pom, "/project/build/plugins/plugin");
-        List<POMPlugin> plugins = POMPlugin.from(nodeList);
+        List<POMPlugin> plugins = MVNActions.getBuildPlugins(pom);
         for (POMPlugin plugin:plugins) {
             if (test.test(plugin)) {
                 Assertions.assertTrue(true);
@@ -145,8 +144,7 @@ public class MVNChecks {
     }
 
     public static void assertHasReportingPluginSuchThat(File pom, Predicate<POMPlugin> test) throws Exception {
-        NodeList nodeList = XML.evalXPath(pom, "/project/reporting/plugins/plugin");
-        List<POMPlugin> plugins = POMPlugin.from(nodeList);
+        List<POMPlugin> plugins = MVNActions.getReportingPlugins(pom);
         for (POMPlugin plugin:plugins) {
             if (test.test(plugin)) {
                 Assertions.assertTrue(true);
@@ -158,8 +156,7 @@ public class MVNChecks {
 
     // includes reporting and build plugins
     public static void assertHasPluginSuchThat(File pom, Predicate<POMPlugin> test) throws Exception {
-        NodeList nodeList = XML.evalXPath(pom, "//plugins/plugin");
-        List<POMPlugin> plugins = POMPlugin.from(nodeList);
+        List<POMPlugin> plugins = MVNActions.getPlugins(pom);
         for (POMPlugin plugin:plugins) {
             if (test.test(plugin)) {
                 Assertions.assertTrue(true);
@@ -170,8 +167,7 @@ public class MVNChecks {
     }
 
     public static void assertValidDependencies(File pom, Predicate<List<MVNDependency>> test) throws Exception {
-        NodeList nodeList = XML.evalXPath(pom, "/project/dependencies/dependency");
-        List<MVNDependency> deps = MVNDependency.from(nodeList);
+        List<MVNDependency> deps = MVNActions.getDependencies(pom);
         if (test.test(deps)) {
             Assertions.assertTrue(true);
         }
