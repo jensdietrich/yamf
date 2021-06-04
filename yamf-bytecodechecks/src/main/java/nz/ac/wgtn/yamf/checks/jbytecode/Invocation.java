@@ -50,6 +50,15 @@ public class Invocation {
                 kind == that.kind;
     }
 
+    // whether a constructor is invoked
+    public boolean isAllocation() {
+        return this.name.equals("<init>");
+    }
+
+    public boolean isConstructorInvocation() {
+        return isAllocation();
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(owner, name, descriptor, kind);
