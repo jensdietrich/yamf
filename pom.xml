@@ -46,6 +46,7 @@
       <module>yamf-audit</module>
       <module>yamf-http</module>
       <module>yamf-jee</module>
+      <module>yamf-coverage</module>
   </modules>
   <url>http://maven.apache.org</url>
     <dependencies>
