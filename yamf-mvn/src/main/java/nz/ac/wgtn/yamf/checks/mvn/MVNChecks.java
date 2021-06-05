@@ -183,7 +183,7 @@ public class MVNChecks {
                     return true;
                 }
             }
-            Assertions.fail("No dependency found satisfing this condition");
+            Assertions.fail("no dependency found satisfying this condition");
             return false;
         });
     }
