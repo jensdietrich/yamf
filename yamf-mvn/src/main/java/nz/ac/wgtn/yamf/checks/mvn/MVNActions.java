@@ -12,6 +12,8 @@ import nz.ac.wgtn.yamf.commons.XML;
 import org.junit.jupiter.api.Assumptions;
 import org.w3c.dom.NodeList;
 import org.zeroturnaround.exec.ProcessResult;
+import org.zeroturnaround.exec.StartedProcess;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -53,6 +55,28 @@ public class MVNActions {
 
     public static ProcessResult mvn(File projectFolder,String... phases) throws Exception {
         return mvn(projectFolder,new Properties(),phases);
+    }
+
+    public static StartedProcess startMvn(File projectFolder, Properties properties, String... phases) throws Exception {
+        Preconditions.checkArgument(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null");
+        Preconditions.checkArgument(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath());
+        String[] cmd = new String[phases.length+properties.size()+1 ];
+        int index = 1;
+        cmd[0] = getMvnString();
+        for (String propertyName:properties.stringPropertyNames()) {
+            cmd[index] ="-D"+propertyName+"="+properties.getProperty(propertyName);
+            index = index+1;
+        }
+        for (int i=0;i<phases.length;i++) {
+            cmd[index] = phases[i];
+            index = index+1;
+        }
+        return OS.start(projectFolder,cmd);
+
+    }
+
+    public static StartedProcess startMvn(File projectFolder, String... phases) throws Exception {
+        return startMvn(projectFolder,new Properties(),phases);
     }
 
     public static ProcessResult compile (File projectFolder) throws Exception {
