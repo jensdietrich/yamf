@@ -8,7 +8,7 @@
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-audit</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.18-SNAPSHOT</version>
+  <version>1.0.18</version>
   <name>yamf-audit</name>
   <url>http://maven.apache.org</url>
   <dependencies>

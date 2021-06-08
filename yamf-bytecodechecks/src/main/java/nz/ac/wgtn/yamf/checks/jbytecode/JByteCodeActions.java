@@ -1,6 +1,7 @@
 package nz.ac.wgtn.yamf.checks.jbytecode;
 
 import com.google.common.base.Preconditions;
+import nz.ac.wgtn.yamf.FailedExpectationHandler;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;
 import org.objectweb.asm.*;
@@ -153,15 +154,28 @@ public class JByteCodeActions {
 
     }
 
-    public static JClass getClass(File file) throws Exception {
-        Preconditions.checkArgument(file.exists(),"File " + file.getAbsolutePath() + " does not exist");
+    public static JClass getClass(File file, FailedExpectationHandler feh) throws Exception {
+        if (feh.handle(file==null,"File is null")) {
+            return null;
+        }
+        if (!feh.handle(file.exists(),"File " + file.getAbsolutePath() + " does not exist")) {
+            return null;
+        }
         JClassBuilder builder = new JClassBuilder();
         ASMCommons.analyse(file,builder);
         return builder.clazz;
     }
 
-    public static JClass getClass(File jar,String name) throws Exception {
-        Preconditions.checkArgument(jar.exists(),"File " + jar.getAbsolutePath() + " does not exist");
+    public static JClass getClass(File jar,String name, FailedExpectationHandler feh) throws Exception {
+        if (feh.handle(jar==null,"Jar file is null")) {
+            return null;
+        }
+        if (feh.handle(name==null,"name is null")) {
+            return null;
+        }
+        if (!feh.handle(jar.exists(),"File " + jar.getAbsolutePath() + " does not exist")) {
+            return null;
+        }
         JClassBuilder builder = new JClassBuilder();
         ASMCommons.analyse(new ZipFile(jar),name,builder);
         return builder.clazz;

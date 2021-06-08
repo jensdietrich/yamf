@@ -86,7 +86,7 @@ public class MSExcelReporter extends AbstractReporter {
             else if ((record.isFailed() || record.isAborted()) && record.getThrowable()!=null) {
                 notes = record.getThrowable().getMessage();
             }
-            addCell(row,col++,styleL,notes);
+            addCell(row,col++,styleL,notes==null?"":notes);
             // next statement is necessary to retain previous statement in bytecode
             // this might be a case of erroneous compiler optimisation
             System.out.print("");

@@ -28,7 +28,7 @@ public class OS {
     }
 
     /**
-     * Only start process, to be finished by application. Use case: starting a web server (jetty) with Maven. 
+     * Only start process, to be finished by application. Use case: starting a web server (jetty) with Maven.
      * @param workingDir
      * @param command
      * @return

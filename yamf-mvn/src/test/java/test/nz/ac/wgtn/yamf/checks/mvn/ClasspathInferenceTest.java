@@ -1,5 +1,6 @@
 package test.nz.ac.wgtn.yamf.checks.mvn;
 
+import nz.ac.wgtn.yamf.FailedExpectationHandler;
 import nz.ac.wgtn.yamf.checks.mvn.MVNActions;
 import org.junit.jupiter.api.Test;
 import java.io.File;
@@ -14,7 +15,7 @@ public class ClasspathInferenceTest {
     @Test
     public void testThisClasspath() throws Exception {
         File project = getResourceAsFile("project-with-dependencies");
-        String classpath = MVNActions.inferClasspath(project,false);
+        String classpath = MVNActions.inferClasspath(project,false, FailedExpectationHandler.Ignore);
         // System.out.println(classpath);
         assertTrue(classpath.contains("log4j-api-2.13.3.jar"));
         assertTrue(classpath.contains("log4j-core-2.13.3.jar"));

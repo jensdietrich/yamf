@@ -26,6 +26,9 @@ public abstract class AbstractReporter implements Reporter {
     }
 
     protected String sanitise(String txt) {
+        if (txt==null) {
+            return null;
+        }
         if (replacementRules.isEmpty()) {
             return txt;
         }

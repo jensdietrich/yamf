@@ -1,5 +1,6 @@
 package test.nz.ac.wgtn.yamf.checks.jbytecode;
 
+import nz.ac.wgtn.yamf.FailedExpectationHandler;
 import nz.ac.wgtn.yamf.checks.jbytecode.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ public class JAnnotationTest {
         System.out.println(file);
         System.out.println(file.exists());
         System.out.println();
-        jclazz = JByteCodeActions.getClass(file);
+        jclazz = JByteCodeActions.getClass(file, FailedExpectationHandler.Ignore);
     }
 
     @AfterEach
