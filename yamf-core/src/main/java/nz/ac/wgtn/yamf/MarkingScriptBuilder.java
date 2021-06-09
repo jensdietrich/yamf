@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
+import org.junit.platform.engine.DiscoverySelector;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
@@ -18,6 +19,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectMethod;
 
 /**
  * Marking script builder.
@@ -115,9 +117,11 @@ public class MarkingScriptBuilder {
                 if (!skipMarkingProjectCondition.test(projectFolder)) {
                     beforeMarkingEachProject.accept(projectFolder);
                     // junit boilerplate code
+                    List<DiscoverySelector> selectors = new ArrayList<>();
+                    selectors.add(selectClass(markingScheme));
                     LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder
                         .request()
-                        .selectors(selectClass(markingScheme)).build();
+                        .selectors(selectors).build();
                     Launcher launcher = LauncherFactory.create();
                     MarkingTestExecutionListener listener = new MarkingTestExecutionListener();
                     launcher.registerTestExecutionListeners(listener);

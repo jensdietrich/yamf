@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static test.nz.ac.wgtn.yamf.checks.mvn.reporting.audit.MarkingResultRecordFactory.testData1;
+import static test.nz.ac.wgtn.yamf.checks.mvn.reporting.audit.MarkingResultRecordFactory.testData3;
 
 /**
  * @author jens dietrich
@@ -58,6 +59,12 @@ public class CheckTooManyFullMarksForSomeTasksTest {
     public void testWith100PercentSensitivity() {
         List<AuditRule.Issue> auditResults = new CheckTooManyFullMarksForSomeTasks(100).apply(testData1());
         assertTrue(auditResults.isEmpty());
+    }
+
+    @Test
+    public void testWithZeroMarkTask() {
+        List<AuditRule.Issue> auditResults = new CheckTooManyFullMarksForSomeTasks(100).apply(testData3());
+        assertSame(0,auditResults.size());
     }
 
 

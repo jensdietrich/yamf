@@ -56,7 +56,8 @@ public class CheckTooManyZeroMarksForSomeTasks implements AuditRule {
             for (List<MarkingResultRecord> results:allResults) {
                 for (int i=0;i<results.size();i++) {
                     MarkingResultRecord record = results.get(i);
-                    if (!record.isManualMarkingRequired() && record.getMark()==0) {
+                    // also check for  record.getMaxMark() == 0 , this is a penalty, or a non-marked task
+                    if (!record.isManualMarkingRequired() && record.getMark()==0 && record.getMaxMark()>0) {
                         failureCounts[i] = failureCounts[i]+1;
                     }
                 }

@@ -1,11 +1,13 @@
 package test.nz.ac.wgtn.yamf.checks.mvn.reporting.audit;
 
 import nz.ac.wgtn.yamf.reporting.audit.AuditRule;
+import nz.ac.wgtn.yamf.reporting.audit.CheckTooManyFullMarksForSomeTasks;
 import nz.ac.wgtn.yamf.reporting.audit.CheckTooManyZeroMarksForSomeTasks;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static test.nz.ac.wgtn.yamf.checks.mvn.reporting.audit.MarkingResultRecordFactory.testData1;
+import static test.nz.ac.wgtn.yamf.checks.mvn.reporting.audit.MarkingResultRecordFactory.testData3;
 
 /**
  * @author jens dietrich
@@ -58,5 +60,11 @@ public class CheckTooManyZeroMarksForSomeTasksTest {
         assertTrue(auditResults.isEmpty());
     }
 
+
+    @Test
+    public void testWithZeroMarkTask() {
+        List<AuditRule.Issue> auditResults = new CheckTooManyZeroMarksForSomeTasks(100).apply(testData3());
+        assertSame(0,auditResults.size());
+    }
 
 }

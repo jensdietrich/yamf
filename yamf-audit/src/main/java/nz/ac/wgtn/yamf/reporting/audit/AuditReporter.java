@@ -23,7 +23,8 @@ public class AuditReporter implements Reporter {
     private List<AuditRule> rules = Lists.newArrayList(
         new CheckTasksMarkedConsistency(),
         new CheckTooManyFullMarksForSomeTasks(90),
-        new CheckTooManyZeroMarksForSomeTasks(90)
+        new CheckTooManyZeroMarksForSomeTasks(90),
+        new CheckDependenciesBetweenTasks(5)
     );
 
     public AuditReporter(File file) {

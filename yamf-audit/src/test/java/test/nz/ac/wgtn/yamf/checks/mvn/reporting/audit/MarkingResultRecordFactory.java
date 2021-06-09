@@ -122,4 +122,43 @@ public class MarkingResultRecordFactory {
         );
         return allResults;
     }
+
+
+    // all tasls get 0/0 -- 0 is used as a max mark for penalties and non-marked tasks,
+    // the "too many" rules should not fire
+    public static List<List<MarkingResultRecord>> testData3() {
+        List<List<MarkingResultRecord>> allResults = Lists.newArrayList(
+                Lists.newArrayList(
+                        create("task1",0,0)
+                ),
+                Lists.newArrayList(
+                        create("task1",0,0)
+                ),
+                Lists.newArrayList(
+                        create("task1",0,0)
+                ),
+                Lists.newArrayList(
+                        create("task1",0,0)
+                ),
+                Lists.newArrayList(
+                        create("task1",0,0)
+                ),
+                Lists.newArrayList(
+                        create("task1",0,0)
+                ),
+                Lists.newArrayList(
+                        create("task1",0,0)
+                ),
+                Lists.newArrayList(
+                        create("task1",0,0)
+                ),
+                Lists.newArrayList(
+                        create("task1",0,0)
+                ),
+                Lists.newArrayList(
+                        create("task1",0,0)
+                )
+        );
+        return allResults;
+    }
 }
