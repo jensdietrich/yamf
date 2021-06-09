@@ -82,11 +82,11 @@ public class JMethod extends JArtifact {
 
     // several useful helper methods
     public boolean isJunit4Test() {
-        return !this.isPrivate() && !this.isStatic() && this.getAnnotations().contains("org.junit.Test");
+        return !this.isPrivate() && !this.isStatic() && this.getAnnotations().stream().anyMatch(anno -> anno.getName().equals("org.junit.Test"));
     }
 
     public boolean isJunit5Test() {
-        return !this.isPrivate() && !this.isStatic() && this.getAnnotations().contains("org.junit.jupiter.api.Test");
+        return !this.isPrivate() && !this.isStatic() && this.getAnnotations().stream().anyMatch(anno -> anno.getName().equals("org.junit.jupiter.api.Test"));
     }
 
     public boolean isConstructor() {
