@@ -20,16 +20,16 @@ public class MVNDependency {
             Node node = children.item(i);
             if (node instanceof Element) {
                 if (node.getNodeName().equals("groupId")) {
-                    dep.groupId = node.getTextContent();
+                    dep.groupId = node.getTextContent().trim();
                 }
                 else if (node.getNodeName().equals("artifactId")) {
                     dep.artifactId = node.getTextContent();
                 }
                 else if (node.getNodeName().equals("scope")) {
-                    dep.scope = node.getTextContent();
+                    dep.scope = node.getTextContent().trim();
                 }
                 else if (node.getNodeName().equals("version")) {
-                    dep.version = node.getTextContent();
+                    dep.version = node.getTextContent().trim();
                 }
             }
         }

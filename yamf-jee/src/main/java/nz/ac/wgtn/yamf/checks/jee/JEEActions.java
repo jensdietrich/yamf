@@ -48,11 +48,11 @@ public class JEEActions {
                 Element element = (Element)node;
                 NodeList children = element.getElementsByTagName("servlet-name");
                 if (children.getLength()>0) {
-                    servletName = children.item(0).getTextContent();
+                    servletName = children.item(0).getTextContent().trim();
                 }
                 children = element.getElementsByTagName("servlet-class");
                 if (children.getLength()>0) {
-                    servletClassName = children.item(0).getTextContent();
+                    servletClassName = children.item(0).getTextContent().trim();
                 }
             //}
             if (servletClassName!=null && servletName!=null) {
@@ -70,11 +70,11 @@ public class JEEActions {
                 Element element = (Element)node;
                 NodeList children = element.getElementsByTagName("servlet-name");
                 if (children.getLength()>0) {
-                    servletName = children.item(0).getTextContent();
+                    servletName = children.item(0).getTextContent().trim();
                 }
                 children = element.getElementsByTagName("url-pattern");
                 for (int j=0;j<children.getLength();j++) {
-                    String urlMapping = children.item(j).getTextContent();
+                    String urlMapping = children.item(j).getTextContent().trim();
                     urlMappings.add(urlMapping);
                 }
             //}
@@ -110,7 +110,7 @@ public class JEEActions {
                 if (object instanceof List) {
                     List<Object> list = (List)object;
                     // there can be a list of URL patterns, those are concatenated
-                    String value = list.stream().map(e -> Objects.toString(e)).collect(Collectors.joining(","));
+                    String value = list.stream().map(e -> Objects.toString(e).trim()).collect(Collectors.joining(","));
                     map.put(clazz.getName(),value);
                 }
             }
