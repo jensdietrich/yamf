@@ -25,7 +25,10 @@ public class JEEActions {
      */
     public static Map<String,String> getServletToURLMappings(File webxml,JClass clazz) throws Exception {
         Map<String,String> map = new HashMap<>();
-        map.putAll(getServletToURLMappingsFromWebXML(webxml));
+        // web.xml is not required when annotations are used -- so this step is skipped if the file does not exist
+        if (webxml!=null && webxml.exists()) {
+            map.putAll(getServletToURLMappingsFromWebXML(webxml));
+        }
         map.putAll(getServletToURLMappingsFromAnnotations(clazz));
         return map;
     }
