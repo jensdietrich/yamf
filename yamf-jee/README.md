@@ -1,11 +1,8 @@
-### MVN (Maven) Module
+### JEE Module
 
-This module contains support for checking Maven projects.
+This module contains support for checking JEE projects.
 
- 1. Actions (`MVNActions`) to programmatically run `mvn` commands (`compile`, `test`, ..) and run acceptance tests are extract the `TestResults` (see acceptancetests module) from the generated sure-fire reports
- 2. Checks (`MVNChecks`) with various check on Maven projects, including
-     1. use of standard project layout
-     2. validity of `pom.xml`
-     3. compliance of group and artifact id to naming patterns
-     4. dependencies
-     5. plugins
+ 1. Actions (`JEEActions`) to extract servlet mappings from a JEE project as a map, both the`web.xml`- and the annotation-based approach are supported.
+ 2. Checks (`JEEChecks`) with various check on JEE projects, including
+     1. whether a class is a servlet
+     2. whether a servlet implements handlers for some HTTP methods (`doGet` etc)
