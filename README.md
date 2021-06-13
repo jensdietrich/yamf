@@ -37,6 +37,9 @@ Those modules are built into separate jars, applications can add dependencies on
 | bytecodechecks        | support for simple checks on Java byte code (superclasses, method signatures etc) |
 | mswordreporting       | reporter to produce editable MSWord documents suitable for manual editing (e.g. to fill in gaps) |
 | mvn                   | support to check Maven projects, both static checks and support for acceptance testing mvn projects |
+| coverage              | action to extract a map containing coverage info from jacoco reports |
+| http                  | actions and checks related to HTTP clients, such as status codes, headers and the format of the response entity (example: does a GET request to some URL return a 200 OK status code and valid JSON?)
+| jee                  | actions and checks related to JEE projects clients, such as extracting routing info (servlet-to-URL mappings), checking whether a class is a servlet and imlements a handler for agiven HTTP method etc)
 | examples              | the examples discussed below |
 
 
