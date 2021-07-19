@@ -32,7 +32,7 @@ Those modules are built into separate jars, applications can add dependencies on
 
 | module | description |
 | -------|-------------|
-| audits                | rule-based checks looking for suspicious patterns in grades -- e.g. hidden dependencies between questions |
+| audit                 | rule-based checks looking for suspicious patterns in grades -- e.g. hidden dependencies between questions |
 | core                  | core classes and utilities, basic reporters, annotations used to make junit5 tests markable |
 | acceptancetests       | support to mark by running acceptance tests |
 | bytecodechecks        | support for simple checks on Java byte code (superclasses, method signatures etc) |
