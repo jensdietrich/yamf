@@ -35,7 +35,7 @@ Those modules are built into separate jars, applications can add dependencies on
 | core                  | core classes and utilities, basic reporters, annotations used to make junit5 tests markable |
 | acceptancetests       | support to mark by running acceptance tests |
 | bytecodechecks        | support for simple checks on Java byte code (superclasses, method signatures etc) |
-| mswordreporting       | reporter to produce editable MSWord documents suitable for manual editing (e.g. to fill in gaps) |
+| msofficereporting       | reporter to produce editable MSWord or MSExcel documents suitable for manual editing (e.g. to fill in gaps) |
 | mvn                   | support to check Maven projects, both static checks and support for acceptance testing mvn projects |
 | coverage              | action to extract a map containing coverage info from jacoco reports |
 | http                  | actions and checks related to HTTP clients, such as status codes, headers and the format of the response entity (example: does a GET request to some URL return a 200 OK status code and valid JSON?)
