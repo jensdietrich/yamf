@@ -1,7 +1,6 @@
 package nz.ac.wgtn.yamf.checks.jbytecode;
 
-import com.google.common.base.Preconditions;
-import nz.ac.wgtn.yamf.FailedExpectationHandler;
+import nz.ac.wgtn.yamf.ConditionNotSatisfiedHandler;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;
 import org.objectweb.asm.*;
@@ -154,7 +153,7 @@ public class JByteCodeActions {
 
     }
 
-    public static JClass getClass(File file, FailedExpectationHandler feh) throws Exception {
+    public static JClass getClass(File file, ConditionNotSatisfiedHandler feh) throws Exception {
         if (feh.handle(file==null,"File is null")) {
             return null;
         }
@@ -166,7 +165,7 @@ public class JByteCodeActions {
         return builder.clazz;
     }
 
-    public static JClass getClass(File jar,String name, FailedExpectationHandler feh) throws Exception {
+    public static JClass getClass(File jar,String name, ConditionNotSatisfiedHandler feh) throws Exception {
         if (feh.handle(jar==null,"Jar file is null")) {
             return null;
         }

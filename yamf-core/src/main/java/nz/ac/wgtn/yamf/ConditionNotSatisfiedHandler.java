@@ -20,15 +20,15 @@ import javax.annotation.Nonnull;
  * if (!handler.handle(aFolder.exists,"Folder does not exist: " + aFolder)) return null;
  * @author jens dietrich
  */
-public abstract class FailedExpectationHandler {
+public abstract class ConditionNotSatisfiedHandler {
 
-    public static FailedExpectationHandler DEFAULT = FailedExpectationHandler.AssumeTrue;
+    public static ConditionNotSatisfiedHandler DEFAULT = ConditionNotSatisfiedHandler.AssumeTrue;
 
-    public static void install(@Nonnull FailedExpectationHandler instance) {
-        FailedExpectationHandler.DEFAULT = instance;
+    public static void install(@Nonnull ConditionNotSatisfiedHandler instance) {
+        ConditionNotSatisfiedHandler.DEFAULT = instance;
     }
 
-    public static FailedExpectationHandler AssumeTrue = new FailedExpectationHandler() {
+    public static ConditionNotSatisfiedHandler AssumeTrue = new ConditionNotSatisfiedHandler() {
         @Override
         public boolean handle(boolean condition, String conditionHasFailedMessage) {
             Assumptions.assumeTrue(condition,conditionHasFailedMessage);
@@ -36,7 +36,7 @@ public abstract class FailedExpectationHandler {
         }
     };
 
-    public static FailedExpectationHandler AssertTrue = new FailedExpectationHandler() {
+    public static ConditionNotSatisfiedHandler AssertTrue = new ConditionNotSatisfiedHandler() {
         @Override
         public boolean handle(boolean condition, String conditionHasFailedMessage) {
             Assertions.assertTrue(condition,conditionHasFailedMessage);
@@ -44,7 +44,7 @@ public abstract class FailedExpectationHandler {
         }
     };
 
-    public static FailedExpectationHandler ValidateArgument = new FailedExpectationHandler() {
+    public static ConditionNotSatisfiedHandler ValidateArgument = new ConditionNotSatisfiedHandler() {
         @Override
         public boolean handle(boolean condition, String conditionHasFailedMessage) {
             Preconditions.checkArgument(condition,conditionHasFailedMessage);
@@ -52,7 +52,7 @@ public abstract class FailedExpectationHandler {
         }
     };
 
-    public static FailedExpectationHandler ValidateState = new FailedExpectationHandler() {
+    public static ConditionNotSatisfiedHandler ValidateState = new ConditionNotSatisfiedHandler() {
         @Override
         public boolean handle(boolean condition, String conditionHasFailedMessage) {
             Preconditions.checkState(condition,conditionHasFailedMessage);
@@ -60,7 +60,7 @@ public abstract class FailedExpectationHandler {
         }
     };
 
-    public static FailedExpectationHandler Ignore = new FailedExpectationHandler() {
+    public static ConditionNotSatisfiedHandler Ignore = new ConditionNotSatisfiedHandler() {
         @Override
         public boolean handle(boolean condition, String conditionHasFailedMessage) {
             return condition;
@@ -68,7 +68,7 @@ public abstract class FailedExpectationHandler {
     };
 
     static {
-        install(FailedExpectationHandler.AssumeTrue);
+        install(ConditionNotSatisfiedHandler.AssumeTrue);
     }
 
     /**
