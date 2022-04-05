@@ -3,6 +3,7 @@ package test.nz.ac.wgtn.yamf.checks;
 import nz.ac.wgtn.yamf.commons.XML;
 import java.io.File;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +27,7 @@ public class XMLChecksTest {
         assertTrue(XML.isXML(file));
     }
 
-    @Test
+    @Test  @Disabled
     public void testIsValidXMLFile1() throws Exception {
         // this test depends on the availability of the network to access the schema
         // and is therefore flaky

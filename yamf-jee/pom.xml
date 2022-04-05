@@ -3,25 +3,25 @@
   <parent>
     <groupId>nz.ac.wgtn.yamf</groupId>
     <artifactId>yamf-parent</artifactId>
-    <version>1.0.18</version>
+    <version>1.0.19</version>
   </parent>
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-jee</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.18</version>
+  <version>${project-version}</version>
   <name>yamf-jee</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
       <groupId>nz.ac.wgtn.yamf</groupId>
       <artifactId>yamf-bytecodechecks</artifactId>
-      <version>1.0.18</version>
+      <version>${project-version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>nz.ac.wgtn.yamf</groupId>
       <artifactId>yamf-core</artifactId>
-      <version>1.0.18</version>
+      <version>${project-version}</version>
     </dependency>
   </dependencies>
 </project>

@@ -17,8 +17,8 @@ public class ClasspathInferenceTest {
         File project = getResourceAsFile("project-with-dependencies");
         String classpath = MVNActions.inferClasspath(project,false, FailedExpectationHandler.Ignore);
         // System.out.println(classpath);
-        assertTrue(classpath.contains("log4j-api-2.13.3.jar"));
-        assertTrue(classpath.contains("log4j-core-2.13.3.jar"));
+        assertTrue(classpath.contains("log4j-api-2.17.1.jar"));
+        assertTrue(classpath.contains("log4j-core-2.17.1.jar"));
         assertTrue(classpath.contains("guava-29.0-jre.jar"));
     }
 }

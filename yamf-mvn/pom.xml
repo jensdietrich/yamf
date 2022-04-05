@@ -3,20 +3,20 @@
   <parent>
     <groupId>nz.ac.wgtn.yamf</groupId>
     <artifactId>yamf-parent</artifactId>
-    <version>1.0.18</version>
+    <version>1.0.19</version>
   </parent>
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-mvn</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.18</version>
+  <version>${project-version}</version>
   <name>yamf-mvn</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
       <groupId>nz.ac.wgtn.yamf</groupId>
       <artifactId>yamf-core</artifactId>
-      <version>1.0.18</version>
-    </dependency>  
+      <version>${project-version}</version>
+    </dependency>
     <dependency>
       <groupId>nz.ac.wgtn.yamf</groupId>
       <artifactId>yamf-acceptancetests</artifactId>
