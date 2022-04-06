@@ -1,6 +1,6 @@
 package nz.ac.wgtn.yamf.checks.jbytecode;
 
-import nz.ac.wgtn.yamf.ConditionNotSatisfiedHandler;
+import nz.ac.wgtn.yamf.ExpectationChecker;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;
 import org.objectweb.asm.*;
@@ -153,11 +153,11 @@ public class JByteCodeActions {
 
     }
 
-    public static JClass getClass(File file, ConditionNotSatisfiedHandler feh) throws Exception {
-        if (feh.handle(file==null,"File is null")) {
+    public static JClass getClass(File file, ExpectationChecker feh) throws Exception {
+        if (!feh.check(file!=null,"File is null")) {
             return null;
         }
-        if (!feh.handle(file.exists(),"File " + file.getAbsolutePath() + " does not exist")) {
+        if (!feh.check(file.exists(),"File " + file.getAbsolutePath() + " does not exist")) {
             return null;
         }
         JClassBuilder builder = new JClassBuilder();
@@ -165,14 +165,14 @@ public class JByteCodeActions {
         return builder.clazz;
     }
 
-    public static JClass getClass(File jar,String name, ConditionNotSatisfiedHandler feh) throws Exception {
-        if (feh.handle(jar==null,"Jar file is null")) {
+    public static JClass getClass(File jar,String name, ExpectationChecker feh) throws Exception {
+        if (!feh.check(jar!=null,"Jar file is null")) {
             return null;
         }
-        if (feh.handle(name==null,"name is null")) {
+        if (!feh.check(name!=null,"name is null")) {
             return null;
         }
-        if (!feh.handle(jar.exists(),"File " + jar.getAbsolutePath() + " does not exist")) {
+        if (!feh.check(jar.exists(),"File " + jar.getAbsolutePath() + " does not exist")) {
             return null;
         }
         JClassBuilder builder = new JClassBuilder();

@@ -1,2 +1,12 @@
 tmp-classpath.txt
 .tmp-project-classpath.txt
+yamf-examples/target
+yamf-http/target
+yamf-jee/target
+yamf-msoffice-reporting/target
+yamf-mvn/target
+yamf-coverage/target
+yamf-core/target
+yamf-acceptancetests/target
+yamf-audit/target
+yamf-bytecodechecks/target

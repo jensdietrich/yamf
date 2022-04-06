@@ -3,7 +3,7 @@ package nz.ac.wgtn.yamf.checks.mvn;
 import com.google.common.base.Preconditions;
 import nz.ac.wgtn.yamf.Attachment;
 import nz.ac.wgtn.yamf.Attachments;
-import nz.ac.wgtn.yamf.ConditionNotSatisfiedHandler;
+import nz.ac.wgtn.yamf.ExpectationChecker;
 import nz.ac.wgtn.yamf.checks.junit.JUnitActions;
 import nz.ac.wgtn.yamf.checks.junit.JUnitVersion;
 import nz.ac.wgtn.yamf.checks.junit.TestResults;
@@ -33,12 +33,12 @@ public class MVNActions {
     /**
      * Run mvn with some custom properties and phases.
      */
-    public static ProcessResult mvn(File projectFolder, Properties properties, ConditionNotSatisfiedHandler feh, String... phases) throws Exception {
+    public static ProcessResult mvn(File projectFolder, Properties properties, ExpectationChecker feh, String... phases) throws Exception {
         
-        if (!feh.handle(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null")) {
+        if (!feh.check(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null")) {
             return null;
         }
-        if (!feh.handle(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath())) {
+        if (!feh.check(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath())) {
             return null;
         }
         String[] cmd = new String[phases.length+properties.size()+1 ];
@@ -54,22 +54,22 @@ public class MVNActions {
         }
         ProcessResult result = OS.exe(projectFolder,cmd);
         String cmdAsString = "mvn " + Stream.of(phases).collect(Collectors.joining(" "));
-        if (!feh.handle(result.getExitValue()==0,"Command \"" + cmdAsString + "\" has failed " + System.lineSeparator() + result.outputString())) {
+        if (!feh.check(result.getExitValue()==0,"Command \"" + cmdAsString + "\" has failed " + System.lineSeparator() + result.outputString())) {
             return null;
         }
 
         return result;
     }
 
-    public static ProcessResult mvn(File projectFolder, ConditionNotSatisfiedHandler feh, String... phases) throws Exception {
+    public static ProcessResult mvn(File projectFolder, ExpectationChecker feh, String... phases) throws Exception {
         return mvn(projectFolder,new Properties(),feh,phases);
     }
 
-    public static StartedProcess startMvn(File projectFolder, Properties properties, ConditionNotSatisfiedHandler feh, String... phases) throws Exception {
-        if (!feh.handle(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null")) {
+    public static StartedProcess startMvn(File projectFolder, Properties properties, ExpectationChecker feh, String... phases) throws Exception {
+        if (!feh.check(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null")) {
             return null;
         };
-        if (!feh.handle(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath())){
+        if (!feh.check(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath())){
             return null;
         };
         String[] cmd = new String[phases.length+properties.size()+1 ];
@@ -87,24 +87,24 @@ public class MVNActions {
 
     }
 
-    public static StartedProcess startMvn(File projectFolder, ConditionNotSatisfiedHandler feh, String... phases) throws Exception {
+    public static StartedProcess startMvn(File projectFolder, ExpectationChecker feh, String... phases) throws Exception {
         return startMvn(projectFolder,new Properties(),feh,phases);
     }
 
-    public static ProcessResult compile (File projectFolder, ConditionNotSatisfiedHandler feh) throws Exception {
+    public static ProcessResult compile (File projectFolder, ExpectationChecker feh) throws Exception {
         return mvn(projectFolder,feh,"compile");
     }
 
-    public static ProcessResult compileTests (File projectFolder, ConditionNotSatisfiedHandler feh) throws Exception {
+    public static ProcessResult compileTests (File projectFolder, ExpectationChecker feh) throws Exception {
         // do not actually run tests
         return mvn(projectFolder,feh,"compile","compiler:testCompile");
     }
 
-    public static ProcessResult test (File projectFolder, ConditionNotSatisfiedHandler feh) throws Exception {
+    public static ProcessResult test (File projectFolder, ExpectationChecker feh) throws Exception {
         return test(projectFolder,true,feh);
     }
 
-    public static String inferClasspath(File projectFolder,boolean includeTargetFolder, ConditionNotSatisfiedHandler feh) throws Exception {
+    public static String inferClasspath(File projectFolder,boolean includeTargetFolder, ExpectationChecker feh) throws Exception {
         File classpathFile = new File(".tmp-project-classpath.txt"); // using a file avoid parsing the (potentially changable) log string
         Properties properties = new Properties();
         properties.setProperty("mdep.outputFile",classpathFile.getAbsolutePath());
@@ -123,15 +123,15 @@ public class MVNActions {
     }
 
 
-    public static String inferClasspath(File projectFolder, ConditionNotSatisfiedHandler feh) throws Exception {
+    public static String inferClasspath(File projectFolder, ExpectationChecker feh) throws Exception {
         return inferClasspath(projectFolder,true, feh);
     }
 
-    public static ProcessResult test (File projectFolder, boolean ignoreFailed, ConditionNotSatisfiedHandler feh) throws Exception {
-        if (!feh.handle(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null")){
+    public static ProcessResult test (File projectFolder, boolean ignoreFailed, ExpectationChecker feh) throws Exception {
+        if (!feh.check(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null")){
             return null;
         };
-        if (!feh.handle(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath())){
+        if (!feh.check(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath())){
             return null;
         };
         ProcessResult result = null;
@@ -158,7 +158,7 @@ public class MVNActions {
             Attachments.add(attachment);
 
         }
-        if (!feh.handle(result.getExitValue()==0,"Command \"mvn test\" has failed")) {
+        if (!feh.check(result.getExitValue()==0,"Command \"mvn test\" has failed")) {
             return null;
         }
         return result;
@@ -167,16 +167,16 @@ public class MVNActions {
     /**
      * After running tests, get the test reports from target/surefire-reports and return them as map, the key is the class name.
      */
-    public static Map<String,TestResults> getTestResults(File projectFolder,boolean includeJUnitReports, ConditionNotSatisfiedHandler feh) throws Exception {
-        if (!feh.handle(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null")){
+    public static Map<String,TestResults> getTestResults(File projectFolder,boolean includeJUnitReports, ExpectationChecker feh) throws Exception {
+        if (!feh.check(projectFolder!=null,"Cannot run \"mvn\" -- project folder is null")){
             return null;
         };
-        if (!feh.handle(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath())){
+        if (!feh.check(projectFolder.exists(),"Cannot run \"mvn\" -- project folder does not exist: " + projectFolder.getAbsolutePath())){
             return null;
         };
 
         File surefireReportsFolder = new File(projectFolder,"target/surefire-reports");
-        if (!feh.handle(surefireReportsFolder.exists(),"Surefire reports folder does not exist: " + surefireReportsFolder.getAbsolutePath() + " -- run \"mvn test\"first")){
+        if (!feh.check(surefireReportsFolder.exists(),"Surefire reports folder does not exist: " + surefireReportsFolder.getAbsolutePath() + " -- run \"mvn test\"first")){
             return null;
         };
 
@@ -215,7 +215,7 @@ public class MVNActions {
     }
 
     @Deprecated // use inferClasspath -- uses more stable file
-    public static String getProjectClassPath (File projectFolder, ConditionNotSatisfiedHandler feh) throws Exception {
+    public static String getProjectClassPath (File projectFolder, ExpectationChecker feh) throws Exception {
         ProcessResult result = OS.exe(projectFolder, getMvnString(),"dependency:build-classpath");
         String output = result.outputString();
 
@@ -244,32 +244,32 @@ public class MVNActions {
             classPathIsNext = line.trim().endsWith("Dependencies classpath:");
 
         }
-        feh.handle(false,"Cannot get Maven project classpath");
+        feh.check(false,"Cannot get Maven project classpath");
         return null;
     }
 
     // -Dmaven.test.failure.ignore=true (or -DtestFailureIgnore=true)
 
-    public static File getClassFile(File projectFolder,String className, ConditionNotSatisfiedHandler feh) {
-        if (!feh.handle(projectFolder.exists(),"Project folder does not exist: " + projectFolder.getAbsolutePath())){
+    public static File getClassFile(File projectFolder,String className, ExpectationChecker feh) {
+        if (!feh.check(projectFolder.exists(),"Project folder does not exist: " + projectFolder.getAbsolutePath())){
             return null;
         };
         File targetFolder = new File(projectFolder,"target");
-        if (!feh.handle(targetFolder.exists(),"Target folder does not exist (project must be built first): " + targetFolder.getAbsolutePath()));
+        if (!feh.check(targetFolder.exists(),"Target folder does not exist (project must be built first): " + targetFolder.getAbsolutePath()));
         File classesFolder = new File(targetFolder,"classes");
-        if (!feh.handle(classesFolder.exists(),"Classes folder does not exist (project must be built first with \"mvn compile\"): " + classesFolder.getAbsolutePath()));
+        if (!feh.check(classesFolder.exists(),"Classes folder does not exist (project must be built first with \"mvn compile\"): " + classesFolder.getAbsolutePath()));
         return new File(classesFolder,className.replace(".","/") + ".class");
 
     }
 
-    public static Set<File> getAllClassFiles(File projectFolder, ConditionNotSatisfiedHandler feh) throws IOException {
-        if (!feh.handle(projectFolder.exists(),"Project folder does not exist: " + projectFolder.getAbsolutePath())){
+    public static Set<File> getAllClassFiles(File projectFolder, ExpectationChecker feh) throws IOException {
+        if (!feh.check(projectFolder.exists(),"Project folder does not exist: " + projectFolder.getAbsolutePath())){
             return null;
         };
         File targetFolder = new File(projectFolder,"target");
-        if (!feh.handle(targetFolder.exists(),"Target folder does not exist (project must be built first): " + targetFolder.getAbsolutePath()));
+        if (!feh.check(targetFolder.exists(),"Target folder does not exist (project must be built first): " + targetFolder.getAbsolutePath()));
         File classesFolder = new File(targetFolder,"classes");
-        if (!feh.handle(classesFolder.exists(),"Classes folder does not exist (project must be built first with \"mvn compile\"): " + classesFolder.getAbsolutePath()));
+        if (!feh.check(classesFolder.exists(),"Classes folder does not exist (project must be built first with \"mvn compile\"): " + classesFolder.getAbsolutePath()));
         return java.nio.file.Files.walk(classesFolder.toPath())
             .filter(java.nio.file.Files::isRegularFile)
             .filter(f -> f.toFile().getName().endsWith(".class"))
@@ -277,14 +277,14 @@ public class MVNActions {
             .collect(Collectors.toSet());
     }
 
-    public static Set<File> getAllTestClassFiles(File projectFolder, ConditionNotSatisfiedHandler feh) throws IOException {
-        if (!feh.handle(projectFolder.exists(),"Project folder does not exist: " + projectFolder.getAbsolutePath())){
+    public static Set<File> getAllTestClassFiles(File projectFolder, ExpectationChecker feh) throws IOException {
+        if (!feh.check(projectFolder.exists(),"Project folder does not exist: " + projectFolder.getAbsolutePath())){
             return null;
         };
         File targetFolder = new File(projectFolder,"target");
-        if (!feh.handle(targetFolder.exists(),"Target folder does not exist (project must be built first): " + targetFolder.getAbsolutePath()));
+        if (!feh.check(targetFolder.exists(),"Target folder does not exist (project must be built first): " + targetFolder.getAbsolutePath()));
         File classesFolder = new File(targetFolder,"test-classes");
-        if (!feh.handle(classesFolder.exists(),"Test classes folder does not exist (project must be built first with \"mvn compile compiler:testCompile\"): " + classesFolder.getAbsolutePath()));
+        if (!feh.check(classesFolder.exists(),"Test classes folder does not exist (project must be built first with \"mvn compile compiler:testCompile\"): " + classesFolder.getAbsolutePath()));
         return java.nio.file.Files.walk(classesFolder.toPath())
             .filter(java.nio.file.Files::isRegularFile)
             .filter(f -> f.toFile().getName().endsWith(".class"))
@@ -297,16 +297,16 @@ public class MVNActions {
         return new File(projectFolder,"target/test-classes");
     }
 
-    public static File getTestClassFile(File projectFolder,String className, ConditionNotSatisfiedHandler feh) {
-        if (!feh.handle(projectFolder.exists(),"Project folder does not exist: " + projectFolder.getAbsolutePath())){
+    public static File getTestClassFile(File projectFolder,String className, ExpectationChecker feh) {
+        if (!feh.check(projectFolder.exists(),"Project folder does not exist: " + projectFolder.getAbsolutePath())){
             return null;
         };
         File targetFolder = new File(projectFolder,"target");
-        if (!feh.handle(targetFolder.exists(),"Target folder does not exist (project must be built first): " + targetFolder.getAbsolutePath())){
+        if (!feh.check(targetFolder.exists(),"Target folder does not exist (project must be built first): " + targetFolder.getAbsolutePath())){
             return null;
         };
         File classesFolder = new File(targetFolder,"test-classes");
-        if (!feh.handle(classesFolder.exists(),"Test classes folder does not exist (project must be built first with \"mvn compile compiler:testCompile\"): " + classesFolder.getAbsolutePath())){
+        if (!feh.check(classesFolder.exists(),"Test classes folder does not exist (project must be built first with \"mvn compile compiler:testCompile\"): " + classesFolder.getAbsolutePath())){
             return null;
         };
         return new File(classesFolder,className.replace(".","/") + ".class");
@@ -321,12 +321,12 @@ public class MVNActions {
      * @param buildMvn whether to run the necessary mvn builds in the projects to ensure that the binaries exist
      * @param junitVersion the junit version used by acceptance tests (to include the appropriate reports)
      */
-    public static TestResults acceptanceTestMvnProject (File junitRunner, String testClass, File mvnProjectToBeTestedFolder, File mvnProjectWithAcceptanceTestsFolder, boolean buildMvn, JUnitVersion junitVersion, ConditionNotSatisfiedHandler feh) throws Exception {
+    public static TestResults acceptanceTestMvnProject (File junitRunner, String testClass, File mvnProjectToBeTestedFolder, File mvnProjectWithAcceptanceTestsFolder, boolean buildMvn, JUnitVersion junitVersion, ExpectationChecker feh) throws Exception {
         if (buildMvn) {
             MVNActions.compileTests(mvnProjectWithAcceptanceTestsFolder,feh);
         }
         File acceptanceTestsClassesFolder = new File(mvnProjectWithAcceptanceTestsFolder,"target/test-classes");
-        if (!feh.handle(acceptanceTestsClassesFolder.exists(),"Folder with acceptance tests does not exist, project " + acceptanceTestsClassesFolder + " must be build first with \"mvn compile compiler:testCompile\"" )){
+        if (!feh.check(acceptanceTestsClassesFolder.exists(),"Folder with acceptance tests does not exist, project " + acceptanceTestsClassesFolder + " must be build first with \"mvn compile compiler:testCompile\"" )){
             return null;
         };
 
@@ -334,7 +334,7 @@ public class MVNActions {
             MVNActions.compile(mvnProjectToBeTestedFolder,feh);
         }
         File submissionClassesFolder = new File(mvnProjectToBeTestedFolder,"target/classes");
-        if (!feh.handle(submissionClassesFolder.exists(),"Folder with classes to be tested does not exist, project " + submissionClassesFolder + " must be build first with \"mvn compile\"" )){
+        if (!feh.check(submissionClassesFolder.exists(),"Folder with classes to be tested does not exist, project " + submissionClassesFolder + " must be build first with \"mvn compile\"" )){
             return null;
         };
 
@@ -362,13 +362,13 @@ public class MVNActions {
      * @param buildMvn whether to run the necessary mvn builds in the projects to ensure that the binaries exist
      * @param junitVersion the junit version used by acceptance tests (to include the appropriate reports)
      */
-    public static TestResults testMvnProject (File junitRunner, String testClass,File mvnProjectToBeTestedFolder, boolean buildMvn,JUnitVersion junitVersion, ConditionNotSatisfiedHandler feh) throws Exception {
+    public static TestResults testMvnProject (File junitRunner, String testClass,File mvnProjectToBeTestedFolder, boolean buildMvn,JUnitVersion junitVersion, ExpectationChecker feh) throws Exception {
 
         if (buildMvn) {
             MVNActions.compileTests(mvnProjectToBeTestedFolder,feh);
         }
         File submissionClassesFolder = new File(mvnProjectToBeTestedFolder,"target/classes");
-        if (!feh.handle(submissionClassesFolder.exists(),"Folder with classes to be tested does not exist, project " + submissionClassesFolder + " must be build first with \"mvn compile compiler:testCompile\"" )) {
+        if (!feh.check(submissionClassesFolder.exists(),"Folder with classes to be tested does not exist, project " + submissionClassesFolder + " must be build first with \"mvn compile compiler:testCompile\"" )) {
             return null;
         }
 
@@ -405,12 +405,12 @@ public class MVNActions {
      * @param root
      * @return
      */
-    public static File getTopMostMvnProjectFolder(File root, ConditionNotSatisfiedHandler feh) {
+    public static File getTopMostMvnProjectFolder(File root, ExpectationChecker feh) {
         Preconditions.checkNotNull(root);
-        if (feh.handle(root.exists(),"File does not exist: " + root.getPath().toUpperCase())) {
+        if (!feh.check(root.exists(),"File does not exist: " + root.getPath().toUpperCase())) {
             return null;
         };
-        if (feh.handle(root.isDirectory(),"File must be a folder: " + root.getPath().toUpperCase())) {
+        if (!feh.check(root.isDirectory(),"File must be a folder: " + root.getPath().toUpperCase())) {
             return null;
         };
         return Files.findTopMostChildSuchThat(root, f -> f.isDirectory() && new File(f,"pom.xml").exists());

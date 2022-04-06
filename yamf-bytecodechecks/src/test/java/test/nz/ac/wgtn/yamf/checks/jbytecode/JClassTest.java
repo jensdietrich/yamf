@@ -1,6 +1,6 @@
 package test.nz.ac.wgtn.yamf.checks.jbytecode;
 
-import nz.ac.wgtn.yamf.ConditionNotSatisfiedHandler;
+import nz.ac.wgtn.yamf.ExpectationChecker;
 import nz.ac.wgtn.yamf.checks.jbytecode.*;
 import org.junit.jupiter.api.*;
 
@@ -23,7 +23,7 @@ public class JClassTest {
         System.out.println(file);
         System.out.println(file.exists());
         System.out.println();
-        jclazz = JByteCodeActions.getClass(file, ConditionNotSatisfiedHandler.Ignore);
+        jclazz = JByteCodeActions.getClass(file, ExpectationChecker.Ignore);
     }
 
     @AfterEach
