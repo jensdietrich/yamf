@@ -130,7 +130,12 @@ public class MarkingScriptBuilder {
                     for (Function<File, Reporter> reporterFactory : reporterFactories) {
                         Reporter reporter = reporterFactory.apply(projectFolder);
                         reporters.add(reporter);
-                        reporter.generateReport(projectFolder,results);
+                        try {
+                            reporter.generateReport(projectFolder, results);
+                        }
+                        catch (Exception x) {
+                            logger.error("Error generating report using reporter " + reporter.toString(),x);
+                        }
                     }
                     afterMarkingEachProject.accept(projectFolder);
                 }

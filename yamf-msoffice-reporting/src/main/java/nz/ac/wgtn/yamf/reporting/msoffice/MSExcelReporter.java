@@ -111,7 +111,12 @@ public class MSExcelReporter extends AbstractReporter {
 
         cell = row.createCell(col++);
         formula = IntStream.range(2,rowCount).mapToObj(i -> "D"+i).collect(Collectors.joining("+"));
-        cell.setCellFormula(formula );  // =SUM(C2:C3)
+        if (formula.trim().length()>0) {
+            cell.setCellFormula(formula);  // =SUM(C2:C3)
+        }
+        else {
+            cell.setCellValue("n/a");
+        }
         cell.setCellStyle(styleR);
 
         addCell(row,col++,styleC,"");
