@@ -3,7 +3,7 @@
     <parent>
         <groupId>nz.ac.wgtn.yamf</groupId>
         <artifactId>yamf-parent</artifactId>
-        <version>1.0.21</version>
+        <version>1.0.22</version>
     </parent>
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-msoffice-reporting</artifactId>
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>4.1.2</version>
+            <version>5.2.2</version>
         </dependency>
         <dependency>
             <groupId>nz.ac.wgtn.yamf</groupId>
