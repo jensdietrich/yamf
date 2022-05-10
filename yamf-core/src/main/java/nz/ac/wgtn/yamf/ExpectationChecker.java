@@ -19,8 +19,12 @@ import javax.annotation.Nonnull;
  * So the correct code would be ExpectationChecker handler = ..;  handler.handler(aFolder.exists,"Folder does not exist: " + aFolder);
  * The Ignore handler does not react to failed tests, this can be used to return null, e.g.:
  * if (!handler.handle(aFolder.exists,"Folder does not exist: " + aFolder)) return null;
+ *
+ * See subclass OnFailure for a more intuitive syntax.
+ *
  * @author jens dietrich
  */
+@Deprecated
 public abstract class ExpectationChecker {
 
     public static ExpectationChecker DEFAULT = ExpectationChecker.AssumeTrue;
@@ -29,6 +33,7 @@ public abstract class ExpectationChecker {
         ExpectationChecker.DEFAULT = instance;
     }
 
+    @Deprecated
     public static ExpectationChecker AssumeTrue = new ExpectationChecker() {
         @Override
         public boolean check(boolean condition, String conditionHasFailedMessage) {
@@ -37,6 +42,7 @@ public abstract class ExpectationChecker {
         }
     };
 
+    @Deprecated
     public static ExpectationChecker AssertTrue = new ExpectationChecker() {
         @Override
         public boolean check(boolean condition, String conditionHasFailedMessage) {
@@ -45,6 +51,16 @@ public abstract class ExpectationChecker {
         }
     };
 
+    @Deprecated
+    public static ExpectationChecker Ignore = new ExpectationChecker() {
+        @Override
+        public boolean check(boolean condition, String conditionHasFailedMessage) {
+            return condition;
+        }
+    };
+
+    // do we need those ?
+    @Deprecated
     public static ExpectationChecker ValidateArgument = new ExpectationChecker() {
         @Override
         public boolean check(boolean condition, String conditionHasFailedMessage) {
@@ -52,7 +68,7 @@ public abstract class ExpectationChecker {
             return condition;
         }
     };
-
+    @Deprecated
     public static ExpectationChecker ValidateState = new ExpectationChecker() {
         @Override
         public boolean check(boolean condition, String conditionHasFailedMessage) {
@@ -61,12 +77,9 @@ public abstract class ExpectationChecker {
         }
     };
 
-    public static ExpectationChecker Ignore = new ExpectationChecker() {
-        @Override
-        public boolean check(boolean condition, String conditionHasFailedMessage) {
-            return condition;
-        }
-    };
+
+
+
 
     static {
         install(ExpectationChecker.AssumeTrue);
