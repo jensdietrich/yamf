@@ -13,6 +13,8 @@ import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -36,6 +38,9 @@ public class MarkingScriptBuilder {
     private List<Function<File, Reporter>> reporterFactories = new ArrayList<>();
     private File[] submissions = null;
     private Class markingScheme = null;
+
+    // this is not to rely on the correct static fixture, if true (default), all reference static fields will be reset to null
+    private boolean hardResetMarkingSchemeBetweenSubmissions = true;
     private boolean configureLogging = true;
     private Level logLevel = Level.INFO;
 
@@ -61,6 +66,11 @@ public class MarkingScriptBuilder {
 
     public MarkingScriptBuilder afterMarkingAllProjectsDo(Runnable action) {
         this.afterMarkingAllProjects = action;
+        return this;
+    }
+
+    public MarkingScriptBuilder hardResetMarkingSchemeBetweenSubmissions(boolean value) {
+        this.hardResetMarkingSchemeBetweenSubmissions = value;
         return this;
     }
 
@@ -115,9 +125,16 @@ public class MarkingScriptBuilder {
         for (File projectFolder:submissions)   {
             if (projectFolder.isDirectory()) {
                 if (!skipMarkingProjectCondition.test(projectFolder)) {
+
+                    // hard-reset static fields in marking scheme
+                    if (hardResetMarkingSchemeBetweenSubmissions) {
+                        resetScheme(logger,markingScheme);
+                    }
+
                     beforeMarkingEachProject.accept(projectFolder);
                     // junit boilerplate code
                     List<DiscoverySelector> selectors = new ArrayList<>();
+
                     selectors.add(selectClass(markingScheme));
                     LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder
                         .request()
@@ -150,6 +167,24 @@ public class MarkingScriptBuilder {
         }
 
         afterMarkingAllProjects.run();
+    }
+
+    // reset static fields to avoid state being transferred between evaluations
+    // this would typically be done in the static fixture of the schemes but if forgotten,
+    // this can have dire consequences
+    private void resetScheme(Logger logger,Class markingScheme) {
+        for (Field field:markingScheme.getDeclaredFields()) {
+            String name = markingScheme.getName() + "::" + field.getName();
+            if (Modifier.isStatic(field.getModifiers()) && !field.getType().isPrimitive()) {
+                logger.info("resetting marking scheme field: " + name);
+                try {
+                    field.setAccessible(true);
+                    field.set(null,null);
+                } catch (IllegalAccessException e) {
+                    logger.error("cannot reset field between evaluations:" + name );
+                }
+            }
+        }
     }
 
 }

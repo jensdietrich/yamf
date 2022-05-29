@@ -4,6 +4,8 @@ package nz.ac.wgtn.yamf;
 import com.google.common.base.Preconditions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.opentest4j.TestAbortedException;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -35,6 +37,12 @@ public abstract class ExpectationChecker {
 
     @Deprecated
     public static ExpectationChecker AssumeTrue = new ExpectationChecker() {
+
+        @Override
+        public void handle(Exception x, String message) {
+            throw new TestAbortedException(message,x);
+        }
+
         @Override
         public boolean check(boolean condition, String conditionHasFailedMessage) {
             Assumptions.assumeTrue(condition,conditionHasFailedMessage);
@@ -44,6 +52,11 @@ public abstract class ExpectationChecker {
 
     @Deprecated
     public static ExpectationChecker AssertTrue = new ExpectationChecker() {
+        @Override
+        public void handle(Exception x, String message) {
+            throw new AssertionError(message,x);
+        }
+
         @Override
         public boolean check(boolean condition, String conditionHasFailedMessage) {
             Assertions.assertTrue(condition,conditionHasFailedMessage);
@@ -57,6 +70,11 @@ public abstract class ExpectationChecker {
         public boolean check(boolean condition, String conditionHasFailedMessage) {
             return condition;
         }
+
+        @Override
+        public void handle(Exception x, String message) {
+            // nothing todo
+        }
     };
 
     // do we need those ?
@@ -67,6 +85,11 @@ public abstract class ExpectationChecker {
             Preconditions.checkArgument(condition,conditionHasFailedMessage);
             return condition;
         }
+
+        @Override
+        public void handle(Exception x, String message) {
+            // nothing todo
+        }
     };
     @Deprecated
     public static ExpectationChecker ValidateState = new ExpectationChecker() {
@@ -74,6 +97,11 @@ public abstract class ExpectationChecker {
         public boolean check(boolean condition, String conditionHasFailedMessage) {
             Preconditions.checkState(condition,conditionHasFailedMessage);
             return condition;
+        }
+
+        @Override
+        public void handle(Exception x, String message) {
+            // nothing todo
         }
     };
 
@@ -93,6 +121,13 @@ public abstract class ExpectationChecker {
      * e.g. to return null: if (!handle(..)) return null;
      */
     public abstract boolean check(boolean condition, String checkFailedMessage);
+
+    /**
+     * Handle an exception.
+     * @param x
+     * @param message
+     */
+    public abstract void handle(Exception x,String message);
 
 
 }
