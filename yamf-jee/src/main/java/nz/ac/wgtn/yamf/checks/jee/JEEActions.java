@@ -116,6 +116,16 @@ public class JEEActions {
                     String value = list.stream().map(e -> Objects.toString(e).trim()).collect(Collectors.joining(","));
                     map.put(clazz.getName(),value);
                 }
+
+                // value can also be used
+                object = annotation.getProperty("value");
+                // flatten list
+                if (object instanceof List) {
+                    List<Object> list = (List)object;
+                    // there can be a list of URL patterns, those are concatenated
+                    String value = list.stream().map(e -> Objects.toString(e).trim()).collect(Collectors.joining(","));
+                    map.put(clazz.getName(),value);
+                }
             }
         }
         return map;
