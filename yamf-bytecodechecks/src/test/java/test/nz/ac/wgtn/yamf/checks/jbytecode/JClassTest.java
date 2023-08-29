@@ -1,9 +1,8 @@
 package test.nz.ac.wgtn.yamf.checks.jbytecode;
 
-import nz.ac.wgtn.yamf.ExpectationChecker;
+import nz.ac.wgtn.yamf.OnFailure;
 import nz.ac.wgtn.yamf.checks.jbytecode.*;
 import org.junit.jupiter.api.*;
-
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -23,7 +22,7 @@ public class JClassTest {
         System.out.println(file);
         System.out.println(file.exists());
         System.out.println();
-        jclazz = JByteCodeActions.getClass(file, ExpectationChecker.Ignore);
+        jclazz = JByteCodeActions.getClass(file, OnFailure.CARRY_ON);
     }
 
     @AfterEach

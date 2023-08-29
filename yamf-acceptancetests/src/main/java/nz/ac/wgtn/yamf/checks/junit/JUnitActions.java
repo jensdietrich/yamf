@@ -23,7 +23,7 @@ import java.util.stream.Stream;
  * Parsing XML files seems to be more reliable.
  * @author jens dietrich
  */
-public class JUnitActions {
+public class  JUnitActions {
 
     public static final String JUNIT_REPORT_FOLDER = ".junit-reports";
     public static final String JUPITER_REPORT_NAME = "TEST-junit-jupiter.xml";

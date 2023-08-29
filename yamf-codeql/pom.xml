@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>nz.ac.wgtn.yamf</groupId>
+        <artifactId>yamf-parent</artifactId>
+        <version>1.0.26</version>
+    </parent>
+  <groupId>nz.ac.wgtn.yamf</groupId>
+  <artifactId>yamf-codeql</artifactId>
+  <packaging>jar</packaging>
+  <version>${project-version}</version>
+  <name>yamf-codeql</name>
+  <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-exec</artifactId>
+            <version>1.12</version>
+        </dependency>
+        <dependency>
+            <groupId>nz.ac.wgtn.yamf</groupId>
+            <artifactId>yamf-core</artifactId>
+            <version>${project-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,6 +1,6 @@
 package nz.ac.wgtn.yamf.examples.mvn;
 
-import nz.ac.wgtn.yamf.ExpectationChecker;
+import nz.ac.wgtn.yamf.OnFailure;
 import nz.ac.wgtn.yamf.checks.mvn.MVNDependency;
 import nz.ac.wgtn.yamf.checks.mvn.MVNActions;
 import nz.ac.wgtn.yamf.checks.mvn.MVNChecks;
@@ -50,13 +50,13 @@ public class MarkingScheme {
     @Test
     @Marking(name="Q4 -- project must compile", marks = 1)
     public void testCompilation () throws Exception {
-        MVNActions.compile(submission, ExpectationChecker.AssumeTrue);
+        MVNActions.compile(submission, OnFailure.MARK_MANUALLY);
     }
 
     @Test
     @Marking(name="Q5 -- project must be testable", marks = 1)
     public void testTest () throws Exception {
-        MVNActions.test(submission, ExpectationChecker.AssumeTrue);
+        MVNActions.test(submission, OnFailure.MARK_MANUALLY);
     }
 
     @Test
@@ -65,14 +65,14 @@ public class MarkingScheme {
         // need to do this again, unless we accept dependencies on other tests with shared state (the  we must fix the test order)
         // or put this in fixture
         // this will create the /target folder with surefire reports
-        MVNActions.test(submission, ExpectationChecker.AssumeTrue);
+        MVNActions.test(submission, OnFailure.MARK_MANUALLY);
         MVNChecks.assertHasNoFailingTests(submission);
     }
 
     @Test
     @Marking(name="Q7 -- the project must only use junit 4.* as its sole dependency (see https://mvnrepository.com/artifact/junit/junit for dependency details)", marks = 1)
     public void testDependencies () throws Exception {
-        MVNActions.test(submission,true, ExpectationChecker.AssumeTrue);
+        MVNActions.test(submission,true, OnFailure.MARK_MANUALLY);
         File pom = new File(submission,"pom.xml");
         MVNChecks.assertValidDependencies(pom, dependencies -> {
             if (dependencies.size()==1) {

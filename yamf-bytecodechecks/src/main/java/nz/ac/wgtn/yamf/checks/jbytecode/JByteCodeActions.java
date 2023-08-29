@@ -1,6 +1,6 @@
 package nz.ac.wgtn.yamf.checks.jbytecode;
 
-import nz.ac.wgtn.yamf.ExpectationChecker;
+import nz.ac.wgtn.yamf.OnFailure;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;
 import org.objectweb.asm.*;
@@ -153,7 +153,7 @@ public class JByteCodeActions {
 
     }
 
-    public static JClass getClass(File file, ExpectationChecker feh) throws Exception {
+    public static JClass getClass(File file, OnFailure feh) throws Exception {
         if (!feh.check(file!=null,"File is null")) {
             return null;
         }
@@ -165,7 +165,7 @@ public class JByteCodeActions {
         return builder.clazz;
     }
 
-    public static JClass getClass(File jar,String name, ExpectationChecker feh) throws Exception {
+    public static JClass getClass(File jar,String name, OnFailure feh) throws Exception {
         if (!feh.check(jar!=null,"Jar file is null")) {
             return null;
         }

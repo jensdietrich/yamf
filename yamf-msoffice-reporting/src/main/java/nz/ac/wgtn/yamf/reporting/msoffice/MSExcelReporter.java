@@ -145,7 +145,17 @@ public class MSExcelReporter extends AbstractReporter {
             for (String line:lines) {
                 aRow = aSheet.createRow(rowCount++);
                 aCell = aRow.createCell(0);
-                aCell.setCellValue(sanitise(line));
+
+
+                line = sanitise(line);
+                // cell content needs to fit, otherwise pom throws IllegalArgumentException
+                if (line.length()> workbook.getSpreadsheetVersion().getMaxTextLength()) {
+                    String shortened = " ... (shortened, max cell size reached)";
+                    line = line.substring(0,workbook.getSpreadsheetVersion().getMaxTextLength() - shortened.length()) + shortened;
+                }
+
+                aCell.setCellValue(line);
+
                 aCell.setCellStyle(style);
             }
             aSheet.autoSizeColumn(0);

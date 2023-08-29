@@ -2,14 +2,9 @@ package nz.ac.wgtn.yamf.checks.coverage;
 
 import com.google.common.base.Preconditions;
 import nz.ac.wgtn.yamf.OnFailure;
-import org.junit.jupiter.api.Assumptions;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Jacoco - related actions.

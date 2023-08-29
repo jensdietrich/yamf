@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
  */
 public class OS {
 
-
-
     public static StartedProcess start(String... command) throws Exception {
         return new ProcessExecutor()
             .readOutput(true)

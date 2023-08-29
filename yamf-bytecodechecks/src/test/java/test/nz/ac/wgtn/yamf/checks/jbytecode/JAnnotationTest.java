@@ -1,15 +1,13 @@
 package test.nz.ac.wgtn.yamf.checks.jbytecode;
 
-import nz.ac.wgtn.yamf.ExpectationChecker;
+import nz.ac.wgtn.yamf.OnFailure;
 import nz.ac.wgtn.yamf.checks.jbytecode.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.net.URL;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -25,7 +23,7 @@ public class JAnnotationTest {
         System.out.println(file);
         System.out.println(file.exists());
         System.out.println();
-        jclazz = JByteCodeActions.getClass(file, ExpectationChecker.Ignore);
+        jclazz = JByteCodeActions.getClass(file, OnFailure.CARRY_ON);
     }
 
     @AfterEach

@@ -10,3 +10,4 @@ yamf-core/target
 yamf-acceptancetests/target
 yamf-audit/target
 yamf-bytecodechecks/target
+yamf-codeql/target

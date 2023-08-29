@@ -34,6 +34,17 @@ public class JUnitChecks {
         );
     }
 
+    public static void assertAllTestsSucceeded(TestResults testResults, int testCount) {
+        Assertions.assertAll(
+            () -> Assertions.assertTrue(testCount==testResults.getTests()),
+            () -> Assertions.assertSame(0,testResults.getTestsFailed(),"Some tests have failed, details:\n" + testResults.getDetails()),
+            () -> Assertions.assertSame(0,testResults.getTestsWithErrors(),"Some tests have caused errors, details:\n" + testResults.getDetails()),
+            () -> Assertions.assertSame(0,testResults.getTestsSkipped(),"Some tests have been aborted, details:\n" + testResults.getDetails())
+        );
+    }
+
+
+
     public static boolean isJunit4InClassPath () {
         try {
             Class.forName("org.junit.Test");

@@ -1,6 +1,6 @@
 package test.nz.ac.wgtn.yamf.checks.jee;
 
-import nz.ac.wgtn.yamf.ExpectationChecker;
+import nz.ac.wgtn.yamf.OnFailure;
 import nz.ac.wgtn.yamf.checks.jbytecode.JByteCodeActions;
 import nz.ac.wgtn.yamf.checks.jbytecode.JClass;
 import nz.ac.wgtn.yamf.checks.jee.JEEActions;
@@ -30,7 +30,7 @@ public class JEEActionsTest {
         URL url = JEEActionsTest.class.getResource("/example2/target/classes/example2/MainServlet.class");
         Assumptions.assumeTrue(url!=null,"must build example2 first");
         File classFile = new File(url.getFile());
-        JClass clazz = JByteCodeActions.getClass(classFile, ExpectationChecker.AssumeTrue);
+        JClass clazz = JByteCodeActions.getClass(classFile, OnFailure.MARK_MANUALLY);
         Map<String,String> urlMappingsByServlet = JEEActions.getServletToURLMappingsFromAnnotations(clazz);
         assertEquals(urlMappingsByServlet.get("example2.MainServlet"),"/path1,/path2");
         assertNull(urlMappingsByServlet.get("foo"));

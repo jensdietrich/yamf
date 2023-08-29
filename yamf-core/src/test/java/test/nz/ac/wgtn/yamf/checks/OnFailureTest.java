@@ -1,11 +1,9 @@
 package test.nz.ac.wgtn.yamf.checks;
 
-import nz.ac.wgtn.yamf.ExpectationChecker;
 import nz.ac.wgtn.yamf.OnFailure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.TestAbortedException;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
