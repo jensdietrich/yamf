@@ -1,7 +1,7 @@
 package example1;
 
 import java.io.*;
-import javax.servlet.http.*;
+import jakarta.servlet.http.*;
 
 public class MainServlet extends HttpServlet {
 

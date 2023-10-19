@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-      <project-version>1.0.26</project-version>
+      <project-version>1.0.27</project-version>
       <maven.compiler.target>11</maven.compiler.target>
       <maven.compiler.source>11</maven.compiler.source>
   </properties>
@@ -10,7 +10,7 @@
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.26</version>
+  <version>1.0.27</version>
   <name>yamf-parent</name>
 
   <licenses>
@@ -48,6 +48,7 @@
       <module>yamf-audit</module>
       <module>yamf-http</module>
       <module>yamf-jee</module>
+      <module>yamf-jee-vintage</module>
       <module>yamf-coverage</module>
       <module>yamf-codeql</module>
   </modules>

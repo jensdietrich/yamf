@@ -11,7 +11,7 @@ public class JEEChecks {
 
     public static void assertIsServlet(JClass clazz) {
         // TODO do full hierarchy analysis once this is implemented in bytecodechecks module
-        JByteCodeChecks.assertDirectlyExtendsSuperClass(clazz, "javax.servlet.http.HttpServlet");
+        JByteCodeChecks.assertDirectlyExtendsSuperClass(clazz, "jakarta.servlet.http.HttpServlet");
     }
 
     public static void assertImplementsDoGet(JClass clazz) {
@@ -56,9 +56,9 @@ public class JEEChecks {
                 (method.isPublic() || method.isProtected())
                         && method.getName().equals(methodName)
                         && method.getParameterTypes().size()==2
-                        && method.getParameterTypes().get(0).equals("javax.servlet.http.HttpServletRequest")
-                        && method.getParameterTypes().get(1).equals("javax.servlet.http.HttpServletResponse")
-            ), "class should contain public or protected method void " + methodName + "(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)"
+                        && method.getParameterTypes().get(0).equals("jakarta.servlet.http.HttpServletRequest")
+                        && method.getParameterTypes().get(1).equals("jakarta.servlet.http.HttpServletResponse")
+            ), "class should contain public or protected method void " + methodName + "(jakarta.servlet.http.HttpServletRequest,jakarta.servlet.http.HttpServletResponse)"
         );
     }
 

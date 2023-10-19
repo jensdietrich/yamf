@@ -11,3 +11,4 @@ yamf-acceptancetests/target
 yamf-audit/target
 yamf-bytecodechecks/target
 yamf-codeql/target
+yamf-jee-vintage/target

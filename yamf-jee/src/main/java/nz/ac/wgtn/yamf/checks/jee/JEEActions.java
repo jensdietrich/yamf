@@ -107,7 +107,7 @@ public class JEEActions {
 
         Map<String,String> map = new HashMap<>();
         for (JAnnotation annotation:clazz.getAnnotations()) {
-            if (annotation.getName().equals("javax.servlet.annotation.WebServlet")) {
+            if (annotation.getName().equals("jakarta.servlet.annotation.WebServlet")) {
                 Object object = annotation.getProperty("urlPatterns");
                 // flatten list
                 if (object instanceof List) {
