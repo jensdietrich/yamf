@@ -15,7 +15,7 @@ import java.util.zip.ZipFile;
 
 public class ASMCommons {
 
-    static int ASM_VERSION = Opcodes.ASM7;
+    static int ASM_VERSION = Opcodes.ASM9;
 
     static void analyse (File file, ClassVisitor visitor) throws IOException {
         String name = file.getName();
