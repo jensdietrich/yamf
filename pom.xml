@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-      <project-version>1.0.28</project-version>
+      <project-version>1.0.29</project-version>
       <maven.compiler.target>11</maven.compiler.target>
       <maven.compiler.source>11</maven.compiler.source>
   </properties>
@@ -10,7 +10,7 @@
   <groupId>nz.ac.wgtn.yamf</groupId>
   <artifactId>yamf-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.28</version>
+  <version>1.0.29</version>
   <name>yamf-parent</name>
 
   <licenses>
@@ -73,27 +73,27 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.17.1</version>
+            <version>2.23.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.17.1</version>
+            <version>2.23.1</version>
         </dependency>
         <dependency>
           <groupId>com.google.guava</groupId>
           <artifactId>guava</artifactId>
-          <version>32.0.0-jre</version>
+          <version>33.3.0-jre</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.30</version>
+            <version>2.0.16</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.30</version>
+            <version>2.0.16</version>
         </dependency>
     </dependencies>
 </project>

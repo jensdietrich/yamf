@@ -97,7 +97,7 @@ public class MVNActions {
 
     public static ProcessResult compileTests (File projectFolder, OnFailure feh) throws Exception {
         // do not actually run tests
-        return mvn(projectFolder,feh,"compile","compiler:testCompile");
+        return mvn(projectFolder,feh,"compile","compiler:testCompile","resources:testResources");
     }
 
     public static ProcessResult test (File projectFolder, OnFailure feh) throws Exception {
