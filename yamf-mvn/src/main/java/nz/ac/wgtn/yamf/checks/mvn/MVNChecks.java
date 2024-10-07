@@ -121,6 +121,12 @@ public class MVNChecks {
             return;
         }
 
+        String releaseVersion = XML.evalXPathSingleNode(pom, "/project/properties/maven.compiler.release");
+        if (releaseVersion!=null) {
+            Assertions.assertTrue(versionTest.test(releaseVersion), "Version constraint (releaseVersion="+releaseVersion+") does not satisfy condition");
+            return;
+        }
+
         targetVersion = XML.evalXPathSingleNode(pom, "/project/build/plugins/plugin[artifactId='maven-compiler-plugin' and groupId='org.apache.maven.plugins']/configuration/target");
         sourceVersion = XML.evalXPathSingleNode(pom, "/project/build/plugins/plugin[artifactId='maven-compiler-plugin' and groupId='org.apache.maven.plugins']/configuration/source");
         if (sourceVersion!=null && targetVersion!=null) {
@@ -128,6 +134,11 @@ public class MVNChecks {
             return;
         }
 
+        releaseVersion = XML.evalXPathSingleNode(pom, "/project/build/plugins/plugin[artifactId='maven-compiler-plugin' and groupId='org.apache.maven.plugins']/configuration/release");
+        if (releaseVersion!=null) {
+            Assertions.assertTrue(versionTest.test(releaseVersion), "Version constraint (releaseVersion="+releaseVersion+") does not satisfy condition");
+            return;
+        }
         Assertions.fail("No source and target Java version specification found in " + pom.getAbsolutePath());
 
     }
