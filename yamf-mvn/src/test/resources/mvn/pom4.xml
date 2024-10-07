@@ -7,8 +7,7 @@
   <version>1.0.0</version>
   <name>ff4s</name>
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.release>11</maven.compiler.release>
     </properties>
   <dependencies>
     <dependency>

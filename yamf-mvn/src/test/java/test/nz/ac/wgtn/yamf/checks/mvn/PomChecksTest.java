@@ -14,6 +14,7 @@ public class PomChecksTest {
         File file = Utils.getResourceAsFile("mvn/pom1.xml");
         MVNChecks.assertValidArtifactId(file, id -> id.equals("foo"));
     }
+
     @Test
     public void testCheckArtifactId2() throws Exception {
         File file = Utils.getResourceAsFile("mvn/pom1.xml");
@@ -21,6 +22,31 @@ public class PomChecksTest {
             AssertionError.class,
             () -> MVNChecks.assertValidArtifactId(file, id -> id.equals("bar"))
         );
+    }
+
+
+    @Test
+    public void testJavaVersion1() throws Exception {
+        File file = Utils.getResourceAsFile("mvn/pom1.xml");
+        MVNChecks.assertConfiguresJavaVersion(file, version -> version.equals("1.8"));
+    }
+
+    @Test
+    public void testJavaVersion2() throws Exception {
+        File file = Utils.getResourceAsFile("mvn/pom2.xml");
+        MVNChecks.assertConfiguresJavaVersion(file, version -> version.equals("1.8"));
+    }
+
+    @Test
+    public void testJavaVersion3() throws Exception {
+        File file = Utils.getResourceAsFile("mvn/pom3.xml");
+        MVNChecks.assertConfiguresJavaVersion(file, version -> version.equals("11"));
+    }
+
+    @Test
+    public void testJavaVersion4() throws Exception {
+        File file = Utils.getResourceAsFile("mvn/pom4.xml");
+        MVNChecks.assertConfiguresJavaVersion(file, version -> version.equals("11"));
     }
 
     @Test
