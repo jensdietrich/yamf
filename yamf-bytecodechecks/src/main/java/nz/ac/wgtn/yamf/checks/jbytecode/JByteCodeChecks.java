@@ -58,7 +58,7 @@ public class JByteCodeChecks {
     public static void assertHasJUnit4Tests(JClass clazz) {
         // junit4 methods must be public:
         // https://junit.org/junit4/javadoc/latest/org/junit/Test.html
-        assertHasAnyMethodSuchThat(clazz, method -> method.isPublic() && !method.isStatic() && method.isJunit4Test(),
+        assertHasAnyMethodSuchThat(clazz, method -> !method.isPrivate() && !method.isStatic() && method.isJunit4Test(),
   "class should contain junit5 test method (non-private, non-static, annotated with @org.junit.Test)"
         );
     }
@@ -71,21 +71,21 @@ public class JByteCodeChecks {
     public static void assertHasJUnit4Tests(JClass clazz,Predicate<String> testMethodFilter)  {
         // junit4 methods must be public:
         // https://junit.org/junit4/javadoc/latest/org/junit/Test.html
-        assertHasAnyMethodSuchThat(clazz, method -> method.isPublic() && !method.isStatic() && method.isJunit4Test() && testMethodFilter.test(method.getName()),
+        assertHasAnyMethodSuchThat(clazz, method -> !method.isPrivate() && !method.isStatic() && method.isJunit4Test() && testMethodFilter.test(method.getName()),
                 "class should contain junit4 test method (public, non-static, annotated with @org.junit.Test)"
         );
     }
 
     public static void assertHasJUnit4or5Tests(JClass clazz)  {
         assertHasAnyMethodSuchThat(clazz,
-            method -> method.isPublic() && !method.isStatic() && (method.isJunit4Test() || method.isJunit5Test()),
+            method -> !method.isPrivate() && !method.isStatic() && (method.isJunit4Test() || method.isJunit5Test()),
                 "class should contain junit4 or junit5 test method (non-private, non-static, annotated with @org.junit.Test or @org.junit.jupiter.api.Test)"
         );
     }
 
     public static void assertHasJUnit4or5Tests(JClass clazz,Predicate<String> testMethodFilter)  {
         assertHasAnyMethodSuchThat(clazz,
-                method -> method.isPublic() && !method.isStatic() && (method.isJunit4Test() || method.isJunit5Test()) && testMethodFilter.test(method.getName()),
+                method -> !method.isPrivate() && !method.isStatic() && (method.isJunit4Test() || method.isJunit5Test()) && testMethodFilter.test(method.getName()),
                 "class should contain junit4 or junit5 test method (non-private, non-static, annotated with @org.junit.Test or @org.junit.jupiter.api.Test)"
         );
     }
