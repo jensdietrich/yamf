@@ -1,4 +1,4 @@
-package test.nz.ac.wgtn.yamf.checks.jbytecode;
+package nz.ac.wgtn.yamf.checks.jbytecode;
 
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.DescriptorParser;
 import nz.ac.wgtn.yamf.checks.jbytecode.descr.MethodDescriptor;

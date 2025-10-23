@@ -1,6 +1,12 @@
 package nz.ac.wgtn.yamf.checks.jbytecode;
 
+import nz.ac.wgtn.yamf.OnFailure;
 import org.junit.jupiter.api.Assertions;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -104,6 +110,59 @@ public class JByteCodeChecks {
 
     public static void assertHasDefaultConstructor(JClass clazz) {
         Assertions.assertTrue(clazz.hasDefaultConstructor(),"No default constructor (public, no parameters) in class " + clazz.getName());
+    }
+
+    public static void assertExtendsOrImplements(JClass clazz, String superType, Path... searchClassPath) {
+        Assertions.assertTrue (checkExtendsOrImplements(clazz, superType, searchClassPath),"This class is a subtype of " + superType);
+    }
+
+    static boolean checkExtendsOrImplements(JClass clazz, String superType, Path... searchClassPath) {
+        if (Objects.equals(superType,clazz.getSuperClass())) {
+            return true;
+        }
+        else if (clazz.getInterfaces().contains(superType)) {
+            return true;
+        }
+        else {
+            List<String> intermediateSuperTypeNames = new ArrayList<>();
+            intermediateSuperTypeNames.add(clazz.getSuperClass());
+            intermediateSuperTypeNames.addAll(clazz.getInterfaces());
+
+            for (String intermediateSuperTypeName:intermediateSuperTypeNames) {
+                intermediateSuperTypeName = intermediateSuperTypeName.replace('.','/');
+                for (Path path : searchClassPath) {
+                    if (Files.isDirectory(path)) {
+                        Path classLoc = path.resolve(intermediateSuperTypeName+".class");
+                        if (Files.exists(classLoc)) {
+                            try {
+                                JClass intermediateClass = JByteCodeActions.getClass(classLoc.toFile(), OnFailure.CARRY_ON);
+                                if (intermediateClass!=null && checkExtendsOrImplements(intermediateClass, superType, searchClassPath)) {
+                                    return true;
+                                }
+                            }
+                            catch (Exception e) {
+                                // ignore, this is speculative
+                            }
+                        }
+                    }
+                    else if (path.toString().endsWith(".jar") || path.toString().endsWith(".zip")) {
+                        try {
+                            JClass intermediateClass = JByteCodeActions.getClass(path.toFile(),intermediateSuperTypeName, OnFailure.CARRY_ON);
+                            if (intermediateClass!=null && checkExtendsOrImplements(intermediateClass, superType, searchClassPath)) {
+                                return true;
+                            }
+                        }
+                        catch (Exception e) {
+                            // ignore, this is speculative
+                        }
+
+                    }
+                }
+            }
+            return false;
+
+        }
+
     }
 
 }
