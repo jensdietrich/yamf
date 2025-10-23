@@ -12,3 +12,7 @@ yamf-audit/target
 yamf-bytecodechecks/target
 yamf-codeql/target
 yamf-jee-vintage/target
+yamf-jee/src/test/resources/example1/target/maven-status
+yamf-jee/src/test/resources/example2/target/maven-status
+yamf-jee-vintage/src/test/resources/example1/target/maven-status
+yamf-jee-vintage/src/test/resources/example2/target/maven-status
