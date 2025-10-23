@@ -31,7 +31,7 @@ public class JClassTest {
 
     @Test
     public void testClassName () throws Exception {
-        assertEquals("test.nz.ac.wgtn.yamf.checks.jbytecode.SampleClass",jclazz.getName());
+        assertEquals("nz.ac.wgtn.yamf.checks.jbytecode.SampleClass",jclazz.getName());
     }
 
     @Test
@@ -140,7 +140,7 @@ public class JClassTest {
 
         assertEquals(1,method.getInvocations().size());
         Invocation inv = method.getInvocations().iterator().next();
-        assertEquals("test.nz.ac.wgtn.yamf.checks.jbytecode.SampleClass",inv.getOwner());
+        assertEquals("nz.ac.wgtn.yamf.checks.jbytecode.SampleClass",inv.getOwner());
         assertEquals("foo",inv.getName());
         assertEquals("void",inv.getDescriptor().getReturnType());
         assertEquals(2,inv.getDescriptor().getParamTypes().size());
