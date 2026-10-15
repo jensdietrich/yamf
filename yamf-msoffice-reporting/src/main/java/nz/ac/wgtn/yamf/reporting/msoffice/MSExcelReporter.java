@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 public class MSExcelReporter extends AbstractReporter {
 
     // separator used when the content of an inlined attachment is concatenated into a single cell
-    private static final String NL = "\n";
+    private static final String SEPARATOR = " ";
 
     private File file = null;
 
@@ -68,6 +68,7 @@ public class MSExcelReporter extends AbstractReporter {
             addCell(row,col++,styleL,record.getName());
 
             String status = (record.isManualMarkingRequired() || record.isAborted()) ? "manual marking required" :
+                record.isImported() ? "imported" :
                 record.isSuccess() ? "success" : "fail";
             addCell(row,col++,styleC,status);
 
@@ -110,7 +111,7 @@ public class MSExcelReporter extends AbstractReporter {
             }
             else {
                 // do not lose existing notes (manual marking instructions, error messages)
-                addCell(row,col++,styleLWrapped,notes.isEmpty()?inlinedAttachmentContent:notes+NL+inlinedAttachmentContent);
+                addCell(row,col++,styleLWrapped,notes.isEmpty()?inlinedAttachmentContent:notes+SEPARATOR+inlinedAttachmentContent);
             }
             // next statement is necessary to retain previous statement in bytecode
             // this might be a case of erroneous compiler optimisation
@@ -218,7 +219,20 @@ public class MSExcelReporter extends AbstractReporter {
             return null;
         }
         List<String> content = loadContent(attachment);
-        return content==null ? "" : content.stream().collect(Collectors.joining(NL));
+        return content==null ? "" : content.stream().collect(Collectors.joining(SEPARATOR));
+    }
+
+    /**
+     * Collapse a (potentially multi-line) value into a single line, replacing line breaks by a whitespace.
+     * Values reported in the cells of the results sheet may contain line breaks, in particular assertion
+     * messages obtained from throwables, and the content of inlined attachments. Excel does not display
+     * those well in a table cell. Note that this does not apply to the details-* sheets, where the line
+     * structure of attachments is retained.
+     * @param value a value to be written to a cell, may be null
+     * @return the value with all line breaks (and any whitespace surrounding them) replaced by a single space
+     */
+    private static String toSingleLine(String value) {
+        return value == null ? null : value.replaceAll("\\s*\\R\\s*", " ").trim();
     }
 
     private void addCell(Row row, int col, CellStyle style, String value) {
@@ -226,6 +240,7 @@ public class MSExcelReporter extends AbstractReporter {
         // truncate if necessary in order to avoid IllegalArgumentException later
 
         value = sanitise(value);
+        value = toSingleLine(value);
         Cell cell = row.createCell(col);
         if(value.length() > this.version.getMaxTextLength()) {
             value = value.substring(0,this.version.getMaxTextLength() - 16) + " .. (truncated)";

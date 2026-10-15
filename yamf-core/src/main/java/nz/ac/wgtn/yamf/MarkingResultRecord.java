@@ -92,6 +92,16 @@ public class MarkingResultRecord {
         return mark.marks < 0 ? 0 : mark.marks ;
     }
 
+    /**
+     * Whether the mark of this record was imported with @ImportMark, as opposed to being
+     * derived from the test outcome. Note that importers are not used for penalties
+     * (negative marks) or for tasks that must be marked manually -- see getMark().
+     * @return true if the mark of this record was produced by an importer
+     */
+    public boolean isImported() {
+        return importer != null && !isPenalty() && !isManualMarkingRequired();
+    }
+
     public boolean isManualMarkingRequired() {
         return mark.mustBeMarkedManually;
     }
