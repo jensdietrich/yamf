@@ -1,0 +1,37 @@
+# Dependabot configuration for yamf.
+#
+# This repository contains many pom.xml files that are NOT part of the build: test
+# fixtures under src/test/resources and the sample projects under yamf-examples/examples.
+# Their dependency versions are part of the test data - bumping them breaks tests
+# (e.g. ClasspathInferenceTest) and changes what the example marking scripts demonstrate.
+#
+# Version updates are therefore scoped to the reactor poms only (the parent and its
+# twelve modules), listed explicitly below. Any pom not listed here is left alone.
+#
+# Note: log4j-api and log4j-core must stay on the same version - see the log4j.version
+# property in the parent pom. Dependabot updates that property, which keeps them in sync.
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directories:
+      - "/"
+      - "/yamf-acceptancetests"
+      - "/yamf-audit"
+      - "/yamf-bytecodechecks"
+      - "/yamf-codeql"
+      - "/yamf-core"
+      - "/yamf-coverage"
+      - "/yamf-examples"
+      - "/yamf-http"
+      - "/yamf-jee"
+      - "/yamf-jee-vintage"
+      - "/yamf-msoffice-reporting"
+      - "/yamf-mvn"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
