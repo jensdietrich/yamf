@@ -3,6 +3,8 @@ package nz.ac.wgtn.yamf;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.launcher.TestIdentifier;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
@@ -18,11 +20,15 @@ public class MarkingResultRecord {
     private TestIdentifier testIdentifier = null;
     private TestExecutionResult testExecutionResult = null;
     private Collection<Attachment> attachments = Collections.EMPTY_SET;
+    private Method importer = null;
+    private String importContext = null;
 
-    public MarkingResultRecord(MarkingTestExecutionListener.AssignedMark mark, TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
+    public MarkingResultRecord(MarkingTestExecutionListener.AssignedMark mark, TestIdentifier testIdentifier, TestExecutionResult testExecutionResult,Method importer,String importContext) {
         this.mark = mark;
         this.testIdentifier = testIdentifier;
         this.testExecutionResult = testExecutionResult;
+        this.importer = importer;
+        this.importContext = importContext;
     }
     public boolean isPenalty() {
         return mark.marks < 0;
@@ -52,6 +58,15 @@ public class MarkingResultRecord {
             if (mark.mustBeMarkedManually) {
                 return 0; // default: no marks but must be checked
             }
+            // use importer
+            else if (importer!=null) {
+                try {
+                    return (double)importer.invoke(null,importContext);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            // default case
             else {
                 return testExecutionResult.getStatus() == TestExecutionResult.Status.SUCCESSFUL ? mark.marks : 0;
             }
