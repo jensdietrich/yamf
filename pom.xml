@@ -6,7 +6,7 @@
       <maven.compiler.target>17</maven.compiler.target>
       <maven.compiler.source>17</maven.compiler.source>
       <!-- log4j-api and log4j-core MUST be kept in sync - mixing versions causes NoSuchMethodError at runtime -->
-      <log4j.version>2.25.3</log4j.version>
+      <log4j.version>2.25.5</log4j.version>
   </properties>
 
   <groupId>nz.ac.wgtn.yamf</groupId>
