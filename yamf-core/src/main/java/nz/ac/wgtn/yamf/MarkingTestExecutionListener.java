@@ -167,7 +167,7 @@ public class MarkingTestExecutionListener implements TestExecutionListener {
                             String importedAsString = cl.getName() + "::" + importMarkAnnotation.method();
                             Preconditions.checkState(importer.getParameterTypes().length==1,"importer " + importedAsString + " must not a single argument");
                             Preconditions.checkState(importer.getParameterTypes()[0]==String.class,"importer " + importedAsString + " single argument must be of type String");
-                            Preconditions.checkState(importer.getReturnType()==Double.TYPE,"importer " + importedAsString + " must return a double");
+                            Preconditions.checkState(importer.getReturnType()==Double.TYPE || importer.getReturnType()==ExplainableGrade.class,"importer " + importedAsString + " must return a double or ExplainableGrade");
                             Preconditions.checkState( Modifier.isStatic(importer.getModifiers()),"importer " + importedAsString + " must be static");
 
                             importContext = importMarkAnnotation.context();

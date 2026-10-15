@@ -48,6 +48,18 @@ public class Attachment {
         }
     }
 
+    public Attachment(String name, String content) {
+        this.name = name;
+        this.contentType = "text/plain";
+        this.content = Collections.singletonList(content);
+    }
+
+    public Attachment(String content) {
+        this.name = "";
+        this.contentType = "text/plain";
+        this.content = Collections.singletonList(content);
+    }
+
 
     public String getName() {
         return name;

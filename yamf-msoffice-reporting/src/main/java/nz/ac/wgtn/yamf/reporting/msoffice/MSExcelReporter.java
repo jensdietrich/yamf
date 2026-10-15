@@ -19,6 +19,10 @@ import java.util.stream.IntStream;
  * @author jens dietrich
  */
 public class MSExcelReporter extends AbstractReporter {
+
+    // separator used when the content of an inlined attachment is concatenated into a single cell
+    private static final String NL = "\n";
+
     private File file = null;
 
     private SpreadsheetVersion version = null;
@@ -51,6 +55,8 @@ public class MSExcelReporter extends AbstractReporter {
         CellStyle styleL = createCellStyle(workbook,HorizontalAlignment.LEFT,false);
         CellStyle styleC = createCellStyle(workbook,HorizontalAlignment.CENTER,false);
         CellStyle styleR = createCellStyle(workbook,HorizontalAlignment.RIGHT,false);
+        CellStyle styleLWrapped = createCellStyle(workbook,HorizontalAlignment.LEFT,false);
+        styleLWrapped.setWrapText(true);
 
         List<Attachment> attachments = new ArrayList<>();
         for (MarkingResultRecord record:markingResultRecords) {
@@ -70,13 +76,24 @@ public class MSExcelReporter extends AbstractReporter {
 
             // attachments
             Collection<Attachment>attachmentsOfThisRecord = record.getAttachments();
-            List<String> attachmentNames = new ArrayList<>();
-            for (Attachment attachment:attachmentsOfThisRecord) {
-                attachments.add(attachment);
-                attachmentNames.add("details-"+attachments.size());
+
+            // special case: a single anonymous (unnamed) attachment is not reported in a separate sheet,
+            // instead, its content is inlined into the notes column (F) of this row
+            String inlinedAttachmentContent = getInlinableAttachmentContent(attachmentsOfThisRecord);
+
+            if (inlinedAttachmentContent!=null) {
+                // no details sheet is created for this record
+                addCell(row,col++,styleL,"");
             }
-            String txt = attachmentNames.stream().collect(Collectors.joining(","));
-            addCell(row,col++,styleL,txt);
+            else {
+                List<String> attachmentNames = new ArrayList<>();
+                for (Attachment attachment:attachmentsOfThisRecord) {
+                    attachments.add(attachment);
+                    attachmentNames.add("details-"+attachments.size());
+                }
+                String txt = attachmentNames.stream().collect(Collectors.joining(","));
+                addCell(row,col++,styleL,txt);
+            }
 
             // notes
             String notes = "";
@@ -86,7 +103,15 @@ public class MSExcelReporter extends AbstractReporter {
             else if ((record.isFailed() || record.isAborted()) && record.getThrowable()!=null) {
                 notes = record.getThrowable().getMessage();
             }
-            addCell(row,col++,styleL,notes==null?"":notes);
+            notes = notes==null?"":notes;
+
+            if (inlinedAttachmentContent==null) {
+                addCell(row,col++,styleL,notes);
+            }
+            else {
+                // do not lose existing notes (manual marking instructions, error messages)
+                addCell(row,col++,styleLWrapped,notes.isEmpty()?inlinedAttachmentContent:notes+NL+inlinedAttachmentContent);
+            }
             // next statement is necessary to retain previous statement in bytecode
             // this might be a case of erroneous compiler optimisation
             System.out.print("");
@@ -174,6 +199,26 @@ public class MSExcelReporter extends AbstractReporter {
 
     private List<String> loadContent(Attachment attachment) {
         return attachment.getContent();
+    }
+
+    /**
+     * If this record has exactly one attachment and this attachment has no name, its content is returned
+     * as a single string to be inlined into the notes column, otherwise null is returned and the
+     * attachment(s) will be reported in separate "details-*" sheets.
+     * @param attachmentsOfThisRecord
+     * @return the concatenated content of the single anonymous attachment, or null
+     */
+    private String getInlinableAttachmentContent(Collection<Attachment> attachmentsOfThisRecord) {
+        if (attachmentsOfThisRecord.size()!=1) {
+            return null;
+        }
+        Attachment attachment = attachmentsOfThisRecord.iterator().next();
+        String name = attachment.getName();
+        if (name!=null && !name.isEmpty()) {
+            return null;
+        }
+        List<String> content = loadContent(attachment);
+        return content==null ? "" : content.stream().collect(Collectors.joining(NL));
     }
 
     private void addCell(Row row, int col, CellStyle style, String value) {

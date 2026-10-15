@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -61,7 +62,20 @@ public class MarkingResultRecord {
             // use importer
             else if (importer!=null) {
                 try {
-                    return (double)importer.invoke(null,importContext);
+                    Object result = importer.invoke(null,importContext);
+                    if (result instanceof Double d) {
+                        return d.doubleValue();
+                    }
+                    else if (result instanceof ExplainableGrade xg) {
+                        Collection<Attachment> atts = List.of(
+                            new Attachment(xg.explanation())
+                        );
+                        setAttachments(atts);
+                        return xg.value();
+                    }
+                    else {
+                        throw new IllegalStateException("Unexpected result type of importer method: "+result.getClass());
+                    }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
